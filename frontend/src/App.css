@@ -1,32 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap');
-.nekohan,.nekohan *{box-sizing:border-box}
-.nekohan{position:fixed;inset:0;overflow-y:auto;background:#fffbed url('/safari-background.png') center/cover no-repeat;color:#543b2b;font-family:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN",Meiryo,sans-serif;font-weight:700;text-align:center;color-scheme:light}
-.nekohan .page{width:min(100%,900px);min-height:100%;margin:0 auto;padding:32px 24px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
-.nekohan h1,.nekohan h2,.nekohan p{margin:0}
-.nekohan .subtitle{max-width:100%;padding:9px 22px;border:2px solid #edce95;border-radius:999px;background:#fff9e9;color:#70502f;font-size:clamp(13px,2vw,16px);line-height:1.7}
-.nekohan .title{display:flex;align-items:center;justify-content:center;gap:18px}
-.nekohan .title h1{color:#d76616;font-size:clamp(48px,8vw,88px);font-weight:900;line-height:1.2;letter-spacing:.06em;text-shadow:3px 0 #fff,-3px 0 #fff,0 3px #fff,0 -3px #fff,3px 3px #fff,-3px -3px #fff,0 7px 0 #efcf94}
-.nekohan .paw{width:42px;height:42px;color:#de842c;flex-shrink:0}
-.nekohan .title>.paw:first-child{transform:rotate(-18deg)}
-.nekohan .title>.paw:last-child{transform:rotate(18deg)}
-.nekohan .intro{display:flex;flex-direction:column;align-items:center;gap:10px}
-.nekohan .cat-badge{width:136px;height:136px;display:grid;place-items:center;border:3px solid #f1d5a4;border-radius:50%;background:#fff9e9;box-shadow:0 5px 0 #eddfc5;transform:rotate(-4deg)}
-.nekohan .cat{width:116px;height:96px}
-.nekohan .intro p{padding:6px 14px;border-radius:16px;background:rgba(255,251,237,.94);font-size:clamp(15px,2.2vw,20px);line-height:1.8}
-.nekohan .steps{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
-.nekohan .step{min-width:0;padding:18px 12px;border:2px solid #edc28d;border-radius:24px;background:#fff5e6;box-shadow:0 5px 0 #ead6b8}
-.nekohan .step:nth-child(2){border-color:#b9d49f;background:#f3fae9;box-shadow:0 5px 0 #d7e4c8}
-.nekohan .step:nth-child(3){border-color:#abcddd;background:#eef8fc;box-shadow:0 5px 0 #cfdfeb}
-.nekohan .step-number{width:38px;height:38px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:#ffd18b;color:#72421c;font-size:21px;font-weight:900}
-.nekohan .step:nth-child(2) .step-number{background:#d4e9b4;color:#3d5d2d}
-.nekohan .step:nth-child(3) .step-number{background:#c7e5f4;color:#345b73}
-.nekohan .step strong{display:block;margin-bottom:8px;font-size:clamp(16px,1.8vw,20px);font-weight:900;line-height:1.6;overflow-wrap:anywhere}
-.nekohan .step p{color:#655447;font-size:14px;line-height:1.8}
-.nekohan .start-button{appearance:none;width:min(100%,380px);min-height:80px;margin-top:6px;padding:15px 26px;display:flex;align-items:center;justify-content:center;gap:18px;border:3px solid #b86020;border-radius:999px;background:#ffbd66;color:#59341c;box-shadow:inset 0 4px 0 rgba(255,255,255,.55),0 7px 0 #b86020,0 11px 18px rgba(112,70,24,.14);font:inherit;font-size:clamp(25px,3vw,32px);font-weight:900;cursor:pointer;touch-action:manipulation;transition:transform .15s,box-shadow .15s,background .15s}
-.nekohan .button-arrow{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#fff5dd;font-size:17px}
-@media(hover:hover){.nekohan .start-button:hover{background:#ffcb83;transform:translateY(-2px)}}
-.nekohan .start-button:active{transform:translateY(5px);box-shadow:inset 0 3px 0 rgba(255,255,255,.4),0 2px 0 #b86020}
-.nekohan .start-button:focus-visible{outline:4px solid #246aac;outline-offset:6px}
-.nekohan .note{padding:5px 12px;border-radius:14px;background:rgba(255,251,237,.94);color:#715b44;font-size:14px;line-height:1.8}
-@media(max-width:640px){.nekohan .page{padding:28px 18px 36px;gap:20px}.nekohan .title{gap:10px}.nekohan .paw{width:28px;height:28px}.nekohan .cat-badge{width:110px;height:110px}.nekohan .cat{width:94px;height:80px}.nekohan .steps{width:min(100%,400px);grid-template-columns:1fr;gap:12px}.nekohan .step{display:grid;grid-template-columns:38px 1fr;column-gap:14px;padding:14px 18px;text-align:left;border-radius:20px}.nekohan .step-number{grid-row:span 2;align-self:center;margin:0}.nekohan .step strong{margin-bottom:3px;font-size:18px}}
-@media(prefers-reduced-motion:reduce){.nekohan .start-button{transition:none}}
+:root{font-family:"M PLUS Rounded 1c",Meiryo,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+.nekohan{min-height:100vh;background:#b6df95 url('/safari-background.png') center center/cover no-repeat;color:#54361f;font-family:"M PLUS Rounded 1c",Meiryo,sans-serif;font-weight:700;color-scheme:light}
+.nekohan .page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.nekohan h1,.nekohan p{margin:0}
+.game-screen{width:min(100%,780px);min-height:min(750px,calc(100vh - 48px));padding:30px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;border:6px solid #a56b38;border-radius:38px;background:linear-gradient(180deg,rgba(236,248,253,.89),rgba(248,247,217,.89));box-shadow:0 16px 0 rgba(92,61,30,.25),0 18px 50px rgba(39,59,22,.2)}
+.wood-sign{max-width:100%;padding:13px 44px;border:4px solid #9d602e;border-radius:20px;background:linear-gradient(#f4c782,#dfa35d);box-shadow:0 6px 0 #9d602e;color:#58321b;font-size:clamp(25px,4vw,42px);font-weight:900}
+.small-sign{font-size:clamp(15px,2.3vw,21px);padding:10px 24px}
+.game-title{font-size:clamp(64px,10vw,108px);line-height:1.2;color:#aa521d;letter-spacing:.08em;font-weight:900;text-shadow:3px 3px #fff, -3px -3px #fff, 0 8px #f3cb8d}
+.game-message{font-size:clamp(21px,3vw,30px);line-height:1.65;color:#50331e}
+.mascot-frame{position:relative;width:min(100%,330px);height:200px;overflow:hidden;border:5px solid #f3d39b;border-radius:36px;background:#fff5e3;box-shadow:0 6px 0 #d9ad6e}
+.mascot-image{width:100%;height:100%;object-fit:cover;object-position:center}
+.mascot-label{position:absolute;left:8px;right:8px;bottom:8px;border-radius:99px;padding:7px;background:rgba(255,248,230,.93);font-size:17px}
+.wood-button{min-height:74px;padding:12px 30px;border:4px solid #a56326;border-radius:999px;background:linear-gradient(#ffe39a,#ffc665);color:#5a351b;font:900 clamp(24px,3vw,32px) "M PLUS Rounded 1c",sans-serif;box-shadow:0 7px 0 #a56326;cursor:pointer}
+.wood-button:hover:not(:disabled){filter:brightness(1.05)}
+.wood-button:active:not(:disabled){transform:translateY(5px);box-shadow:0 2px 0 #a56326}
+.wood-button:disabled{opacity:.5;cursor:not-allowed}
+.primary-button{width:min(100%,420px)}
+.screen-note{font-size:18px}
+.question-bubble{padding:20px 42px;background:#fffdf4;border:4px solid #e9d6ad;border-radius:45% 45% 40% 40% / 35% 35% 45% 45%;font-size:clamp(27px,4vw,44px);font-weight:900;line-height:1.45}
+.answer-panel{width:min(100%,670px);padding:28px 24px;border:8px solid #a66b39;border-radius:32px;background:rgba(255,250,237,.97);box-shadow:0 8px 0 #764a27;display:flex;flex-direction:column;align-items:center;gap:20px}
+.answer-hint{font-size:clamp(18px,2.5vw,25px)}
+.number-grid{width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.number-button{min-width:0;min-height:85px;border:3px solid #d8ae78;border-radius:20px;background:#fffdf8;color:#51341e;font:900 clamp(26px,4vw,43px) "M PLUS Rounded 1c",sans-serif;box-shadow:0 5px 0 #dfc7a5;cursor:pointer}
+.number-button:hover{background:#fff0cc}
+.number-button.selected{background:#ffcc76;border-color:#aa6227;box-shadow:0 3px 0 #aa6227;transform:translateY(2px)}
+.selection-message{font-size:20px}
+.confirm-button{width:min(100%,360px)}
+.back-button{border:2px solid #a77e55;border-radius:999px;padding:10px 24px;background:#fff9ec;color:#68462b;font:700 18px "M PLUS Rounded 1c",sans-serif;cursor:pointer}
+button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
+@media(max-width:640px){.nekohan .page{padding:12px}.game-screen{padding:20px 12px;min-height:calc(100vh - 24px);gap:16px;border-width:4px;border-radius:24px}.mascot-frame{height:170px}.number-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.number-button{min-height:68px}.answer-panel{padding:18px 12px}.question-bubble{padding:14px 20px}}
