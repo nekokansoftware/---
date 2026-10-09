@@ -31,3 +31,31 @@ body{margin:0}
 .back-button{border:2px solid #a77e55;border-radius:999px;padding:10px 24px;background:#fff9ec;color:#68462b;font:700 18px "M PLUS Rounded 1c",sans-serif;cursor:pointer}
 button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
 @media(max-width:640px){.nekohan .page{padding:12px}.game-screen{padding:20px 12px;min-height:calc(100vh - 24px);gap:16px;border-width:4px;border-radius:24px}.mascot-frame{height:170px}.number-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.number-button{min-height:68px}.answer-panel{padding:18px 12px}.question-bubble{padding:14px 20px}}
+
+/* スタート画面：画像に文字とボタンが含まれるため、画像そのものを使う */
+.nekohan{background:#b9dcb0}
+.nekohan .page{padding:0}
+.start-artwork{
+  position:relative;
+  width:min(100vw,75vh);
+  aspect-ratio:3 / 4;
+  max-height:100vh;
+  flex-shrink:0;
+  background:#b9dcb0 url('/safari-background.png') center / 100% 100% no-repeat;
+}
+.artwork-start-button{
+  position:absolute;
+  left:15%;
+  width:70%;
+  top:77.5%;
+  height:11%;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+.artwork-start-button:hover{background:rgba(255,255,255,.13)}
+.artwork-start-button:focus-visible{outline:5px solid #1566b0;outline-offset:3px}
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-aspect-ratio:3/4){.start-artwork{width:100vw;max-height:none}}
