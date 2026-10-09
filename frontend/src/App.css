@@ -81,3 +81,31 @@ button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
 @media(max-aspect-ratio:3/4){
   .start-artwork{width:min(100vw,177.7778dvh);max-height:100dvh}
 }
+
+/* PC画面いっぱいに16:9画像を拡大。余白なし・縦横比維持 */
+.nekohan:has(.start-artwork){width:100%;min-height:100vh;min-height:100dvh;overflow:hidden}
+.nekohan .page:has(.start-artwork){
+  position:relative;
+  width:100vw;
+  height:100vh;
+  height:100dvh;
+  min-height:0;
+  overflow:hidden;
+  display:block;
+  padding:0;
+}
+.start-artwork{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:max(100vw,177.7778vh);
+  width:max(100vw,177.7778dvh);
+  height:auto;
+  max-height:none;
+  aspect-ratio:16/9;
+  transform:translate(-50%,-50%);
+  background-size:100% 100%;
+}
+@media(max-aspect-ratio:3/4){
+  .start-artwork{width:max(100vw,177.7778dvh);max-height:none}
+}
