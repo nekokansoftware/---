@@ -109,3 +109,9 @@ button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
 @media(max-aspect-ratio:3/4){
   .start-artwork{width:max(100vw,177.7778dvh);max-height:none}
 }
+
+/* Full-width 16:9 start scene */
+.nekohan:has(.start-artwork){width:100%;min-height:100dvh;overflow:hidden}
+.nekohan .page:has(.start-artwork){width:100%;height:100dvh;min-height:0;padding:0;overflow:hidden;position:relative;display:block}
+.start-artwork{position:absolute;left:50%;top:50%;width:max(100vw,177.7778dvh);max-height:none;aspect-ratio:16/9;transform:translate(-50%,-50%);background-size:100% 100%}
+.artwork-start-button{left:34.7%;top:77.8%;width:30.6%;height:14%}
