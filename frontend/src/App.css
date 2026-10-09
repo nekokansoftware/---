@@ -115,3 +115,26 @@ button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
 .nekohan .page:has(.start-artwork){width:100%;height:100dvh;min-height:0;padding:0;overflow:hidden;position:relative;display:block}
 .start-artwork{position:absolute;left:50%;top:50%;width:max(100vw,177.7778dvh);max-height:none;aspect-ratio:16/9;transform:translate(-50%,-50%);background-size:100% 100%}
 .artwork-start-button{left:34.7%;top:77.8%;width:30.6%;height:14%}
+
+/* スタートボタンにマウスを乗せたときの反応 */
+.artwork-start-button {
+  z-index: 2;
+  transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.artwork-start-button:hover {
+  background: rgba(255, 238, 130, .22);
+  box-shadow: 0 0 0 5px rgba(255, 252, 214, .9), 0 0 28px 12px rgba(255, 213, 56, .75);
+  transform: scale(1.045);
+}
+.artwork-start-button:active {
+  background: rgba(255, 200, 68, .34);
+  transform: scale(.97);
+}
+.artwork-start-button:focus-visible {
+  outline: 5px solid #1566b0;
+  outline-offset: 6px;
+  box-shadow: 0 0 24px 9px rgba(255, 213, 56, .65);
+}
+@media (prefers-reduced-motion: reduce) {
+  .artwork-start-button { transition: none; }
+}
