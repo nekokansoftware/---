@@ -59,3 +59,25 @@ button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
 .artwork-start-button:focus-visible{outline:5px solid #1566b0;outline-offset:3px}
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-aspect-ratio:3/4){.start-artwork{width:100vw;max-height:none}}
+
+/* 横長16:9版のスタート画面。画像を切らずに全体表示 */
+.nekohan:has(.start-artwork){background:#b9dcb0 url('/safari-background.png') center / cover no-repeat}
+.nekohan .page:has(.start-artwork){min-height:100vh;min-height:100dvh;padding:0;overflow:hidden}
+.start-artwork{
+  width:min(100vw,177.7778vh);
+  width:min(100vw,177.7778dvh);
+  height:auto;
+  max-height:100vh;
+  max-height:100dvh;
+  aspect-ratio:16 / 9;
+  background-size:100% 100%;
+}
+.artwork-start-button{
+  left:35.2%;
+  width:29.6%;
+  top:77%;
+  height:14%;
+}
+@media(max-aspect-ratio:3/4){
+  .start-artwork{width:min(100vw,177.7778dvh);max-height:100dvh}
+}
