@@ -1,0 +1,80 @@
+
+.result-page {
+  min-height: 100vh;
+  width: 100%;
+
+  background-image: url("../assets/result-background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  padding: 30px 20px;
+  text-align: center;
+  font-family: sans-serif;
+  color: #333;
+}
+
+.result-number {
+  text-align: left;
+  color: #777;
+  font-size: 14px;
+}
+
+.result-page h1 {
+  margin: 30px 0;
+  font-size: 36px;
+}
+
+.result-score {
+  padding: 25px;
+  border-radius: 20px;
+  background-color: #fff5d9;
+}
+
+.result-score p {
+  margin: 10px 0;
+}
+
+.result-percent {
+  font-size: 64px;
+  font-weight: bold;
+  color: #f39800;
+}
+
+.result-title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.result-details {
+  margin: 25px 0;
+  padding: 15px;
+  border: 2px solid #eee;
+  border-radius: 15px;
+}
+
+.result-details p {
+  margin: 10px;
+  font-size: 18px;
+}
+
+.result-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.result-buttons button {
+  padding: 15px 25px;
+  border: none;
+  border-radius: 12px;
+  background-color: #ffca55;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.result-buttons button:hover {
+  background-color: #ffb92e;
+}
