@@ -1,7 +1,7 @@
 import { useState, type ComponentType } from 'react'
-import StartScreen from './StartScreen'
-import AnswerScreen  from './AnswerScreen'
-import  ConfirmScreen  from './ConfirmScreen'
+import StartScreen from './components/StartScreen'
+import AnswerScreen  from './components/AnswerScreen'
+import  ConfirmScreen  from './components/ConfirmScreen'
 import './App.css'
 
 type Screen = 'start' | 'answer' | 'confirm'
