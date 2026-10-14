@@ -19,10 +19,6 @@ function Result() {
           🐱 きみのネコひげかんかくは…？
         </p>
 
-        <p className="match-label">
-          ぴったりど
-        </p>
-
         <div className="match-rate">
           {matchRate}<span>%</span>
         </div>
