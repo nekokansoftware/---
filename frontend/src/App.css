@@ -63,3 +63,8 @@ body{margin:0}
 button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
 
 @media(max-width:640px){.nekohan .page{padding:12px}.game-screen{padding:20px 12px;min-height:calc(100vh - 24px);gap:16px;border-width:4px;border-radius:24px}.mascot-frame{height:170px}.number-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.number-button{min-height:68px}.answer-panel{padding:18px 12px}.question-bubble{padding:14px 20px}}
+/* タッチ時の灰色のハイライトを消す */
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
