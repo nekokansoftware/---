@@ -1,4 +1,5 @@
 
+import { useState } from 'react'
 import './NameScreen.css'
 
 type Props = {
@@ -17,7 +18,7 @@ const kanaRows = [
 ]
 
 const rowY = [36.2, 45.4, 54.6, 63.8, 73.0]
-const columnX = [7.6, 16.8, 25.9, 35.0, 44.2, 53.3, 62.5, 71.6, 80.8, 90.0, 96.0]
+const columnX = [17, 23.7, 30.3, 37, 43.6, 50.3, 56.9, 63.6, 70.3, 77, 83.6]
 
 const first = ['もふもふ', 'きらきら', 'にこにこ', 'ふわふわ', 'わくわく']
 const second = ['ねこ', 'とら', 'うさぎ', 'ぱんだ', 'きつね']
@@ -33,6 +34,8 @@ export default function NameScreen({
   onConfirm,
   onBack,
 }: Props) {
+  const [showMarks, setShowMarks] = useState(false)
+
   function addKana(kana: string) {
     if (name.length >= 8) return
     onChange(name + kana)
@@ -46,7 +49,7 @@ export default function NameScreen({
     onChange('')
   }
 
-  function addMark() {
+  function addMark(mark: 'dakuten' | 'handakuten') {
     if (!name) return
 
     const last = name.slice(-1)
@@ -96,13 +99,21 @@ export default function NameScreen({
             aria-label={`${kana}を入力`}
             onClick={() => {
               if (kana === '゛゜') {
-                addMark()
+                setShowMarks(true)
               } else {
                 addKana(kana)
               }
             }}
           />
         ))
+      )}
+
+      {showMarks && (
+        <div className="name-mark-choices" role="group" aria-label="てんてんかまるをえらぶ">
+          <button type="button" onClick={() => addMark('dakuten')}>゛ てんてん</button>
+          <button type="button" onClick={() => addMark('handakuten')}>゜ まる</button>
+          <button type="button" onClick={() => setShowMarks(false)}>とじる</button>
+        </div>
       )}
 
       <button
