@@ -66,7 +66,7 @@ export default function App() {
     windTimers.current.push(setTimeout(() => {
       setAnswer(null)
       setPlayerName('')
-      setScreen('answer')
+      setScreen('name')
     }, 1450))
 
     // 葉っぱが飛び去ったら演出を終了
@@ -98,7 +98,7 @@ export default function App() {
                 setScreen('confirm')
               }
             }}
-            onBack={returnToStart}
+            onBack={() => setScreen('name')}
           />
         )}
 
@@ -107,7 +107,10 @@ export default function App() {
             answer={answer}
             onEdit={() => setScreen('answer')}
             onBack={returnToStart}
-            onNext={() => setScreen('name')}
+            onNext={() => {
+              console.log('名前:', playerName, '回答:', answer)
+              // 結果画面完成後にここから遷移する
+            }}
           />
         )}
 
@@ -115,11 +118,8 @@ export default function App() {
           <NameScreen
             name={playerName}
             onChange={setPlayerName}
-            onBack={() => setScreen('confirm')}
-            onConfirm={() => {
-              console.log('名前:', playerName, '回答:', answer)
-              // 結果画面が完成したらここから遷移する
-            }}
+            onBack={returnToStart}
+            onConfirm={() => setScreen('answer')}
           />
         )}
       </div>
