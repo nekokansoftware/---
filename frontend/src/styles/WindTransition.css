@@ -1,0 +1,62 @@
+/* ==========================
+   風と葉っぱの画面遷移
+========================== */
+
+.wind-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: all;
+}
+
+/* 葉っぱが画面を覆う瞬間の緑色 */
+.wind-leaf-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #80bd4e;
+  opacity: 0;
+  animation: wind-cover 2.9s ease-in-out forwards;
+}
+
+@keyframes wind-cover {
+  0%, 38% { opacity: 0; }
+  49%, 55% { opacity: 1; }
+  75%, 100% { opacity: 0; }
+}
+
+/* 1枚ずつ飛ぶ葉っぱ */
+.wind-leaf {
+  position: absolute;
+  z-index: 1;
+  top: var(--leaf-y);
+  left: -20vw;
+  width: var(--leaf-size);
+  height: auto;
+  max-width: none;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: leaf-gust var(--leaf-duration)
+    cubic-bezier(.22, .45, .5, 1)
+    var(--leaf-delay) both;
+}
+
+@keyframes leaf-gust {
+  0% {
+    opacity: 0;
+    transform: translate3d(-15vw, 20px, 0) rotate(0deg) scale(.35);
+  }
+  12% { opacity: 1; }
+  45% {
+    transform: translate3d(55vw, -35px, 0)
+      rotate(calc(var(--leaf-rotation) * .45)) scale(1.2);
+  }
+  85% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate3d(150vw, 25px, 0)
+      rotate(var(--leaf-rotation)) scale(2.5);
+  }
+}
