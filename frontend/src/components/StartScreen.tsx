@@ -6,7 +6,7 @@ type Props = {
 }
 
 export default function StartScreen({ onStart }: Props) {
-  const [eyes, setEyes] = useState({ x: 0, y: 0 })
+const [eyes, setEyes] = useState({ x: 0, y: 0 })
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -37,12 +37,12 @@ export default function StartScreen({ onStart }: Props) {
   }
 
   return (
-    <section
-      className="start-artwork eyes-background"
-      aria-label="ネコカン スタート画面"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setEyes({ x: 0, y: 0 })}
-    >
+  <section
+    className="start-artwork eyes-background"
+    aria-label="ネコカン スタート画面"
+    onMouseMove={handleMouseMove}
+    onMouseLeave={() => setEyes({ x: 0, y: 0 })}
+  >
       <h1 className="visually-hidden">ネコカン</h1>
 
       <div
@@ -80,4 +80,3 @@ export default function StartScreen({ onStart }: Props) {
     </section>
   )
 }
-

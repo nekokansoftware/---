@@ -1,278 +1,560 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap');
+
 :root{font-family:"M PLUS Rounded 1c",Meiryo,sans-serif}
+
 *,*::before,*::after{box-sizing:border-box}
+
 body{margin:0}
+
 .nekohan{min-height:100vh;background:#b6df95 url('/safari-background.png') center center/cover no-repeat;color:#54361f;font-family:"M PLUS Rounded 1c",Meiryo,sans-serif;font-weight:700;color-scheme:light}
+
 .nekohan .page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
 .nekohan h1,.nekohan p{margin:0}
+
 .game-screen{width:min(100%,780px);min-height:min(750px,calc(100vh - 48px));padding:30px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;border:6px solid #a56b38;border-radius:38px;background:linear-gradient(180deg,rgba(236,248,253,.89),rgba(248,247,217,.89));box-shadow:0 16px 0 rgba(92,61,30,.25),0 18px 50px rgba(39,59,22,.2)}
+
 .wood-sign{max-width:100%;padding:13px 44px;border:4px solid #9d602e;border-radius:20px;background:linear-gradient(#f4c782,#dfa35d);box-shadow:0 6px 0 #9d602e;color:#58321b;font-size:clamp(25px,4vw,42px);font-weight:900}
+
 .small-sign{font-size:clamp(15px,2.3vw,21px);padding:10px 24px}
+
 .game-title{font-size:clamp(64px,10vw,108px);line-height:1.2;color:#aa521d;letter-spacing:.08em;font-weight:900;text-shadow:3px 3px #fff, -3px -3px #fff, 0 8px #f3cb8d}
+
 .game-message{font-size:clamp(21px,3vw,30px);line-height:1.65;color:#50331e}
+
 .mascot-frame{position:relative;width:min(100%,330px);height:200px;overflow:hidden;border:5px solid #f3d39b;border-radius:36px;background:#fff5e3;box-shadow:0 6px 0 #d9ad6e}
+
 .mascot-image{width:100%;height:100%;object-fit:cover;object-position:center}
+
 .mascot-label{position:absolute;left:8px;right:8px;bottom:8px;border-radius:99px;padding:7px;background:rgba(255,248,230,.93);font-size:17px}
+
 .wood-button{min-height:74px;padding:12px 30px;border:4px solid #a56326;border-radius:999px;background:linear-gradient(#ffe39a,#ffc665);color:#5a351b;font:900 clamp(24px,3vw,32px) "M PLUS Rounded 1c",sans-serif;box-shadow:0 7px 0 #a56326;cursor:pointer}
+
 .wood-button:hover:not(:disabled){filter:brightness(1.05)}
+
 .wood-button:active:not(:disabled){transform:translateY(5px);box-shadow:0 2px 0 #a56326}
+
 .wood-button:disabled{opacity:.5;cursor:not-allowed}
+
 .primary-button{width:min(100%,420px)}
+
 .screen-note{font-size:18px}
+
 .question-bubble{padding:20px 42px;background:#fffdf4;border:4px solid #e9d6ad;border-radius:45% 45% 40% 40% / 35% 35% 45% 45%;font-size:clamp(27px,4vw,44px);font-weight:900;line-height:1.45}
+
 .answer-panel{width:min(100%,670px);padding:28px 24px;border:8px solid #a66b39;border-radius:32px;background:rgba(255,250,237,.97);box-shadow:0 8px 0 #764a27;display:flex;flex-direction:column;align-items:center;gap:20px}
+
 .answer-hint{font-size:clamp(18px,2.5vw,25px)}
+
 .number-grid{width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+
 .number-button{min-width:0;min-height:85px;border:3px solid #d8ae78;border-radius:20px;background:#fffdf8;color:#51341e;font:900 clamp(26px,4vw,43px) "M PLUS Rounded 1c",sans-serif;box-shadow:0 5px 0 #dfc7a5;cursor:pointer}
+
 .number-button:hover{background:#fff0cc}
+
 .number-button.selected{background:#ffcc76;border-color:#aa6227;box-shadow:0 3px 0 #aa6227;transform:translateY(2px)}
+
 .selection-message{font-size:20px}
+
 .confirm-button{width:min(100%,360px)}
+
 .back-button{border:2px solid #a77e55;border-radius:999px;padding:10px 24px;background:#fff9ec;color:#68462b;font:700 18px "M PLUS Rounded 1c",sans-serif;cursor:pointer}
+
 button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
+
 @media(max-width:640px){.nekohan .page{padding:12px}.game-screen{padding:20px 12px;min-height:calc(100vh - 24px);gap:16px;border-width:4px;border-radius:24px}.mascot-frame{height:170px}.number-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.number-button{min-height:68px}.answer-panel{padding:18px 12px}.question-bubble{padding:14px 20px}}
 
 /* スタート画面：画像に文字とボタンが含まれるため、画像そのものを使う */
+
 .nekohan{background:#b9dcb0}
+
 .nekohan .page{padding:0}
+
 .start-artwork{
+
   position:relative;
+
   width:min(100vw,75vh);
+
   aspect-ratio:3 / 4;
+
   max-height:100vh;
+
   flex-shrink:0;
+
   background:#b9dcb0 url('/safari-background.png') center / 100% 100% no-repeat;
+
 }
+
 .artwork-start-button{
+
   position:absolute;
+
   left:15%;
+
   width:70%;
+
   top:77.5%;
+
   height:11%;
+
   border:0;
+
   border-radius:999px;
+
   background:transparent;
+
   cursor:pointer;
+
   touch-action:manipulation;
+
 }
+
 .artwork-start-button:hover{background:rgba(255,255,255,.13)}
+
 .artwork-start-button:focus-visible{outline:5px solid #1566b0;outline-offset:3px}
+
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
 @media(max-aspect-ratio:3/4){.start-artwork{width:100vw;max-height:none}}
 
 /* 横長16:9版のスタート画面。画像を切らずに全体表示 */
+
 .nekohan:has(.start-artwork){background:#b9dcb0 url('/safari-background.png') center / cover no-repeat}
+
 .nekohan .page:has(.start-artwork){min-height:100vh;min-height:100dvh;padding:0;overflow:hidden}
+
 .start-artwork{
+
   width:min(100vw,177.7778vh);
+
   width:min(100vw,177.7778dvh);
+
   height:auto;
+
   max-height:100vh;
+
   max-height:100dvh;
+
   aspect-ratio:16 / 9;
+
   background-size:100% 100%;
+
 }
+
 .artwork-start-button{
+
   left:35.2%;
+
   width:29.6%;
+
   top: 77%;
+
   height:14%;
+
 }
+
 @media(max-aspect-ratio:3/4){
+
   .start-artwork{width:min(100vw,177.7778dvh);max-height:100dvh}
+
 }
 
 /* PC画面いっぱいに16:9画像を拡大。余白なし・縦横比維持 */
+
 .nekohan:has(.start-artwork){width:100%;min-height:100vh;min-height:100dvh;overflow:hidden}
+
 .nekohan .page:has(.start-artwork){
+
   position:relative;
+
   width:100vw;
+
   height:100vh;
+
   height:100dvh;
+
   min-height:0;
+
   overflow:hidden;
+
   display:block;
+
   padding:0;
+
 }
+
 .start-artwork{
+
   position:absolute;
+
   left:50%;
+
   top:50%;
+
   width:max(100vw,177.7778vh);
+
   width:max(100vw,177.7778dvh);
+
   height:auto;
+
   max-height:none;
+
   aspect-ratio:16/9;
+
   transform:translate(-50%,-50%);
+
   background-size:100% 100%;
+
 }
+
 @media(max-aspect-ratio:3/4){
+
   .start-artwork{width:max(100vw,177.7778dvh);max-height:none}
+
 }
 
 /* Full-width 16:9 start scene */
+
 .nekohan:has(.start-artwork){width:100%;min-height:100dvh;overflow:hidden}
+
 .nekohan .page:has(.start-artwork){width:100%;height:100dvh;min-height:0;padding:0;overflow:hidden;position:relative;display:block}
+
 .start-artwork{position:absolute;left:50%;top:50%;width:max(100vw,177.7778dvh);max-height:none;aspect-ratio:16/9;transform:translate(-50%,-50%);background-size:100% 100%}
+
 .artwork-start-button{left:35.35%;top:77.5%;width:29.3%;height:12.9%}
 
 /* スタートボタンにマウスを乗せたときの反応 */
+
 .artwork-start-button {
+
   z-index: 2;
+
   transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
+
 }
+
 .artwork-start-button:hover {
+
   background: rgba(255, 239, 150, .14);
+
   box-shadow: 0 0 0 2px rgba(255, 251, 195, .85), 0 0 14px 4px rgba(255, 214, 71, .55);
+
   transform: none;
+
 }
+
 .artwork-start-button:active {
+
   background: rgba(255, 200, 68, .34);
+
   transform: scale(.985);
+
 }
+
 .artwork-start-button:focus-visible {
+
   outline: 5px solid #1566b0;
+
   outline-offset: 6px;
+
   box-shadow: 0 0 24px 9px rgba(255, 213, 56, .65);
+
 }
+
 @media (prefers-reduced-motion: reduce) {
+
   .artwork-start-button { transition: none; }
+
 }
+
 /* スタートボタンを目立たせる */
+
 .artwork-start-button {
+
   top: 77.5%;
+
   cursor: pointer;
+
   transition:
+
     background-color 0.2s ease,
+
     box-shadow 0.2s ease,
+
     transform 0.2s ease;
+
 }
 
 /* マウスを乗せると明るく光る */
+
 .artwork-start-button:hover {
+
   background: rgba(255, 240, 120, 0.25);
+
   box-shadow:
+
     0 0 0 5px rgba(255, 235, 70, 0.95),
+
     0 0 20px 8px rgba(255, 210, 40, 0.8);
+
   transform: scale(1.025);
+
 }
 
 /* 押した瞬間に少し沈む */
+
 .artwork-start-button:active {
+
   transform: scale(0.98);
+
 }
 
 /* 白目だけの背景画像を使用 */
+
 .start-artwork.eyes-background {
+
   background-image: url('/safari-background.png');
+
 }
 
 /* 黒目の共通設定 */
+
 .cat-pupil {
+
   position: absolute;
+
   width: 0.75%;
+
   aspect-ratio: 1 / 1.3;
+
   background: #17120d;
+
   border-radius: 50%;
+
   z-index: 1;
+
   pointer-events: none;
+
   transition: transform 0.12s ease-out;
+
 }
 
 /* 猫の左目 */
+
 .left-pupil {
+
   left: 47.1%;
+
   top: 51.7%;
+
 }
 
 /* 猫の右目 */
+
 .right-pupil {
+
   left: 51.9%;
+
   top: 51.7%;
+
 }
 
 /* まばたき用のまぶた */
+
 .cat-eyelid {
+
   position: absolute;
+
   width: 2.2%;
+
   height: 3.8%;
+
   background: #ff941f;
+
   border-bottom: 2px solid #49301c;
+
   border-radius: 50% 50% 45% 45%;
+
   z-index: 2;
+
   pointer-events: none;
 
   /* 普段はまぶたを隠しておく */
+
   transform: translate(-50%, -50%) scaleY(0);
+
   transform-origin: center top;
 
   /* 4秒ごとにまばたき */
+
   animation: cat-blink 4s infinite;
+
 }
 
 /* 左目のまぶた */
+
 .left-eyelid {
+
   left: 47.1%;
+
   top: 51.7%;
+
 }
 
 /* 右目のまぶた */
+
 .right-eyelid {
+
   left: 51.9%;
+
   top: 51.7%;
+
 }
 
 /* まばたきの動き */
+
 @keyframes cat-blink {
+
   0%, 90%, 100% {
+
     transform: translate(-50%, -50%) scaleY(0);
+
   }
 
   93%, 96% {
+
     transform: translate(-50%, -50%) scaleY(1);
+
   }
+
 }
 
 /* ネコカン君のしっぽ */
+
 .cat-tail {
+
   position: absolute;
 
   /* しっぽの位置 */
+
   left: 55%;
+
   top: 53%;
 
   /* しっぽの大きさ */
+
   width: 10%;
+
   height: auto;
 
   /* 猫の体より後ろに表示 */
+
   z-index: 0;
 
   /* マウス操作を邪魔しない */
+
   pointer-events: none;
 
   /* 付け根を中心に回転 */
+
   transform-origin: 15% 90%;
 
   /* 2.5秒かけて左右に振る */
+
   animation: tail-wag 2.5s ease-in-out infinite;
+
 }
 
 /* しっぽを振るアニメーション */
+
 @keyframes tail-wag {
+
   0%, 100% {
+
     transform: rotate(-10deg);
+
   }
 
   50% {
+
     transform: rotate(12deg);
+
   }
+
 }
 
 /* 動きを減らす設定への対応 */
+
 @media (prefers-reduced-motion: reduce) {
+
   .cat-tail {
+
     animation: none;
+
   }
+
 }
 
+/* ==========================
+   風と葉っぱの画面遷移
+========================== */
+
+.wind-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: all;
+}
+
+/* 葉っぱが画面を覆う瞬間の緑色 */
+.wind-leaf-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #80bd4e;
+  opacity: 0;
+  animation: wind-cover 2.9s ease-in-out forwards;
+}
+
+@keyframes wind-cover {
+  0%, 38% { opacity: 0; }
+  49%, 55% { opacity: 1; }
+  75%, 100% { opacity: 0; }
+}
+
+/* 1枚ずつ飛ぶ葉っぱ */
+.wind-leaf {
+  position: absolute;
+  z-index: 1;
+  top: var(--leaf-y);
+  left: -20vw;
+  width: var(--leaf-size);
+  height: auto;
+  max-width: none;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation: leaf-gust var(--leaf-duration)
+    cubic-bezier(.22, .45, .5, 1)
+    var(--leaf-delay) both;
+}
+
+@keyframes leaf-gust {
+  0% {
+    opacity: 0;
+    transform: translate3d(-15vw, 20px, 0) rotate(0deg) scale(.35);
+  }
+  12% { opacity: 1; }
+  45% {
+    transform: translate3d(55vw, -35px, 0)
+      rotate(calc(var(--leaf-rotation) * .45)) scale(1.2);
+  }
+  85% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate3d(150vw, 25px, 0)
+      rotate(var(--leaf-rotation)) scale(2.5);
+  }
+}
