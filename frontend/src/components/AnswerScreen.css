@@ -89,3 +89,13 @@
 .decide-hotspot:disabled {
   cursor: not-allowed;
 }
+
+/* 左上の「もどる」イラストに重ねる透明なタッチ領域 */
+.back-hotspot {
+  left: 7.5%;
+  top: 7.5%;
+  width: 19%;
+  height: 12%;
+  border-radius: 999px;
+  -webkit-tap-highlight-color: transparent;
+}
