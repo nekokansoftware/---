@@ -4,6 +4,10 @@ import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
 import  ConfirmScreen  from './components/ConfirmScreen'
 import './App.css'
+import './components/StartScreen.css'
+import './styles/WindTransition.css'
+import './components/AnswerScreen.css'
+import './components/ConfirmScreen.css'
 
 type Screen = 'start' | 'answer' | 'confirm'
 type ConfirmScreenProps = {
