@@ -1,0 +1,72 @@
+/* 16:9の画像とタッチ領域を同じ比率で拡大縮小する */
+.nekohan .page:has(.name-artwork) {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  display: block;
+}
+.name-artwork {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(100vw, 177.7778dvh);
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+}
+.name-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+.name-value {
+  position: absolute;
+  z-index: 2;
+  left: 28%;
+  top: 22.8%;
+  width: 41%;
+  height: 7.8%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff8e8;
+  color: #47200e;
+  font-size: clamp(16px, 3.4vw, 56px);
+  font-weight: 900;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.name-hotspot {
+  appearance: none;
+  position: absolute;
+  z-index: 3;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.name-kana {
+  width: 8.5%;
+  height: 9.5%;
+  transform: translate(-50%, -50%);
+  border-radius: 18%;
+}
+.name-kana:last-of-type { width: 5%; }
+.name-back { left: 3%; top: 4%; width: 18%; height: 12%; border-radius: 999px; }
+.name-clear { left: 2.5%; top: 82%; width: 18%; height: 12%; border-radius: 999px; }
+.name-delete { left: 21%; top: 82%; width: 18%; height: 12%; border-radius: 999px; }
+.name-random { left: 60%; top: 82%; width: 17%; height: 12%; border-radius: 999px; }
+.name-confirm { left: 78%; top: 82%; width: 20%; height: 12%; border-radius: 999px; }
+.name-hotspot:focus-visible { outline: 3px solid #1769bc; outline-offset: -3px; }
+.name-hotspot:disabled { cursor: not-allowed; }
