@@ -23,6 +23,7 @@ export default function AnswerScreen({
   answer,
   onChange,
   onConfirm,
+  onBack,
 }: Props) {
   const input = answer === null ? '' : String(answer)
 
@@ -60,6 +61,14 @@ export default function AnswerScreen({
       <output className="answer-value">
         {input}
       </output>
+
+      {/* 背景画像の左上に描かれた「もどる」ボタン */}
+      <button
+        type="button"
+        className="answer-hotspot back-hotspot"
+        aria-label="スタート画面にもどる"
+        onClick={onBack}
+      />
 
       {/* 数字ボタン */}
       {keys.map(({ digit, x, y }) => (
