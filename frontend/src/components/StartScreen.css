@@ -1,0 +1,431 @@
+/* スタート画面：画像に文字とボタンが含まれるため、画像そのものを使う */
+
+.nekohan{background:#b9dcb0}
+
+.nekohan .page{padding:0}
+
+.start-artwork{
+
+  position:relative;
+
+  width:min(100vw,75vh);
+
+  aspect-ratio:3 / 4;
+
+  max-height:100vh;
+
+  flex-shrink:0;
+
+  background:#b9dcb0 url('/safari-background.png') center / 100% 100% no-repeat;
+
+}
+
+.artwork-start-button{
+
+  position:absolute;
+
+  left:15%;
+
+  width:70%;
+
+  top:77.5%;
+
+  height:11%;
+
+  border:0;
+
+  border-radius:999px;
+
+  background:transparent;
+
+  cursor:pointer;
+
+  touch-action:manipulation;
+
+}
+
+.artwork-start-button:hover{background:rgba(255,255,255,.13)}
+
+.artwork-start-button:focus-visible{outline:5px solid #1566b0;outline-offset:3px}
+
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+@media(max-aspect-ratio:3/4){.start-artwork{width:100vw;max-height:none}}
+
+/* 横長16:9版のスタート画面。画像を切らずに全体表示 */
+
+.nekohan:has(.start-artwork){background:#b9dcb0 url('/safari-background.png') center / cover no-repeat}
+
+.nekohan .page:has(.start-artwork){min-height:100vh;min-height:100dvh;padding:0;overflow:hidden}
+
+.start-artwork{
+
+  width:min(100vw,177.7778vh);
+
+  width:min(100vw,177.7778dvh);
+
+  height:auto;
+
+  max-height:100vh;
+
+  max-height:100dvh;
+
+  aspect-ratio:16 / 9;
+
+  background-size:100% 100%;
+
+}
+
+.artwork-start-button{
+
+  left:35.2%;
+
+  width:29.6%;
+
+  top: 77%;
+
+  height:14%;
+
+}
+
+@media(max-aspect-ratio:3/4){
+
+  .start-artwork{width:min(100vw,177.7778dvh);max-height:100dvh}
+
+}
+
+/* PC画面いっぱいに16:9画像を拡大。余白なし・縦横比維持 */
+
+.nekohan:has(.start-artwork){width:100%;min-height:100vh;min-height:100dvh;overflow:hidden}
+
+.nekohan .page:has(.start-artwork){
+
+  position:relative;
+
+  width:100vw;
+
+  height:100vh;
+
+  height:100dvh;
+
+  min-height:0;
+
+  overflow:hidden;
+
+  display:block;
+
+  padding:0;
+
+}
+
+.start-artwork{
+
+  position:absolute;
+
+  left:50%;
+
+  top:50%;
+
+  width:max(100vw,177.7778vh);
+
+  width:max(100vw,177.7778dvh);
+
+  height:auto;
+
+  max-height:none;
+
+  aspect-ratio:16/9;
+
+  transform:translate(-50%,-50%);
+
+  background-size:100% 100%;
+
+}
+
+@media(max-aspect-ratio:3/4){
+
+  .start-artwork{width:max(100vw,177.7778dvh);max-height:none}
+
+}
+
+/* Full-width 16:9 start scene */
+
+.nekohan:has(.start-artwork){width:100%;min-height:100dvh;overflow:hidden}
+
+.nekohan .page:has(.start-artwork){width:100%;height:100dvh;min-height:0;padding:0;overflow:hidden;position:relative;display:block}
+
+.start-artwork{position:absolute;left:50%;top:50%;width:max(100vw,177.7778dvh);max-height:none;aspect-ratio:16/9;transform:translate(-50%,-50%);background-size:100% 100%}
+
+.artwork-start-button{left:35.35%;top:77.5%;width:29.3%;height:12.9%}
+
+/* スタートボタンにマウスを乗せたときの反応 */
+
+.artwork-start-button {
+
+  z-index: 2;
+
+  transition: background-color .18s ease, box-shadow .18s ease, transform .18s ease;
+
+}
+
+.artwork-start-button:hover {
+
+  background: rgba(255, 239, 150, .14);
+
+  box-shadow: 0 0 0 2px rgba(255, 251, 195, .85), 0 0 14px 4px rgba(255, 214, 71, .55);
+
+  transform: none;
+
+}
+
+.artwork-start-button:active {
+
+  background: rgba(255, 200, 68, .34);
+
+  transform: scale(.985);
+
+}
+
+.artwork-start-button:focus-visible {
+
+  outline: 5px solid #1566b0;
+
+  outline-offset: 6px;
+
+  box-shadow: 0 0 24px 9px rgba(255, 213, 56, .65);
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .artwork-start-button { transition: none; }
+
+}
+
+/* スタートボタンを目立たせる */
+
+.artwork-start-button {
+
+  top: 77.5%;
+
+  cursor: pointer;
+
+  transition:
+
+    background-color 0.2s ease,
+
+    box-shadow 0.2s ease,
+
+    transform 0.2s ease;
+
+}
+
+/* マウスを乗せると明るく光る */
+
+.artwork-start-button:hover {
+
+  background: rgba(255, 240, 120, 0.25);
+
+  box-shadow:
+
+    0 0 0 5px rgba(255, 235, 70, 0.95),
+
+    0 0 20px 8px rgba(255, 210, 40, 0.8);
+
+  transform: scale(1.025);
+
+}
+
+/* 押した瞬間に少し沈む */
+
+.artwork-start-button:active {
+
+  transform: scale(0.98);
+
+}
+
+/* 白目だけの背景画像を使用 */
+
+.start-artwork.eyes-background {
+
+  background-image: url('/safari-background.png');
+
+}
+
+/* 黒目の共通設定 */
+
+.cat-pupil {
+
+  position: absolute;
+
+  width: 0.75%;
+
+  aspect-ratio: 1 / 1.3;
+
+  background: #17120d;
+
+  border-radius: 50%;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  transition: transform 0.12s ease-out;
+
+}
+
+/* 猫の左目 */
+
+.left-pupil {
+
+  left: 47.1%;
+
+  top: 51.7%;
+
+}
+
+/* 猫の右目 */
+
+.right-pupil {
+
+  left: 51.9%;
+
+  top: 51.7%;
+
+}
+
+/* まばたき用のまぶた */
+
+.cat-eyelid {
+
+  position: absolute;
+
+  width: 2.2%;
+
+  height: 3.8%;
+
+  background: #ff941f;
+
+  border-bottom: 2px solid #49301c;
+
+  border-radius: 50% 50% 45% 45%;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  /* 普段はまぶたを隠しておく */
+
+  transform: translate(-50%, -50%) scaleY(0);
+
+  transform-origin: center top;
+
+  /* 4秒ごとにまばたき */
+
+  animation: cat-blink 4s infinite;
+
+}
+
+/* 左目のまぶた */
+
+.left-eyelid {
+
+  left: 47.1%;
+
+  top: 51.7%;
+
+}
+
+/* 右目のまぶた */
+
+.right-eyelid {
+
+  left: 51.9%;
+
+  top: 51.7%;
+
+}
+
+/* まばたきの動き */
+
+@keyframes cat-blink {
+
+  0%, 90%, 100% {
+
+    transform: translate(-50%, -50%) scaleY(0);
+
+  }
+
+  93%, 96% {
+
+    transform: translate(-50%, -50%) scaleY(1);
+
+  }
+
+}
+
+/* ネコカン君のしっぽ */
+
+.cat-tail {
+
+  position: absolute;
+
+  /* しっぽの位置 */
+
+  left: 55%;
+
+  top: 53%;
+
+  /* しっぽの大きさ */
+
+  width: 10%;
+
+  height: auto;
+
+  /* 猫の体より後ろに表示 */
+
+  z-index: 0;
+
+  /* マウス操作を邪魔しない */
+
+  pointer-events: none;
+
+  /* 付け根を中心に回転 */
+
+  transform-origin: 15% 90%;
+
+  /* 2.5秒かけて左右に振る */
+
+  animation: tail-wag 2.5s ease-in-out infinite;
+
+}
+
+/* しっぽを振るアニメーション */
+
+@keyframes tail-wag {
+
+  0%, 100% {
+
+    transform: rotate(-10deg);
+
+  }
+
+  50% {
+
+    transform: rotate(12deg);
+
+  }
+
+}
+
+/* 動きを減らす設定への対応 */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cat-tail {
+
+    animation: none;
+
+  }
+
+}
