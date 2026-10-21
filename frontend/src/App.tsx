@@ -2,18 +2,20 @@
 import { useState, useEffect, useRef, type ComponentType, type CSSProperties } from 'react'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
-import  ConfirmScreen  from './components/ConfirmScreen'
+import ConfirmScreen from './components/ConfirmScreen'
+import NameScreen from './components/NameScreen'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
 import './components/AnswerScreen.css'
 import './components/ConfirmScreen.css'
 
-type Screen = 'start' | 'answer' | 'confirm'
+type Screen = 'start' | 'answer' | 'confirm' | 'name'
 type ConfirmScreenProps = {
   answer: number
   onEdit: () => void
   onBack: () => void
+  onNext: () => void
 }
 
 const ConfirmationScreen = ConfirmScreen as unknown as ComponentType<ConfirmScreenProps>
@@ -45,6 +47,7 @@ const leaves = Array.from({ length: 110 }, (_, i) => {
 export default function App() {
   const [screen, setScreen] = useState<Screen>('start')
   const [answer, setAnswer] = useState<number | null>(null)
+  const [playerName, setPlayerName] = useState('')
   const [isWindPlaying, setIsWindPlaying] = useState(false)
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
@@ -62,6 +65,7 @@ export default function App() {
     // 葉っぱが画面を覆ったタイミングで切り替える
     windTimers.current.push(setTimeout(() => {
       setAnswer(null)
+      setPlayerName('')
       setScreen('answer')
     }, 1450))
 
@@ -74,6 +78,7 @@ export default function App() {
 
   function returnToStart() {
     setAnswer(null)
+    setPlayerName('')
     setScreen('start')
   }
 
@@ -102,6 +107,19 @@ export default function App() {
             answer={answer}
             onEdit={() => setScreen('answer')}
             onBack={returnToStart}
+            onNext={() => setScreen('name')}
+          />
+        )}
+
+        {screen === 'name' && (
+          <NameScreen
+            name={playerName}
+            onChange={setPlayerName}
+            onBack={() => setScreen('confirm')}
+            onConfirm={() => {
+              console.log('名前:', playerName, '回答:', answer)
+              // 結果画面が完成したらここから遷移する
+            }}
           />
         )}
       </div>
