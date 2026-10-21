@@ -18,7 +18,7 @@ const kanaRows = [
 ]
 
 const rowY = [36.2, 45.4, 54.6, 63.8, 73.0]
-const columnX = [17, 23.7, 30.3, 37, 43.6, 50.3, 56.9, 63.6, 70.3, 77, 83.6]
+const columnX = [7.6, 16.8, 25.9, 35.0, 44.2, 53.3, 62.5, 71.6, 80.8, 90.0, 96.0]
 
 const first = ['もふもふ', 'きらきら', 'にこにこ', 'ふわふわ', 'わくわく']
 const second = ['ねこ', 'とら', 'うさぎ', 'ぱんだ', 'きつね']
@@ -50,20 +50,12 @@ export default function NameScreen({
   }
 
   function addMark(mark: 'dakuten' | 'handakuten') {
-    if (!name) return
-
     const last = name.slice(-1)
-    const dakuten = (last + '\u3099').normalize('NFC')
-    const handakuten = (last + '\u309A').normalize('NFC')
-
-    if (dakuten !== last + '\u3099' && dakuten !== last) {
-      onChange(name.slice(0, -1) + dakuten)
-    } else if (
-      handakuten !== last + '\u309A' &&
-      handakuten !== last
-    ) {
-      onChange(name.slice(0, -1) + handakuten)
-    }
+    const marks: Record<string, string> = mark === 'dakuten'
+      ? { か:'が',き:'ぎ',く:'ぐ',け:'げ',こ:'ご',さ:'ざ',し:'じ',す:'ず',せ:'ぜ',そ:'ぞ',た:'だ',ち:'ぢ',つ:'づ',て:'で',と:'ど',は:'ば',ひ:'び',ふ:'ぶ',へ:'べ',ほ:'ぼ',う:'ゔ' }
+      : { は:'ぱ',ひ:'ぴ',ふ:'ぷ',へ:'ぺ',ほ:'ぽ' }
+    if (marks[last]) onChange(name.slice(0, -1) + marks[last])
+    setShowMarks(false)
   }
 
   return (
