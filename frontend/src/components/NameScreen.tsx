@@ -7,18 +7,17 @@ type Props = {
   onBack: () => void
 }
 
-// 画像の各行と同じ並び。最下段は小文字・濁点・半濁点を含む12キー。
+// 画像の10列×5行に正確に合わせる（右端は濁点・半濁点）
 const kanaRows = [
   ['あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ'],
   ['い', 'き', 'し', 'ち', 'に', 'ひ', 'み', 'ゆ', 'り', 'を'],
   ['う', 'く', 'す', 'つ', 'ぬ', 'ふ', 'む', 'よ', 'る', 'ん'],
-  ['え', 'け', 'せ', 'て', 'ね', 'へ', 'め', 'っ', 'ー', 'れ'],
-  ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'ゃ', 'ゅ', 'ょ', '゛', '゜'],
+  ['え', 'け', 'せ', 'て', 'ね', 'へ', 'め', '小', 'れ', '゛'],
+  ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'ー', 'ろ', '゜'],
 ]
 
-const rowY = [36.3, 46.2, 56.3, 66.4, 76.5]
-const regularX = [7.6, 16.8, 25.9, 35.0, 44.0, 53.1, 62.2, 71.3, 80.4, 89.5]
-const lastRowX = [7.6, 16.8, 25.9, 35.0, 44.0, 53.1, 62.2, 69.5, 76.3, 82.8, 89.3, 95.8]
+const rowY = [36.3, 46.3, 56.4, 66.5, 76.5]
+const columnX = [7.6, 16.8, 25.9, 34.9, 44.0, 53.0, 61.8, 70.9, 80.0, 89.1]
 
 const dakuten: Record<string, string> = {
   か:'が',き:'ぎ',く:'ぐ',け:'げ',こ:'ご',
@@ -29,6 +28,14 @@ const dakuten: Record<string, string> = {
 const handakuten: Record<string, string> = {
   は:'ぱ',ひ:'ぴ',ふ:'ぷ',へ:'ぺ',ほ:'ぽ',
 }
+const smallKana: Record<string, string> = {
+  あ:'ぁ', い:'ぃ', う:'ぅ', え:'ぇ', お:'ぉ',
+  つ:'っ', や:'ゃ', ゆ:'ゅ', よ:'ょ', わ:'ゎ',
+}
+const largeKana = Object.fromEntries(
+  Object.entries(smallKana).map(([large, small]) => [small, large])
+) as Record<string, string>
+
 const randomFirst = ['もふもふ', 'きらきら', 'にこにこ', 'ふわふわ', 'わくわく']
 const randomSecond = ['ねこ', 'とら', 'うさぎ', 'ぱんだ', 'きつね']
 
@@ -48,6 +55,16 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
     const chars = Array.from(name)
     const last = chars[chars.length - 1]
     const converted = (mark === '゛' ? dakuten : handakuten)[last]
+    if (!converted) return
+    chars[chars.length - 1] = converted
+    onChange(chars.join(''))
+  }
+
+  function toggleSmall() {
+    if (!name) return
+    const chars = Array.from(name)
+    const last = chars[chars.length - 1]
+    const converted = smallKana[last] ?? largeKana[last]
     if (!converted) return
     chars[chars.length - 1] = converted
     onChange(chars.join(''))
@@ -80,13 +97,13 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
           <button
             key={`${rowIndex}-${columnIndex}`}
             type="button"
-            className={`name-hotspot name-kana ${rowIndex === 4 && columnIndex >= 7 ? 'name-kana-small' : ''}`}
+            className="name-hotspot name-kana"
             style={{
-              left: `${rowIndex === 4 ? lastRowX[columnIndex] : regularX[columnIndex]}%`,
+              left: `${columnX[columnIndex]}%`,
               top: `${rowY[rowIndex]}%`,
             }}
-            aria-label={kana === '゛' ? 'てんてんをつける' : kana === '゜' ? 'まるをつける' : `${kana}を入力`}
-            onClick={() => kana === '゛' || kana === '゜' ? applyMark(kana) : addKana(kana)}
+            aria-label={kana === '゛' ? 'てんてんをつける' : kana === '゜' ? 'まるをつける' : kana === '小' ? '最後の文字を小さくする' : `${kana}を入力`}
+            onClick={() => kana === '゛' || kana === '゜' ? applyMark(kana) : kana === '小' ? toggleSmall() : addKana(kana)}
           />
         ))
       )}
