@@ -29,13 +29,27 @@
   12%, 82% { opacity: 1; }
   100% { opacity: 0; transform: translate(120vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1); }
 }
-/* 横向きの流れを維持し、画面全体の高さに葉を散らす */
+/* 密集部分は全て同じ水平移動。上下方向のずれを一切入れない。 */
+.wind-leaf-covering {
+  width: 20vw;
+  height: 24vh;
+  object-fit: fill;
+}
 @keyframes wind-covering {
-  0% { opacity: 0; transform: translate(-150vw, -50%) rotate(calc(var(--leaf-rotation) - 90deg)) scale(.8); }
-  13% { opacity: 1; }
-  48% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.45); }
+  0% {
+    opacity: 0;
+    transform: translate(-140vw, -50%) rotate(var(--leaf-rotation)) scale(1.15);
+  }
+  12% { opacity: 1; }
+  50% {
+    opacity: 1;
+    transform: translate(-10vw, -50%) rotate(var(--leaf-rotation)) scale(1.15);
+  }
   82% { opacity: 1; }
-  100% { opacity: 0; transform: translate(125vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(.9); }
+  100% {
+    opacity: 0;
+    transform: translate(125vw, -50%) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1.15);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .wind-leaf { animation-timing-function: linear; }
