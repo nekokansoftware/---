@@ -1,4 +1,4 @@
-/* 左から吹く風に乗って葉っぱが集まり、一瞬覆って右へ飛び去る */
+/* 葉っぱが左から右へ止まらず吹き抜ける連続アニメーション */
 .wind-transition {
   position: fixed;
   inset: 0;
@@ -7,17 +7,17 @@
   pointer-events: all;
 }
 
-/* 画面切り替え時の葉の隙間を控えめに補う */
+/* 葉の隙間だけを切り替えの瞬間に補う */
 .wind-leaf-cover {
   position: absolute;
   inset: 0;
   background: #7eae44;
   opacity: 0;
-  animation: leaf-underlay 1.95s linear forwards;
+  animation: leaf-underlay 1.65s linear both;
 }
 @keyframes leaf-underlay {
-  0%, 36%, 70%, 100% { opacity: 0; }
-  46%, 55% { opacity: .16; }
+  0%, 36%, 60%, 100% { opacity: 0; }
+  45%, 52% { opacity: .18; }
 }
 
 .wind-leaf {
@@ -33,32 +33,25 @@
   opacity: 0;
   transform-origin: center;
   will-change: transform, opacity;
-  animation: leaf-wind-in .42s cubic-bezier(.08,.75,.25,1) var(--leaf-delay) both;
+  animation: leaf-wind-through 1.5s linear var(--leaf-delay) both;
 }
 
-/* 左から列ごとに飛来。集まった葉は一瞬その位置に残る */
-@keyframes leaf-wind-in {
+/* 画面中央で速度を落としたり停止したりせず、同じ風で通り抜ける */
+@keyframes leaf-wind-through {
   0% {
     opacity: 0;
     transform: translate(-650%, -70%) rotate(calc(var(--leaf-rotation) - 120deg)) scale(.7);
   }
-  30% { opacity: 1; }
-  100% {
+  12% { opacity: 1; }
+  48% {
     opacity: 1;
     transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.3);
   }
-}
-
-/* 画面が切り替わったら、同じ左→右の風で葉っぱが抜ける */
-.wind-transition.leaves-exiting .wind-leaf {
-  animation: leaf-wind-out .78s cubic-bezier(.3,0,.9,.7) forwards;
-}
-@keyframes leaf-wind-out {
-  0% {
+  56% {
     opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.3);
+    transform: translate(75%, -54%) rotate(calc(var(--leaf-rotation) + var(--leaf-spin) * .16)) scale(1.3);
   }
-  65% { opacity: 1; }
+  85% { opacity: 1; }
   100% {
     opacity: 0;
     transform: translate(750%, -85%) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(.75);
