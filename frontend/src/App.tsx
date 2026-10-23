@@ -43,14 +43,14 @@ const leaves = Array.from({ length: 384 }, (_, i) => {
   return {
     id: i,
     image: leafImages[i % leafImages.length],
-    x: covering ? (col + .5 + (layer === 1 ? .35 : 0)) * 6.25 : 0,
-    y: covering ? (row + .5 + (layer === 1 ? .3 : 0)) * 10 : 6 + scatter(i + 17) * 88,
+    x: covering ? (col + .5 + (scatter(i + 211) - .5) * .72 + (layer === 1 ? .35 : 0)) * 6.25 : 0,
+    y: covering ? (row + .5 + (scatter(i + 223) - .5) * .52 + (layer === 1 ? .3 : 0)) * 10 : 6 + scatter(i + 17) * 88,
     rotation: Math.round(scatter(i + 39) * 360 - 180),
     spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (120 + scatter(i + 71) * 250)),
     // 早い葉は疎ら、終盤ほど密に。ただし全葉を同時には出さない
-    delay: covering ? 1.75 : .06 + 1.58 * Math.pow(i / 63, .62) + (scatter(i + 91) - .5) * .045,
-    duration: covering ? 1.86 : 1.15 + scatter(i + 113) * .38,
-    size: covering ? 20 : 11 + scatter(i + 157) * 4,
+    delay: covering ? 1.62 + col * .027 + (scatter(i + 241) - .5) * .13 + layer * .035 : .06 + 1.58 * Math.pow(i / 63, .62) + (scatter(i + 91) - .5) * .045,
+    duration: covering ? 1.75 + scatter(i + 251) * .22 : 1.15 + scatter(i + 113) * .38,
+    size: covering ? 18 + scatter(i + 179) * 5 : 11 + scatter(i + 157) * 4,
     drift: covering ? 0 : Math.round((scatter(i + 197) - .5) * 3),
     covering,
   }
