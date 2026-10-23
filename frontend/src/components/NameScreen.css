@@ -77,8 +77,8 @@
   position: absolute;
   z-index: 2;
   left: 50%;
-  bottom: -17%;
-  width: 34%;
+  bottom: -12%;
+  width: 27%;
   aspect-ratio: 1450 / 1023;
   transform: translateX(-50%);
   pointer-events: none;
