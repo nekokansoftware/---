@@ -1,11 +1,14 @@
 
 .result-page {
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 
-  background-image: url("../assets/result-background.png");
-  background-size: cover;
+  position: relative;
+
+  background-image: url("../assets/result-background-new.png.png");
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
 
@@ -26,27 +29,46 @@
 }
 
 .result-heading {
-  margin: 30px 0 25px;
+  margin: 110px 0 25px;
+
+  width: 100%;
+  max-width: 900px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+
   font-size: 60px;
+  line-height: 1;
   font-weight: 900;
-  color: #ff8a00;
-  text-shadow:
-    3px 3px 0 #ffffff,
-    -2px -2px 0 #ffffff,
-    2px -2px 0 #ffffff,
-    -2px 2px 0 #ffffff;
+  color: #ff8500;
+  white-space: nowrap;
+
+   /* 文字のまわりを白く囲む */
+  -webkit-text-stroke: 5px white;
+  paint-order: stroke fill;
+
+   /* 少し立体感をつける */
+  text-shadow: 4px 5px 0 #ffb52e;
+}
+
+.party-icon {
+  font-size: 55px;
 }
 
 .result-card {
   width: min(700px, 90%);
-  padding: 40px auto 30px;
-  margin-bottom: center;
+  margin-top: -30px;
 }
 
 .whisker-text {
-  font-size: 26px;
-  font-weight: bold;
-  margin-bottom: 15px;
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 18px;
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
 }
 
 .match-label {
@@ -56,20 +78,32 @@
 }
 
 .match-rate {
-  font-size: 110px;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 140px;
   line-height: 1;
   font-weight: 900;
-  color: #ff8a00;
-  margin: 10px 0;
+ 
+  /* オレンジ～黄色のグラデーション */
+  background: linear-gradient(#ff9d00, #ff6f00);
+  
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  /* 白いふち */
+  -webkit-text-stroke: 6px white;
+  paint-order: stroke fill;
+
+  /* 立体感 */
+  filter: drop-shadow(0 7px 0 #ffc44d);
+
+  margin: 20px 0;
 }
 
 .match-rate span {
-  font-size: 55px;
-}
-
-.result-title {
-  font-size: 32px;
-  font-weight: 900;
+  font-size: 110px;
+  margin-left: 8px;
 }
 
 .result-score {
@@ -89,8 +123,32 @@
 }
 
 .result-title {
-  font-size: 22px;
-  font-weight: bold;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 48px;
+  line-height: 1.2;
+  font-weight: 900;
+
+  /* 点数と同じグラデーション */
+  background: linear-gradient(#ff9d00, #ff6f00);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 立体感 */
+  filter: drop-shadow(0 4px 0 #ffc44d);
+
+  margin-top: 15px;
+}
+
+.title-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-icon {
+  font-size: 48px;
 }
 
 .result-details {
@@ -110,18 +168,112 @@
   justify-content: center;
   gap: 15px;
   flex-wrap: wrap;
+
+  margin-top: 25px;
 }
 
 .result-buttons button {
-  padding: 15px 25px;
-  border: none;
-  border-radius: 12px;
-  background-color: #ffca55;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 16px 45px;
+
+  border: 3px solid white;
+  border-radius: 30px;
+
+  background: linear-gradient(#ffad33, #ff8500);
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+
   cursor: pointer;
+
+  box-shadow: 0 5px 0 #d96d00;
 }
 
 .result-buttons button:hover {
-  background-color: #ffb92e;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 #d96d00;
+}
+
+.answer-card {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.answer-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.answer-item {
+  width: 220px;
+  padding: 12px 25px;
+  border-radius: 25px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* きみのこたえ */
+.answer-user {
+  background-color: #ffe4ea;
+}
+
+/* ほんとうは */
+.answer-actual {
+  background-color: #dff3ff;
+}
+
+/* 4こ・3こ */
+.answer-item strong {
+  font-size: 42px;
+  font-weight: 900;
+  margin-top: 2px;
+}
+
+/* 4こをピンク */
+.answer-user strong {
+  color: #ff3f78;
+}
+
+/* 3こを青 */
+.answer-actual strong {
+  color: #159ee4;
+}
+
+/* ○こちがい！ */
+.difference {
+  display: inline-block;
+
+  margin-top: 15px;
+  padding: 10px 45px;
+
+  background-color: #fff3b0;
+  border: 3px solid #ffd45c;
+  border-radius: 30px;
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  color: #e88900;
+
+  box-shadow: 0 4px 0 #f2c44e;
+}
+
+.cat-body {
+  position: fixed;
+
+  left: 20px;
+  bottom: 20px;
+
+  width: clamp(180px, 20vw, 380px);
+  height: auto;
+
+  z-index: 2;
 }

@@ -1,60 +1,95 @@
 import "./Result.css";
+import catBody from "../assets/cat-body.png.png";
 
-function Result() {
-  // 今はデザイン確認用の仮データ
-  const answer = 4;
+type Props = {
+  answer: number;
+};
+
+export default function ResultScreen({ answer }: Props) {
+  // ハードウェアから受け取る予定。今は仮データ
   const actual = 3;
-  const matchRate = 90;
+  const matchRate = 80;
+
+  // こたえと実際の個数の差
+  const difference = Math.abs(answer - actual);
+
+  let title = "";
+  let titleIcon = "";
+
+  if (matchRate >= 90) {
+    title = "ひげマスター！";
+    titleIcon = "👑";
+  } else if (matchRate >= 70) {
+    title = "ひげじょうず！";
+    titleIcon = "🌟";
+  } else if (matchRate >= 50) {
+    title = "ひげみならい！";
+    titleIcon = "🐱";
+  } else {
+    title = "もういっかいやってみよう！";
+    titleIcon = "🐾";
+  }
 
   return (
     <div className="result-page">
 
+    <img
+      src={catBody}
+      className="cat-body"
+      alt=""
+    />
+
+    <h1 className="result-heading"></h1>
+
       <h1 className="result-heading">
-        🎉 けっかはっぴょう！ 🎉
+        <span className="party-icon">🎉</span>
+        <span>けっかはっぴょう</span>
+        <span className="party-icon">🎉</span>
       </h1>
 
       <div className="result-card">
 
         <p className="whisker-text">
-          🐱 きみのネコひげかんかくは…？
+          🐱 きみのねこひげかんかくは…？
         </p>
 
         <div className="match-rate">
-          {matchRate}<span>%</span>
+          {matchRate}<span>てん！</span>
         </div>
 
-        <div className="result-title">
-          ✨ ネコひげマスター！ ✨
+        <div className="result-area">
+          <span className="title-icon">{titleIcon}</span>
+          <span className="result-title">{title}</span>
         </div>
 
       </div>
 
       <div className="answer-card">
 
-        <div className="answer-item">
-          <span>🐾 きみのこたえ</span>
-          <strong>{answer}こ</strong>
-        </div>
+  <div className="answer-row">
+    <div className="answer-item answer-user">
+      <span>🐾 きみのこたえ</span>
+      <strong>{answer}こ</strong>
+    </div>
 
-        <div className="answer-item">
-          <span>🐾 ほんとうは</span>
-          <strong>{actual}こ</strong>
-        </div>
+    <div className="answer-item answer-actual">
+      <span>🐾 ほんとうは</span>
+      <strong>{actual}こ</strong>
+    </div>
+  </div>
 
-        <p className="difference">
-          1こちがい！
-        </p>
+  <p className="difference">
+     {difference === 0
+    ? "✨ ぴったり！ ✨"
+    : `✨ ${difference}こちがい！ ✨`}
+  </p>
 
-      </div>
+</div>
 
       <div className="result-buttons">
 
         <button className="ranking-button">
           🏆 ランキングをみる
-        </button>
-
-        <button className="finish-button">
-          🏠 おわる
         </button>
 
       </div>
@@ -63,4 +98,3 @@ function Result() {
   );
 }
 
-export default Result;
