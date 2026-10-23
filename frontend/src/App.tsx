@@ -82,18 +82,18 @@ export default function App() {
 
     setIsWindPlaying(true)
 
-    // 葉っぱが画面を覆ったタイミングで切り替える
+    // 葉っぱの流れに合わせて次画面を左から徐々に表示し、全面表示後に確定する
     windTimers.current.push(setTimeout(() => {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 2380))
+    }, 3150))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 3700))
+    }, 3850))
   }
 
   function returnToStart() {
@@ -143,6 +143,12 @@ export default function App() {
           />
         )}
       </div>
+
+      {isWindPlaying && screen === 'start' && (
+        <div className="wind-next-screen" aria-hidden="true">
+          <NameScreen name="" onChange={() => {}} onBack={() => {}} onConfirm={() => {}} />
+        </div>
+      )}
 
       {isWindPlaying && (
         <div className="wind-transition" aria-hidden="true">
