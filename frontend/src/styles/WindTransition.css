@@ -1,7 +1,4 @@
-/* ==========================
-   風と葉っぱの画面遷移
-========================== */
-
+/* 葉っぱが集まり、切り替え中は止まり、再び飛び去る */
 .wind-transition {
   position: fixed;
   inset: 0;
@@ -10,53 +7,46 @@
   pointer-events: all;
 }
 
-/* 画面切り替えを葉っぱの風になじませる薄い色のベール */
+/* 葉っぱの隙間を埋める薄いベール。全面が単色になる演出は使わない */
 .wind-leaf-cover {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background: #80bd4e;
+  background: #7eae44;
   opacity: 0;
-  animation: wind-cover 2.9s ease-in-out forwards;
+  animation: leaf-underlay 2.9s linear forwards;
 }
 
-@keyframes wind-cover {
-  0%, 34% { opacity: 0; }
-  47%, 55% { opacity: .38; }
-  72%, 100% { opacity: 0; }
+@keyframes leaf-underlay {
+  0%, 34%, 72%, 100% { opacity: 0; }
+  43%, 60% { opacity: .22; }
 }
 
-/* 1枚ずつ飛ぶ葉っぱ */
 .wind-leaf {
   position: absolute;
   z-index: 1;
+  left: var(--leaf-x);
   top: var(--leaf-y);
-  left: -20vw;
-  width: var(--leaf-size);
-  height: auto;
+  width: 16vw;
+  height: 24vh;
+  object-fit: fill;
   max-width: none;
-  opacity: 0;
   pointer-events: none;
+  opacity: 0;
+  transform-origin: center;
   will-change: transform, opacity;
-  animation: leaf-gust var(--leaf-duration)
-    cubic-bezier(.22, .45, .5, 1)
-    var(--leaf-delay) both;
+  animation: leaf-gather 2.9s ease-in-out both;
+  animation-delay: var(--leaf-delay);
 }
 
-@keyframes leaf-gust {
-  0% {
-    opacity: 0;
-    transform: translate3d(-15vw, 20px, 0) rotate(0deg) scale(.35);
-  }
-  12% { opacity: 1; }
-  45% {
-    transform: translate3d(55vw, -35px, 0)
-      rotate(calc(var(--leaf-rotation) * .45)) scale(1.2);
-  }
+@keyframes leaf-gather {
+  0% { opacity: 0; transform: translate(-180%, -50%) rotate(-75deg) scale(.2); }
+  15% { opacity: 1; }
+  38% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--leaf-rotation, 0deg)) scale(1.35); }
+  40%, 58% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1.45); }
   85% { opacity: 1; }
-  100% {
-    opacity: 0;
-    transform: translate3d(150vw, 25px, 0)
-      rotate(var(--leaf-rotation)) scale(2.5);
-  }
+  100% { opacity: 0; transform: translate(150%, -80%) rotate(130deg) scale(.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wind-leaf { animation-timing-function: linear; }
 }
