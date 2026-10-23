@@ -46,9 +46,9 @@ const leaves = Array.from({ length: 14 + 12 * 8 * 2 }, (_, i) => {
     y: early ? 5 + scatter(i + 17) * 90 : (row + .5 + (scatter(i + 19) - .5) * .3) * (100 / 8),
     rotation: Math.round(scatter(i + 39) * 360 - 180),
     spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (180 + scatter(i + 71) * 300)),
-    delay: early ? (i < 2 ? i * .18 : .3 + (i - 2) * .065) : .92 + layer * .045 + scatter(i + 91) * .08,
+    delay: early ? (i < 2 ? i * .18 : .3 + (i - 2) * .065) : .55 + 1.12 * Math.pow(n / 191, .58) + (scatter(i + 91) - .5) * .09,
     duration: early ? 1.15 + scatter(i + 113) * .4 : 1.38,
-    size: early ? 7 + scatter(i + 157) * 4 : 20 + scatter(i + 179) * 5,
+    size: early ? 7 + scatter(i + 157) * 4 : 11 + 11 * (n / 191) + scatter(i + 179) * 3,
     drift: Math.round((scatter(i + 197) - .5) * 28),
     early,
   }
@@ -87,13 +87,13 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 1610))
+    }, 2380))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 2700))
+    }, 3700))
   }
 
   function returnToStart() {
