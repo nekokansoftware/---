@@ -51,6 +51,16 @@ export default function App() {
   const [isWindPlaying, setIsWindPlaying] = useState(false)
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
+  // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
+  useEffect(() => {
+    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku.png', ...leafImages]
+    images.forEach(src => {
+      const img = new Image()
+      img.src = src
+      if (typeof img.decode === 'function') void img.decode().catch(() => {})
+    })
+  }, [])
+
   useEffect(() => {
     return () => {
       windTimers.current.forEach(clearTimeout)
