@@ -1,7 +1,7 @@
 /* 背景画像とタッチ領域を同じ16:9の座標系で表示 */
 .nekohan .page:has(.name-artwork) {
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 100dvh;
   min-height: 0;
   padding: 0;
@@ -12,7 +12,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(100vw, 177.7778dvh);
+  width: max(100vw, 177.7778dvh);
   aspect-ratio: 16 / 9;
   transform: translate(-50%, -50%);
   overflow: hidden;
