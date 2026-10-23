@@ -117,3 +117,16 @@
   0%, 45%, 47%, 100% { transform: scaleY(0); }
   46% { transform: scaleY(1); }
 }
+
+/* 名前入力画面の下端に本体を重ねる。ボタン操作は妨げない */
+.nickname-cat-body {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: -16%;
+  width: 19%;
+  height: auto;
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+}
