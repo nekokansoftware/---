@@ -22,8 +22,8 @@
 
 @keyframes wind-cover {
   0%, 38% { opacity: 0; }
-  49%, 55% { opacity: 1; }
-  75%, 100% { opacity: 0; }
+  46%, 60% { opacity: 1; }
+  78%, 100% { opacity: 0; }
 }
 
 /* 1枚ずつ飛ぶ葉っぱ */
