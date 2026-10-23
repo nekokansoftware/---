@@ -35,20 +35,25 @@
   height: auto;
   object-fit: contain;
 }
+/* 葉ごとに到着時刻をずらしつつ、画面切替時は密度を維持する。
+   全て同じ水平軌道で移動し、縦方向のドリフトは入れない。 */
 @keyframes wind-covering {
   0% {
     opacity: 0;
     transform: translate(-140vw, -50%) rotate(var(--leaf-rotation)) scale(1.15);
   }
-  12% { opacity: 1; }
-  50% {
+  8% { opacity: 1; }
+  18% {
     opacity: 1;
-    transform: translate(-10vw, -50%) rotate(calc(var(--leaf-rotation) + 25deg)) scale(1.2);
+    transform: translate(-50%, -50%) rotate(calc(var(--leaf-rotation) + 12deg)) scale(1.25);
   }
-  82% { opacity: 1; }
+  68% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(calc(var(--leaf-rotation) + 45deg)) scale(1.25);
+  }
   100% {
     opacity: 0;
-    transform: translate(125vw, -50%) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1.15);
+    transform: translate(125vw, -50%) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1.1);
   }
 }
 @media (prefers-reduced-motion: reduce) {
