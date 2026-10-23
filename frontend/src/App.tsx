@@ -32,7 +32,7 @@ const scatter = (seed: number) => {
   return value - Math.floor(value)
 }
 
-// 累積枚数 N(t) ∝ t²。逆関数 sqrt(i/N) で葉ごとの登場時刻を決める。
+// 最初は穏やかに、後半ほど滑らかに加速する三次曲線 N(t) ∝ t³。
 const LEAF_COUNT = 384
 const COVER_START = 64
 const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
@@ -42,6 +42,7 @@ const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
   const row = Math.floor(index / 16) % 10
   const layer = Math.floor(index / 160)
   const progress = (i + 1) / LEAF_COUNT
+  const arrival = .03 + 2.05 * Math.cbrt(progress)
   return {
     id: i,
     image: leafImages[i % leafImages.length],
@@ -50,9 +51,9 @@ const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
     y: covering ? (row + .5 + (scatter(i + 223) - .5) * .4 + (layer === 1 ? .25 : 0)) * 10 : 6 + scatter(i + 17) * 88,
     rotation: Math.round(scatter(i + 39) * 360 - 180),
     spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (120 + scatter(i + 71) * 250)),
-    delay: .03 + 2.05 * Math.sqrt(progress),
+    delay: arrival,
     // 後から現れた葉も切り替え時に中央へ集まるよう終了時刻を揃える
-    duration: covering ? 3.8 - (.03 + 2.05 * Math.sqrt(progress)) : 1.25 + scatter(i + 113) * .4,
+    duration: covering ? 3.8 - arrival : 1.25 + scatter(i + 113) * .4,
     size: covering ? 19 + scatter(i + 179) * 4 : 11 + scatter(i + 157) * 4,
     drift: covering ? 0 : Math.round((scatter(i + 197) - .5) * 3),
     covering,
