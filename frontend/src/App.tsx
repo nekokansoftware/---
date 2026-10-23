@@ -26,18 +26,25 @@ const leafImages = [
   '/leaf-yellow.png',
 ]
 
-// 左から右へ風が通り抜けるよう、列ごとに到着をずらす
-const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
-  const col = i % 12
-  const row = Math.floor(i / 12)
+// 決まった乱数で毎回同じ自然な配置にする
+const scatter = (seed: number) => {
+  const value = Math.sin(seed * 127.1 + 78.233) * 43758.5453
+  return value - Math.floor(value)
+}
+
+// 最初は小さな葉が一枚ずつ、後半は上下に散った葉が増える
+const leaves = Array.from({ length: 76 }, (_, i) => {
+  const early = i < 14
   return {
     id: i,
     image: leafImages[i % leafImages.length],
-    x: (col + .5) * (100 / 12),
-    y: i < 12 ? 8 + ((i * 47 + 23) % 85) : (row + .5) * (100 / 7),
-    rotation: ((i * 137 + row * 41) % 360) - 180,
-    spin: (((i * 47) % 3) - 1) * 240 + 80,
-    delay: i < 2 ? i * .14 : i < 12 ? .25 + (i - 2) * .06 : .87 + ((i * 37) % 17) * .012,
+    y: 5 + scatter(i + 17) * 90,
+    rotation: Math.round(scatter(i + 39) * 360 - 180),
+    spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (180 + scatter(i + 71) * 300)),
+    delay: i < 2 ? i * .18 : early ? .30 + (i - 2) * .065 : .98 + scatter(i + 91) * .45,
+    duration: early ? 1.15 + scatter(i + 113) * .4 : 1.05 + scatter(i + 137) * .45,
+    size: early ? 7 + scatter(i + 157) * 4 : 9 + scatter(i + 179) * 8,
+    drift: Math.round((scatter(i + 197) - .5) * 28),
   }
 })
 
@@ -74,13 +81,13 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 1560))
+    }, 1550))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 2650))
+    }, 2900))
   }
 
   function returnToStart() {
@@ -143,11 +150,13 @@ export default function App() {
               alt=""
               draggable={false}
               style={{
-                '--leaf-x': `${leaf.x}%`,
                 '--leaf-y': `${leaf.y}%`,
                 '--leaf-delay': `${leaf.delay}s`,
                 '--leaf-rotation': `${leaf.rotation}deg`,
                 '--leaf-spin': `${leaf.spin}deg`,
+                '--leaf-duration': `${leaf.duration}s`,
+                '--leaf-size': `${leaf.size}vw`,
+                '--leaf-drift': `${leaf.drift}vh`,
               } as CSSProperties}
             />
           ))}
