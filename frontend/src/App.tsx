@@ -32,25 +32,26 @@ const scatter = (seed: number) => {
   return value - Math.floor(value)
 }
 
-// 先行する葉は散発的。後半は葉そのものが重なって画面を埋める突風。
-const leaves = Array.from({ length: 14 + 12 * 8 * 2 }, (_, i) => {
-  const early = i < 14
-  const n = i - 14
-  const col = n % 12
-  const row = Math.floor(n / 12) % 8
-  const layer = Math.floor(n / 96)
+// 出現間隔が連続的に短くなる。終盤は均等な高さに重なる葉で視界を埋める。
+const leaves = Array.from({ length: 224 }, (_, i) => {
+  const progress = i / 223
+  const covering = i >= 64
+  const index = i - 64
+  const col = index % 16
+  const row = Math.floor(index / 16) % 10
   return {
     id: i,
     image: leafImages[i % leafImages.length],
-    x: early ? 0 : (col + .5 + (scatter(i + 7) - .5) * .35) * (100 / 12),
-    y: early ? 5 + scatter(i + 17) * 90 : (row + .5 + (scatter(i + 19) - .5) * .3) * (100 / 8),
+    x: covering ? (col + .5) * 6.25 : 0,
+    y: covering ? (row + .5) * 10 : 6 + scatter(i + 17) * 88,
     rotation: Math.round(scatter(i + 39) * 360 - 180),
-    spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (180 + scatter(i + 71) * 300)),
-    delay: early ? (i < 2 ? i * .18 : .3 + (i - 2) * .065) : .55 + 1.12 * Math.pow(n / 191, .58) + (scatter(i + 91) - .5) * .09,
-    duration: early ? 1.15 + scatter(i + 113) * .4 : 1.38,
-    size: early ? 11 + scatter(i + 157) * 3 : 12 + scatter(i + 179) * 4,
+    spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (120 + scatter(i + 71) * 250)),
+    // 早い葉は疎ら、終盤ほど密に。ただし全葉を同時には出さない
+    delay: .06 + 1.9 * Math.pow(progress, .57) + (scatter(i + 91) - .5) * .055,
+    duration: covering ? 1.42 : 1.15 + scatter(i + 113) * .38,
+    size: covering ? 17 + scatter(i + 179) * 3 : 11 + scatter(i + 157) * 4,
     drift: Math.round((scatter(i + 197) - .5) * 3),
-    early,
+    covering,
   }
 })
 
@@ -82,18 +83,18 @@ export default function App() {
 
     setIsWindPlaying(true)
 
-    // 葉っぱの流れに合わせて次画面を左から徐々に表示し、全面表示後に確定する
+    // 密度が最大になるタイミングで背後の画面を切り替える
     windTimers.current.push(setTimeout(() => {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 3150))
+    }, 2680))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 3850))
+    }, 3900))
   }
 
   function returnToStart() {
@@ -144,12 +145,6 @@ export default function App() {
         )}
       </div>
 
-      {isWindPlaying && screen === 'start' && (
-        <div className="wind-next-screen" aria-hidden="true">
-          <NameScreen name="" onChange={() => {}} onBack={() => {}} onConfirm={() => {}} />
-        </div>
-      )}
-
       {isWindPlaying && (
         <div className="wind-transition" aria-hidden="true">
 
@@ -157,7 +152,7 @@ export default function App() {
             <img
               key={leaf.id}
               src={leaf.image}
-              className={`wind-leaf${leaf.early ? " wind-leaf-early" : " wind-leaf-gust"}`}
+              className={`wind-leaf${leaf.covering ? " wind-leaf-covering" : " wind-leaf-scattered"}`}
               alt=""
               draggable={false}
               style={{
