@@ -9,7 +9,7 @@ export default function StartScreen({ onStart }: Props) {
 
       {/* 背景とは別の、全画面共通のネコカン君 */}
       <img
-        src="/nekokankun.png"
+        src="/sipponasi.png"
         className="start-nekokankun"
         alt="ネコカン君"
         draggable={false}
