@@ -34,7 +34,7 @@ const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
     id: i,
     image: leafImages[i % leafImages.length],
     x: (col + .5) * (100 / 12),
-    y: (row + .5) * (100 / 7),
+    y: i < 12 ? 8 + ((i * 47 + 23) % 85) : (row + .5) * (100 / 7),
     rotation: ((i * 137 + row * 41) % 360) - 180,
     spin: (((i * 47) % 3) - 1) * 240 + 80,
     delay: i < 2 ? i * .14 : i < 12 ? .25 + (i - 2) * .06 : .87 + ((i * 37) % 17) * .012,
@@ -74,7 +74,7 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 1500))
+    }, 1560))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
