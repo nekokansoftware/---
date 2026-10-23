@@ -1,4 +1,4 @@
-/* 葉は一枚ずつ別の高さ・速度で流れ、最後に葉模様の突風が画面を覆う */
+/* 壁紙や単色カバーを使わず、個々の葉っぱだけで画面を覆う */
 .wind-transition {
   position: fixed;
   inset: 0;
@@ -6,37 +6,9 @@
   overflow: hidden;
   pointer-events: all;
 }
-
-/* 緑一色のフラッシュを避け、葉の模様で切り替え時の隙間を隠す */
-.wind-leaf-cover {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background-color: #8eaf54;
-  background-image:
-    url('/leaf-green.png'),
-    url('/leaf-yellow.png'),
-    url('/leaf-lightgreen.png'),
-    url('/leaf-green.png');
-  background-repeat: repeat;
-  background-position: 0 0, 65px 85px, 140px 25px, 205px 125px;
-  background-size: 165px 155px, 190px 175px, 150px 170px, 210px 190px;
-  clip-path: inset(0 100% 0 0);
-  animation: leaf-curtain 2.9s linear both;
-}
-
-/* 1.55秒で全面を覆い、その瞬間にReactの画面を切り替える */
-@keyframes leaf-curtain {
-  0%, 35% { clip-path: inset(0 100% 0 0); }
-  53.45% { clip-path: inset(0 0 0 0); }
-  60% { clip-path: inset(0 0 0 0); }
-  86%, 100% { clip-path: inset(0 0 0 100%); }
-}
-
 .wind-leaf {
   position: absolute;
-  z-index: 3;
-  left: 0;
+  left: var(--leaf-x);
   top: var(--leaf-y);
   width: var(--leaf-size);
   height: auto;
@@ -45,22 +17,41 @@
   opacity: 0;
   transform-origin: center;
   will-change: transform, opacity;
-  animation: leaf-wind-through var(--leaf-duration) linear var(--leaf-delay) both;
+  animation-duration: var(--leaf-duration);
+  animation-delay: var(--leaf-delay);
+  animation-timing-function: linear;
+  animation-fill-mode: both;
 }
-
-@keyframes leaf-wind-through {
+.wind-leaf-early { animation-name: leaf-scatter; }
+.wind-leaf-gust { animation-name: leaf-gust; }
+@keyframes leaf-scatter {
   0% {
     opacity: 0;
-    transform: translate(-18vw, -50%) rotate(var(--leaf-rotation)) scale(.7);
+    transform: translate(-22vw, -50%) rotate(var(--leaf-rotation)) scale(.7);
   }
-  12% { opacity: 1; }
-  80% { opacity: 1; }
+  12%, 80% { opacity: 1; }
   100% {
     opacity: 0;
     transform: translate(120vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1.05);
   }
 }
-
+/* 同時に上下へ散った大量の葉が中央で重なり、停止せず右へ抜ける */
+@keyframes leaf-gust {
+  0% {
+    opacity: 0;
+    transform: translate(-155vw, -50%) rotate(calc(var(--leaf-rotation) - 100deg)) scale(.8);
+  }
+  12% { opacity: 1; }
+  49% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.5);
+  }
+  82% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(125vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(.9);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .wind-leaf { animation-timing-function: linear; }
 }
