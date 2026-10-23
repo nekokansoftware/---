@@ -26,7 +26,7 @@ const leafImages = [
   '/leaf-yellow.png',
 ]
 
-// 下段から順に葉っぱが積もるよう、行ごとに到着をずらす
+// 左から右へ風が通り抜けるよう、列ごとに到着をずらす
 const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
   const col = i % 12
   const row = Math.floor(i / 12)
@@ -36,7 +36,7 @@ const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
     x: (col + .5) * (100 / 12),
     y: (row + .5) * (100 / 7),
     rotation: ((i * 73) % 90) - 45,
-    delay: (6 - row) * .13 + ((col * 7 + row * 3) % 5) * .018,
+    delay: col * .07 + ((row * 7 + col * 3) % 4) * .018,
   }
 })
 
@@ -75,16 +75,16 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 1550))
+    }, 1650))
 
-    // 積もった葉っぱを一度止め、画面切り替え後に風で飛ばす
+    // 葉っぱが一瞬画面を覆った後、同じ風で右へ飛ばす
     windTimers.current.push(setTimeout(() => setIsLeavesExiting(true), 1850))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 3000))
+    }, 3100))
   }
 
   function returnToStart() {
