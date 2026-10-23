@@ -26,7 +26,7 @@ const leafImages = [
   '/leaf-yellow.png',
 ]
 
-// 画面を隙間なく覆えるよう葉っぱを格子状に配置する
+// 下段から順に葉っぱが積もるよう、行ごとに到着をずらす
 const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
   const col = i % 12
   const row = Math.floor(i / 12)
@@ -36,7 +36,7 @@ const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
     x: (col + .5) * (100 / 12),
     y: (row + .5) * (100 / 7),
     rotation: ((i * 73) % 90) - 45,
-    delay: ((col * 3 + row * 7) % 9) * .025,
+    delay: (6 - row) * .13 + ((col * 7 + row * 3) % 5) * .018,
   }
 })
 
@@ -45,6 +45,7 @@ export default function App() {
   const [answer, setAnswer] = useState<number | null>(null)
   const [playerName, setPlayerName] = useState('')
   const [isWindPlaying, setIsWindPlaying] = useState(false)
+  const [isLeavesExiting, setIsLeavesExiting] = useState(false)
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
   // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
@@ -66,6 +67,7 @@ export default function App() {
   function startGame() {
     if (isWindPlaying) return
 
+    setIsLeavesExiting(false)
     setIsWindPlaying(true)
 
     // 葉っぱが画面を覆ったタイミングで切り替える
@@ -73,13 +75,16 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 1450))
+    }, 1550))
+
+    // 積もった葉っぱを一度止め、画面切り替え後に風で飛ばす
+    windTimers.current.push(setTimeout(() => setIsLeavesExiting(true), 1850))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 2900))
+    }, 3000))
   }
 
   function returnToStart() {
@@ -131,7 +136,7 @@ export default function App() {
       </div>
 
       {isWindPlaying && (
-        <div className="wind-transition" aria-hidden="true">
+        <div className={`wind-transition${isLeavesExiting ? ' leaves-exiting' : ''}`} aria-hidden="true">
           <div className="wind-leaf-cover" />
 
           {leaves.map((leaf) => (
@@ -145,7 +150,6 @@ export default function App() {
                 '--leaf-x': `${leaf.x}%`,
                 '--leaf-y': `${leaf.y}%`,
                 '--leaf-delay': `${leaf.delay}s`,
-                '--leaf-rotation': `${leaf.rotation}deg`,
                 '--leaf-rotation': `${leaf.rotation}deg`,
               } as CSSProperties}
             />
