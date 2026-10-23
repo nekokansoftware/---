@@ -48,7 +48,7 @@ const leaves = Array.from({ length: 14 + 12 * 8 * 2 }, (_, i) => {
     spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (180 + scatter(i + 71) * 300)),
     delay: early ? (i < 2 ? i * .18 : .3 + (i - 2) * .065) : .55 + 1.12 * Math.pow(n / 191, .58) + (scatter(i + 91) - .5) * .09,
     duration: early ? 1.15 + scatter(i + 113) * .4 : 1.38,
-    size: early ? 7 + scatter(i + 157) * 4 : 12 + scatter(i + 179) * 4,
+    size: early ? 11 + scatter(i + 157) * 3 : 12 + scatter(i + 179) * 4,
     drift: Math.round((scatter(i + 197) - .5) * 3),
     early,
   }
