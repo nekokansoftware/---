@@ -33,24 +33,25 @@ const scatter = (seed: number) => {
 }
 
 // 出現間隔が連続的に短くなる。終盤は均等な高さに重なる葉で視界を埋める。
-const leaves = Array.from({ length: 224 }, (_, i) => {
-  const progress = i / 223
+const leaves = Array.from({ length: 384 }, (_, i) => {
+  const progress = i / 383
   const covering = i >= 64
   const index = i - 64
   const col = index % 16
   const row = Math.floor(index / 16) % 10
+  const layer = Math.floor(index / 160)
   return {
     id: i,
     image: leafImages[i % leafImages.length],
-    x: covering ? (col + .5) * 6.25 : 0,
-    y: covering ? (row + .5) * 10 : 6 + scatter(i + 17) * 88,
+    x: covering ? (col + .5 + (layer === 1 ? .35 : 0)) * 6.25 : 0,
+    y: covering ? (row + .5 + (layer === 1 ? .3 : 0)) * 10 : 6 + scatter(i + 17) * 88,
     rotation: Math.round(scatter(i + 39) * 360 - 180),
     spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (120 + scatter(i + 71) * 250)),
     // 早い葉は疎ら、終盤ほど密に。ただし全葉を同時には出さない
-    delay: .06 + 1.9 * Math.pow(progress, .57) + (scatter(i + 91) - .5) * .055,
-    duration: covering ? 1.42 : 1.15 + scatter(i + 113) * .38,
-    size: covering ? 17 + scatter(i + 179) * 3 : 11 + scatter(i + 157) * 4,
-    drift: Math.round((scatter(i + 197) - .5) * 3),
+    delay: covering ? 1.75 : .06 + 1.58 * Math.pow(i / 63, .62) + (scatter(i + 91) - .5) * .045,
+    duration: covering ? 1.86 : 1.15 + scatter(i + 113) * .38,
+    size: covering ? 20 : 11 + scatter(i + 157) * 4,
+    drift: covering ? 0 : Math.round((scatter(i + 197) - .5) * 3),
     covering,
   }
 })
