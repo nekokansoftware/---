@@ -10,7 +10,7 @@
   pointer-events: all;
 }
 
-/* 葉っぱが画面を覆う瞬間の緑色 */
+/* 画面切り替えを葉っぱの風になじませる薄い色のベール */
 .wind-leaf-cover {
   position: absolute;
   inset: 0;
@@ -21,9 +21,9 @@
 }
 
 @keyframes wind-cover {
-  0%, 38% { opacity: 0; }
-  46%, 60% { opacity: 1; }
-  78%, 100% { opacity: 0; }
+  0%, 34% { opacity: 0; }
+  47%, 55% { opacity: .38; }
+  72%, 100% { opacity: 0; }
 }
 
 /* 1枚ずつ飛ぶ葉っぱ */
