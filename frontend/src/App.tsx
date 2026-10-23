@@ -36,7 +36,7 @@ const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
     x: (col + .5) * (100 / 12),
     y: (row + .5) * (100 / 7),
     rotation: ((i * 73) % 90) - 45,
-    delay: col * .07 + ((row * 7 + col * 3) % 4) * .018,
+    delay: col * .023 + ((row * 7 + col * 3) % 4) * .009,
   }
 })
 
@@ -75,16 +75,16 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 1650))
+    }, 950))
 
     // 葉っぱが一瞬画面を覆った後、同じ風で右へ飛ばす
-    windTimers.current.push(setTimeout(() => setIsLeavesExiting(true), 1850))
+    windTimers.current.push(setTimeout(() => setIsLeavesExiting(true), 1080))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 3100))
+    }, 1950))
   }
 
   function returnToStart() {
