@@ -72,42 +72,51 @@
 .name-hotspot:focus-visible { outline: 3px solid #1769bc; outline-offset: -3px; }
 .name-hotspot:disabled { cursor: not-allowed; }
 
-/* 名前入力画面：ネコカン君の白目を保ちながら黒目と瞬きを追加 */
-.nickname-cat-eyes { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-.nickname-eye {
+/* 猫本体と目を同じコンテナに固定（スタート画面と同じ比率） */
+.nickname-cat {
   position: absolute;
-  top: 90.25%;
-  width: 3.5%;
-  aspect-ratio: 1;
-  border: 2px solid #20140c;
-  border-radius: 50%;
-  background: #fff;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
+  z-index: 2;
+  left: 50%;
+  bottom: -16%;
+  width: 19%;
+  aspect-ratio: 1450 / 1023;
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
 }
-.nickname-eye-left { left: 44.2%; }
-.nickname-eye-right { left: 52.7%; }
+.nickname-cat-body { display: block; width: 100%; height: 100%; object-fit: contain; }
 .nickname-pupil {
-  width: 35%;
+  position: absolute;
+  top: 30.4%;
+  width: 2.9%;
   aspect-ratio: 1;
-  background: #16100d;
   border-radius: 50%;
+  background: #16100d;
   animation: start-cat-look 8s ease-in-out infinite;
 }
-.nickname-eye::after {
-  content: '';
+.nickname-pupil-left { left: 37.4%; }
+.nickname-pupil-right { left: 58.1%; }
+.nickname-eyelid {
   position: absolute;
-  inset: 0;
+  top: 25.1%;
+  width: 9.1%;
+  height: 13%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.nickname-eyelid-left { left: 34.4%; }
+.nickname-eyelid-right { left: 55.1%; }
+.nickname-eyelid::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
   background: #ff9414;
   transform: scaleY(0);
   transform-origin: top;
   animation: start-cat-blink 5.7s linear infinite;
 }
-@media (prefers-reduced-motion: reduce) {
-  .nickname-pupil, .nickname-eye::after { animation: none; }
-}
-
 @keyframes start-cat-look {
   0%, 17%, 32%, 70%, 100% { transform: translate(0, 0); }
   22%, 27% { transform: translate(28%, 0); }
@@ -117,16 +126,6 @@
   0%, 45%, 47%, 100% { transform: scaleY(0); }
   46% { transform: scaleY(1); }
 }
-
-/* 名前入力画面の下端に本体を重ねる。ボタン操作は妨げない */
-.nickname-cat-body {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  bottom: -16%;
-  width: 19%;
-  height: auto;
-  transform: translateX(-50%);
-  pointer-events: none;
-  user-select: none;
+@media (prefers-reduced-motion: reduce) {
+  .nickname-pupil, .nickname-eyelid::after { animation: none; }
 }
