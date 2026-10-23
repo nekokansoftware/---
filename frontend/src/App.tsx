@@ -35,7 +35,8 @@ const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
     image: leafImages[i % leafImages.length],
     x: (col + .5) * (100 / 12),
     y: (row + .5) * (100 / 7),
-    rotation: ((i * 73) % 90) - 45,
+    rotation: ((i * 137 + row * 41) % 360) - 180,
+    spin: (((i * 47) % 3) - 1) * 240 + 80,
     delay: col * .023 + ((row * 7 + col * 3) % 4) * .009,
   }
 })
@@ -151,6 +152,7 @@ export default function App() {
                 '--leaf-y': `${leaf.y}%`,
                 '--leaf-delay': `${leaf.delay}s`,
                 '--leaf-rotation': `${leaf.rotation}deg`,
+                '--leaf-spin': `${leaf.spin}deg`,
               } as CSSProperties}
             />
           ))}
