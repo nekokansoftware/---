@@ -40,7 +40,7 @@
 @keyframes leaf-wind-in {
   0% {
     opacity: 0;
-    transform: translate(-650%, -70%) rotate(-115deg) scale(.7);
+    transform: translate(-650%, -70%) rotate(calc(var(--leaf-rotation) - 120deg)) scale(.7);
   }
   30% { opacity: 1; }
   100% {
@@ -61,7 +61,7 @@
   65% { opacity: 1; }
   100% {
     opacity: 0;
-    transform: translate(750%, -85%) rotate(155deg) scale(.75);
+    transform: translate(750%, -85%) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(.75);
   }
 }
 
