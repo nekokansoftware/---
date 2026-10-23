@@ -83,13 +83,13 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
         draggable={false}
       />
 
-      {/* 背景から分離したネコカン君本体 */}
-      <img src="/sipponasi.png" className="nickname-cat-body" alt="ネコカン君" draggable={false} />
-
-      {/* 本体の目に重ねるアニメーション */}
-      <div className="nickname-cat-eyes" aria-hidden="true">
-        <span className="nickname-eye nickname-eye-left"><span className="nickname-pupil" /></span>
-        <span className="nickname-eye nickname-eye-right"><span className="nickname-pupil" /></span>
+      {/* 本体と目を同じ座標系にしてずれないようにする */}
+      <div className="nickname-cat" role="img" aria-label="ネコカン君">
+        <img src="/sipponasi.png" className="nickname-cat-body" alt="" draggable={false} />
+        <span className="nickname-pupil nickname-pupil-left" aria-hidden="true" />
+        <span className="nickname-pupil nickname-pupil-right" aria-hidden="true" />
+        <span className="nickname-eyelid nickname-eyelid-left" aria-hidden="true" />
+        <span className="nickname-eyelid nickname-eyelid-right" aria-hidden="true" />
       </div>
 
       <output className="name-value" aria-live="polite">{name}</output>
