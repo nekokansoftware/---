@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import './NameScreen.css'
 
 type Props = {
@@ -45,6 +46,19 @@ function randomName() {
 }
 
 export default function NameScreen({ name, onChange, onConfirm, onBack }: Props) {
+  const [isIdle, setIsIdle] = useState(false)
+  const [lastInteraction, setLastInteraction] = useState(0)
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setIsIdle(true), 5000)
+    return () => window.clearTimeout(timeout)
+  }, [lastInteraction])
+
+  function wakeCat() {
+    setIsIdle(false)
+    setLastInteraction(value => value + 1)
+  }
+
   function addKana(kana: string) {
     if (Array.from(name).length >= 8) return
     onChange(name + kana)
@@ -75,7 +89,7 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
   }
 
   return (
-    <section className="name-artwork">
+    <section className="name-artwork" onClickCapture={wakeCat}>
       <img
         src="/nekokan-nickname.png"
         alt=""
@@ -84,7 +98,7 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
       />
 
       {/* 本体と目を同じ座標系にしてずれないようにする */}
-      <div className="nickname-cat" role="img" aria-label="ネコカン君">
+      <div className={`nickname-cat${isIdle ? ' nickname-cat-idle' : ''}`} role="img" aria-label="ネコカン君">
         <img src="/sipponasi.png" className="nickname-cat-body" alt="" draggable={false} />
         <span className="nickname-pupil nickname-pupil-left" aria-hidden="true" />
         <span className="nickname-pupil nickname-pupil-right" aria-hidden="true" />
