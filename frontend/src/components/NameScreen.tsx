@@ -83,6 +83,12 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
         draggable={false}
       />
 
+      {/* 画像のネコカン君の目を独立レイヤーで動かす */}
+      <div className="nickname-cat-eyes" aria-hidden="true">
+        <span className="nickname-eye nickname-eye-left"><span className="nickname-pupil" /></span>
+        <span className="nickname-eye nickname-eye-right"><span className="nickname-pupil" /></span>
+      </div>
+
       <output className="name-value" aria-live="polite">{name}</output>
 
       <button
