@@ -1,4 +1,4 @@
-/* 壁紙や単色カバーを使わず、個々の葉っぱだけで画面を覆う */
+/* 葉の出現数を滑らかに増やす。ワイプや壁紙は使わない */
 .wind-transition {
   position: fixed;
   inset: 0;
@@ -22,56 +22,21 @@
   animation-timing-function: linear;
   animation-fill-mode: both;
 }
-.wind-leaf-early { animation-name: leaf-scatter; }
-.wind-leaf-gust { animation-name: leaf-gust; }
-@keyframes leaf-scatter {
-  0% {
-    opacity: 0;
-    transform: translate(-22vw, -50%) rotate(var(--leaf-rotation)) scale(.7);
-  }
-  12%, 80% { opacity: 1; }
-  100% {
-    opacity: 0;
-    transform: translate(120vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1.05);
-  }
+.wind-leaf-scattered { animation-name: wind-scattered; }
+.wind-leaf-covering { animation-name: wind-covering; }
+@keyframes wind-scattered {
+  0% { opacity: 0; transform: translate(-22vw, -50%) rotate(var(--leaf-rotation)) scale(.8); }
+  12%, 82% { opacity: 1; }
+  100% { opacity: 0; transform: translate(120vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1); }
 }
-/* 同時に上下へ散った大量の葉が中央で重なり、停止せず右へ抜ける */
-@keyframes leaf-gust {
-  0% {
-    opacity: 0;
-    transform: translate(-155vw, -50%) rotate(calc(var(--leaf-rotation) - 100deg)) scale(.8);
-  }
-  12% { opacity: 1; }
-  49% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.5);
-  }
+/* 横向きの流れを維持し、画面全体の高さに葉を散らす */
+@keyframes wind-covering {
+  0% { opacity: 0; transform: translate(-150vw, -50%) rotate(calc(var(--leaf-rotation) - 90deg)) scale(.8); }
+  13% { opacity: 1; }
+  48% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.45); }
   82% { opacity: 1; }
-  100% {
-    opacity: 0;
-    transform: translate(125vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(.9);
-  }
+  100% { opacity: 0; transform: translate(125vw, calc(-50% + var(--leaf-drift))) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(.9); }
 }
 @media (prefers-reduced-motion: reduce) {
   .wind-leaf { animation-timing-function: linear; }
-}
-
-/* 葉の隙間から画面全体が突然切り替わるのを防ぐ。
-   風と同じ左→右の方向に新しい画面を段階的に見せる。 */
-.wind-next-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  overflow: hidden;
-  pointer-events: none;
-  clip-path: inset(0 100% 0 0);
-  animation: wind-screen-reveal 3.15s linear both;
-}
-.wind-next-screen > * {
-  width: 100%;
-  height: 100%;
-}
-@keyframes wind-screen-reveal {
-  0%, 47% { clip-path: inset(0 100% 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
 }
