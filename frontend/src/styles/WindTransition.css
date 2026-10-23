@@ -1,4 +1,4 @@
-/* 葉っぱが集まり、切り替え中は止まり、再び飛び去る */
+/* 葉っぱが下から積もり、切り替え中に静止し、風で飛び去る */
 .wind-transition {
   position: fixed;
   inset: 0;
@@ -7,18 +7,17 @@
   pointer-events: all;
 }
 
-/* 葉っぱの隙間を埋める薄いベール。全面が単色になる演出は使わない */
+/* 葉の間の小さな隙間だけをなじませる。単色の全画面演出にはしない */
 .wind-leaf-cover {
   position: absolute;
   inset: 0;
   background: #7eae44;
   opacity: 0;
-  animation: leaf-underlay 2.9s linear forwards;
+  animation: leaf-underlay 3s linear forwards;
 }
-
 @keyframes leaf-underlay {
-  0%, 34%, 72%, 100% { opacity: 0; }
-  43%, 60% { opacity: .22; }
+  0%, 34%, 76%, 100% { opacity: 0; }
+  48%, 60% { opacity: .16; }
 }
 
 .wind-leaf {
@@ -26,25 +25,43 @@
   z-index: 1;
   left: var(--leaf-x);
   top: var(--leaf-y);
-  width: 16vw;
-  height: 24vh;
+  width: 20vw;
+  height: 29vh;
   object-fit: fill;
   max-width: none;
   pointer-events: none;
   opacity: 0;
   transform-origin: center;
   will-change: transform, opacity;
-  animation: leaf-gather 2.9s ease-in-out both;
-  animation-delay: var(--leaf-delay);
+  animation: leaf-stack-in .55s cubic-bezier(.15,.65,.25,1) var(--leaf-delay) both;
 }
 
-@keyframes leaf-gather {
-  0% { opacity: 0; transform: translate(-180%, -50%) rotate(-75deg) scale(.2); }
-  15% { opacity: 1; }
-  38% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--leaf-rotation, 0deg)) scale(1.35); }
-  40%, 58% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1.45); }
-  85% { opacity: 1; }
-  100% { opacity: 0; transform: translate(150%, -80%) rotate(130deg) scale(.6); }
+/* 下の段から順番に到着。到着した葉は画面切り替えまでその場に残る */
+@keyframes leaf-stack-in {
+  0% {
+    opacity: 0;
+    transform: translate(-115%, -125%) rotate(-95deg) scale(.65);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.3);
+  }
+}
+
+/* 画面切り替えが終わった後、積もった葉っぱが再び飛び始める */
+.wind-transition.leaves-exiting .wind-leaf {
+  animation: leaf-stack-out 1.05s ease-in forwards;
+}
+@keyframes leaf-stack-out {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--leaf-rotation)) scale(1.3);
+  }
+  70% { opacity: 1; }
+  100% {
+    opacity: 0;
+    transform: translate(165%, -115%) rotate(160deg) scale(.65);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
