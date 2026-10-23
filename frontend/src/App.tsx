@@ -32,19 +32,25 @@ const scatter = (seed: number) => {
   return value - Math.floor(value)
 }
 
-// 最初は小さな葉が一枚ずつ、後半は上下に散った葉が増える
-const leaves = Array.from({ length: 76 }, (_, i) => {
+// 先行する葉は散発的。後半は葉そのものが重なって画面を埋める突風。
+const leaves = Array.from({ length: 14 + 12 * 8 * 2 }, (_, i) => {
   const early = i < 14
+  const n = i - 14
+  const col = n % 12
+  const row = Math.floor(n / 12) % 8
+  const layer = Math.floor(n / 96)
   return {
     id: i,
     image: leafImages[i % leafImages.length],
-    y: 5 + scatter(i + 17) * 90,
+    x: early ? 0 : (col + .5 + (scatter(i + 7) - .5) * .35) * (100 / 12),
+    y: early ? 5 + scatter(i + 17) * 90 : (row + .5 + (scatter(i + 19) - .5) * .3) * (100 / 8),
     rotation: Math.round(scatter(i + 39) * 360 - 180),
     spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (180 + scatter(i + 71) * 300)),
-    delay: i < 2 ? i * .18 : early ? .30 + (i - 2) * .065 : .98 + scatter(i + 91) * .45,
-    duration: early ? 1.15 + scatter(i + 113) * .4 : 1.05 + scatter(i + 137) * .45,
-    size: early ? 7 + scatter(i + 157) * 4 : 9 + scatter(i + 179) * 8,
+    delay: early ? (i < 2 ? i * .18 : .3 + (i - 2) * .065) : .92 + layer * .045 + scatter(i + 91) * .08,
+    duration: early ? 1.15 + scatter(i + 113) * .4 : 1.38,
+    size: early ? 7 + scatter(i + 157) * 4 : 20 + scatter(i + 179) * 5,
     drift: Math.round((scatter(i + 197) - .5) * 28),
+    early,
   }
 })
 
@@ -81,13 +87,13 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 1550))
+    }, 1610))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
       setIsWindPlaying(false)
       windTimers.current = []
-    }, 2900))
+    }, 2700))
   }
 
   function returnToStart() {
@@ -140,16 +146,16 @@ export default function App() {
 
       {isWindPlaying && (
         <div className="wind-transition" aria-hidden="true">
-          <div className="wind-leaf-cover" />
 
           {leaves.map((leaf) => (
             <img
               key={leaf.id}
               src={leaf.image}
-              className="wind-leaf"
+              className={`wind-leaf${leaf.early ? " wind-leaf-early" : " wind-leaf-gust"}`}
               alt=""
               draggable={false}
               style={{
+                '--leaf-x': `${leaf.x}%`,
                 '--leaf-y': `${leaf.y}%`,
                 '--leaf-delay': `${leaf.delay}s`,
                 '--leaf-rotation': `${leaf.rotation}deg`,
