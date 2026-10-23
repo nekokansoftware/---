@@ -26,21 +26,17 @@ const leafImages = [
   '/leaf-yellow.png',
 ]
 
-// 葉っぱの位置・大きさ・速度を最初に固定しておく
-const leaves = Array.from({ length: 110 }, (_, i) => {
-  const random = (seed: number) => {
-    const x = Math.sin(seed * 127.1 + 78.233) * 43758.5453
-    return x - Math.floor(x)
-  }
-
+// 画面を隙間なく覆えるよう葉っぱを格子状に配置する
+const leaves = Array.from({ length: 12 * 7 }, (_, i) => {
+  const col = i % 12
+  const row = Math.floor(i / 12)
   return {
     id: i,
     image: leafImages[i % leafImages.length],
-    y: random(i + 1) * 110 - 5,
-    size: 35 + random(i + 200) * 125,
-    delay: random(i + 400) * 0.85,
-    duration: 1.1 + random(i + 600) * 0.65,
-    rotation: 360 + random(i + 800) * 720,
+    x: (col + .5) * (100 / 12),
+    y: (row + .5) * (100 / 7),
+    rotation: ((i * 73) % 90) - 45,
+    delay: ((col * 3 + row * 7) % 9) * .025,
   }
 })
 
@@ -146,10 +142,10 @@ export default function App() {
               alt=""
               draggable={false}
               style={{
+                '--leaf-x': `${leaf.x}%`,
                 '--leaf-y': `${leaf.y}%`,
-                '--leaf-size': `${leaf.size}px`,
                 '--leaf-delay': `${leaf.delay}s`,
-                '--leaf-duration': `${leaf.duration}s`,
+                '--leaf-rotation': `${leaf.rotation}deg`,
                 '--leaf-rotation': `${leaf.rotation}deg`,
               } as CSSProperties}
             />
