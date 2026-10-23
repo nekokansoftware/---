@@ -35,22 +35,14 @@
   height: auto;
   object-fit: contain;
 }
-/* 葉ごとに到着時刻をずらしつつ、画面切替時は密度を維持する。
-   全て同じ水平軌道で移動し、縦方向のドリフトは入れない。 */
+/* 葉は途中で止まらず、左から右へ連続して流れる。 */
 @keyframes wind-covering {
   0% {
     opacity: 0;
     transform: translate(-140vw, -50%) rotate(var(--leaf-rotation)) scale(1.15);
   }
   8% { opacity: 1; }
-  18% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(calc(var(--leaf-rotation) + 12deg)) scale(1.25);
-  }
-  68% {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(calc(var(--leaf-rotation) + 45deg)) scale(1.25);
-  }
+  88% { opacity: 1; }
   100% {
     opacity: 0;
     transform: translate(125vw, -50%) rotate(calc(var(--leaf-rotation) + var(--leaf-spin))) scale(1.1);
