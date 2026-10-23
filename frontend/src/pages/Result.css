@@ -29,7 +29,7 @@
 }
 
 .result-heading {
-  margin: 110px 0 25px;
+  margin: 60px 0 20px;
 
   width: 100%;
   max-width: 900px;
@@ -60,7 +60,7 @@
 
 .result-card {
   width: min(700px, 90%);
-  margin-top: -30px;
+  margin-top: -20px;
 }
 
 .whisker-text {
@@ -169,7 +169,7 @@
   gap: 15px;
   flex-wrap: wrap;
 
-  margin-top: 25px;
+  margin-top: 0px;
 }
 
 .result-buttons button {
@@ -266,14 +266,109 @@
   box-shadow: 0 4px 0 #f2c44e;
 }
 
-.cat-body {
+/* 猫全体の位置と大きさ */
+.cat {
   position: fixed;
 
   left: 20px;
   bottom: 20px;
 
-  width: clamp(180px, 20vw, 380px);
-  height: auto;
+  width: clamp(220px, 26vw, 480px);
 
   z-index: 2;
+}
+
+/* 猫の胴体 */
+.cat-body {
+  position: relative;
+
+  width: 100%;
+  height: auto;
+
+  display: block;
+  z-index: 2;
+}
+
+/* しっぽ */
+.cat-tail {
+  position: absolute;
+
+  width: 50%;
+
+  right: -5%;
+  bottom: 15%;
+
+  height: auto;
+  z-index: 1;
+
+  transform-origin: bottom left;
+  animation: tail-wag 1.5s ease-in-out infinite;
+}
+
+@keyframes tail-wag {
+  0% {
+    transform: rotate(-8deg);
+  }
+
+  50% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(-8deg);
+  }
+}
+
+.butterfly {
+  position: fixed;
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.butterfly-left {
+  width: clamp(150px, 15vw, 240px);
+  left: 17%;
+  top: 40%;
+}
+
+.butterfly-right {
+  width: clamp(150px, 15vw, 240px);
+  right: 16%;
+  top: 30%;
+}
+
+.stage-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+
+  z-index: 9999;
+  pointer-events: none;
+
+  /* 最初は画面の上に隠しておく */
+  transform: translateY(-105%);
+}
+
+/* ボタンを押したとき */
+.stage-curtain.curtain-drop {
+  animation: curtainFall 1.2s forwards;
+}
+
+@keyframes curtainFall {
+  0% {
+    transform: translateY(-105%);
+  }
+
+  15% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }

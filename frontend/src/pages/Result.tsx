@@ -1,11 +1,27 @@
+import { useState } from "react";
 import "./Result.css";
 import catBody from "../assets/cat-body.png.png";
+import catTail from "../assets/cat-siri.png";
+import butterflyLeft from "../assets/left.png";
+import butterflyRight from "../assets/right.png";
+import curtainImage from "../assets/curtain.png";
 
 type Props = {
   answer: number;
+  onRanking: () => void;
 };
 
-export default function ResultScreen({ answer }: Props) {
+export default function ResultScreen({ answer, onRanking }: Props) {
+  const [curtainClosing, setCurtainClosing] = useState(false);
+
+  const handleRankingClick = () => {
+    setCurtainClosing(true);
+
+    setTimeout(() => {
+    onRanking();
+  }, 1500);
+  };
+  
   // ハードウェアから受け取る予定。今は仮データ
   const actual = 3;
   const matchRate = 80;
@@ -33,11 +49,22 @@ export default function ResultScreen({ answer }: Props) {
   return (
     <div className="result-page">
 
-    <img
-      src={catBody}
-      className="cat-body"
-      alt=""
-    />
+      <img
+  src={butterflyLeft}
+  className="butterfly butterfly-left"
+  alt=""
+/>
+
+<img
+  src={butterflyRight}
+  className="butterfly butterfly-right"
+  alt=""
+/>
+
+    <div className="cat">
+     <img src={catTail} className="cat-tail" alt="" />
+     <img src={catBody} className="cat-body" alt="" />
+    </div>
 
     <h1 className="result-heading"></h1>
 
@@ -52,6 +79,8 @@ export default function ResultScreen({ answer }: Props) {
         <p className="whisker-text">
           🐱 きみのねこひげかんかくは…？
         </p>
+
+        
 
         <div className="match-rate">
           {matchRate}<span>てん！</span>
@@ -88,11 +117,20 @@ export default function ResultScreen({ answer }: Props) {
 
       <div className="result-buttons">
 
-        <button className="ranking-button">
+        <button 
+         className="ranking-button"
+         onClick={handleRankingClick}
+        >
           🏆 ランキングをみる
         </button>
 
       </div>
+      
+      <img
+  src={curtainImage}
+  className={`stage-curtain ${curtainClosing ? "curtain-drop" : ""}`}
+  alt=""
+/>
 
     </div>
   );
