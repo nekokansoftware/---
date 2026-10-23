@@ -32,7 +32,7 @@ const scatter = (seed: number) => {
   return value - Math.floor(value)
 }
 
-// 最初は穏やかに、後半ほど滑らかに加速する三次曲線 N(t) ∝ t³。
+// 葉の累計枚数を滑らかな指数イージングで増やす。終盤に向けて自然に加速。
 const LEAF_COUNT = 384
 const COVER_START = 64
 const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
@@ -42,7 +42,9 @@ const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
   const row = Math.floor(index / 16) % 10
   const layer = Math.floor(index / 160)
   const progress = (i + 1) / LEAF_COUNT
-  const arrival = .03 + 2.05 * Math.cbrt(progress)
+  // 累計出現率 (exp(k*t)-1)/(exp(k)-1) の逆関数。段差のない「ぐいーん」曲線。
+  const curveStrength = 5
+  const arrival = .03 + 2.05 * Math.log1p(progress * Math.expm1(curveStrength)) / curveStrength
   return {
     id: i,
     image: leafImages[i % leafImages.length],
