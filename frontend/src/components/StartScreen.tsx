@@ -9,7 +9,7 @@ export default function StartScreen({ onStart }: Props) {
 
       {/* 本体・黒目・しっぽを別レイヤーにして動かす */}
       <div className="start-cat" role="img" aria-label="ネコカン君">
-        <div className="start-cat-tail" aria-hidden="true" />
+        <img src="/nekokan-tail.png" className="start-cat-tail" alt="" draggable={false} aria-hidden="true" />
         <img
           src="/sipponasi.png"
           className="start-nekokankun"
@@ -18,6 +18,8 @@ export default function StartScreen({ onStart }: Props) {
         />
         <span className="start-cat-pupil start-cat-pupil-left" aria-hidden="true" />
         <span className="start-cat-pupil start-cat-pupil-right" aria-hidden="true" />
+        <span className="start-cat-eyelid start-cat-eyelid-left" aria-hidden="true" />
+        <span className="start-cat-eyelid start-cat-eyelid-right" aria-hidden="true" />
       </div>
 
       <button
