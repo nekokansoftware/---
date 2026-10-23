@@ -32,25 +32,28 @@ const scatter = (seed: number) => {
   return value - Math.floor(value)
 }
 
-// 出現間隔が連続的に短くなる。終盤は均等な高さに重なる葉で視界を埋める。
-const leaves = Array.from({ length: 384 }, (_, i) => {
-  const progress = i / 383
-  const covering = i >= 64
-  const index = i - 64
+// 累積枚数 N(t) ∝ t²。逆関数 sqrt(i/N) で葉ごとの登場時刻を決める。
+const LEAF_COUNT = 384
+const COVER_START = 64
+const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
+  const covering = i >= COVER_START
+  const index = i - COVER_START
   const col = index % 16
   const row = Math.floor(index / 16) % 10
   const layer = Math.floor(index / 160)
+  const progress = (i + 1) / LEAF_COUNT
   return {
     id: i,
     image: leafImages[i % leafImages.length],
-    x: covering ? (col + .5 + (scatter(i + 211) - .5) * .72 + (layer === 1 ? .35 : 0)) * 6.25 : 0,
-    y: covering ? (row + .5 + (scatter(i + 223) - .5) * .52 + (layer === 1 ? .3 : 0)) * 10 : 6 + scatter(i + 17) * 88,
+    // 密集部分は画面全体に分散。規則的な格子を避けるため小さく揺らす
+    x: covering ? (col + .5 + (scatter(i + 211) - .5) * .48 + (layer === 1 ? .3 : 0)) * 6.25 : 0,
+    y: covering ? (row + .5 + (scatter(i + 223) - .5) * .4 + (layer === 1 ? .25 : 0)) * 10 : 6 + scatter(i + 17) * 88,
     rotation: Math.round(scatter(i + 39) * 360 - 180),
     spin: Math.round((scatter(i + 51) > .5 ? 1 : -1) * (120 + scatter(i + 71) * 250)),
-    // 早い葉は疎ら、終盤ほど密に。ただし全葉を同時には出さない
-    delay: covering ? 1.62 + col * .027 + (scatter(i + 241) - .5) * .13 + layer * .035 : .06 + 1.58 * Math.pow(i / 63, .62) + (scatter(i + 91) - .5) * .045,
-    duration: covering ? 1.75 + scatter(i + 251) * .22 : 1.15 + scatter(i + 113) * .38,
-    size: covering ? 18 + scatter(i + 179) * 5 : 11 + scatter(i + 157) * 4,
+    delay: .03 + 2.05 * Math.sqrt(progress),
+    // 後から現れた葉も切り替え時に中央へ集まるよう終了時刻を揃える
+    duration: covering ? 3.8 - (.03 + 2.05 * Math.sqrt(progress)) : 1.25 + scatter(i + 113) * .4,
+    size: covering ? 19 + scatter(i + 179) * 4 : 11 + scatter(i + 157) * 4,
     drift: covering ? 0 : Math.round((scatter(i + 197) - .5) * 3),
     covering,
   }
@@ -89,7 +92,7 @@ export default function App() {
       setAnswer(null)
       setPlayerName('')
       setScreen('name')
-    }, 2680))
+    }, 2760))
 
     // 葉っぱが飛び去ったら演出を終了
     windTimers.current.push(setTimeout(() => {
