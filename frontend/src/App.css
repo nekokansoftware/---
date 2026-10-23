@@ -6,7 +6,7 @@
 
 body{margin:0}
 
-.nekohan{min-height:100vh;background:#b6df95 url('/safari-background.png') center center/cover no-repeat;color:#54361f;font-family:"M PLUS Rounded 1c",Meiryo,sans-serif;font-weight:700;color-scheme:light}
+.nekohan{min-height:100vh;background:#b9dcb0;color:#54361f;font-family:"M PLUS Rounded 1c",Meiryo,sans-serif;font-weight:700;color-scheme:light}
 
 .nekohan .page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 
