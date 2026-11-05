@@ -7,6 +7,7 @@ import catTail from "../assets/cat-siri.png";
 import butterflyLeft from "../assets/left.png";
 import butterflyRight from "../assets/right.png";
 import curtainImage from "../assets/curtain.png";
+import { saveRanking } from "../utils/rankingStorage";
 
 type Props = {
   answer: number;
@@ -17,16 +18,19 @@ export default function ResultScreen({ answer, onRanking }: Props) {
   const [curtainClosing, setCurtainClosing] = useState(false);
 
   // ランキングボタンを押したとき
-  const handleRankingClick = () => {
-    if (curtainClosing) return;
+const handleRankingClick = () => {
+  if (curtainClosing) return;
 
-    setCurtainClosing(true);
+  // 仮のニックネームと点数を保存
+  saveRanking("テストねこ", matchRate);
 
-    // 幕が降りたらランキング画面に移動
-    setTimeout(() => {
-      onRanking();
-    }, 1200);
-  };
+  setCurtainClosing(true);
+
+  // 幕が降りたらランキング画面に移動
+  setTimeout(() => {
+    onRanking();
+  }, 1200);
+};
 
   // ハードウェアから受け取る予定。今は仮データ
   const actual = 3;

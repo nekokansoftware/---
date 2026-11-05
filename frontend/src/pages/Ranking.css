@@ -518,3 +518,58 @@
     padding: 7px 16px;
   }
 }
+
+/* オレンジの外枠を画面全体に広げる */
+@media (min-width: 701px) {
+  .ranking-page {
+    padding: 0;
+    align-items: flex-start;
+  }
+
+  .ranking-page .ranking-panel {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+
+    margin: 0;
+    padding: 100px 35px 25px;
+
+    border: 5px solid #f2c96b;
+    border-radius: 0;
+    box-shadow: none;
+
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
+}
+
+/* 森の背景を表示 */
+.ranking-page {
+  background-image: url("../assets/Ranking-background.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ランキング全体の白い背景を透明にする */
+.ranking-page .ranking-panel {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* 文字を背景から見やすくする */
+.ranking-page .ranking-heading,
+.ranking-page .ranking-subtitle,
+.ranking-page .my-rank-area p {
+  text-shadow:
+    2px 2px 0 white,
+    -2px -2px 0 white,
+    2px -2px 0 white,
+    -2px 2px 0 white;
+}
+
+/* 画像に外枠があるのでCSSの外枠を消す */
+.ranking-page .ranking-panel {
+  border: none;
+  border-radius: 0;
+}

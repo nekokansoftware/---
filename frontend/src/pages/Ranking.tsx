@@ -1,44 +1,51 @@
 
+import { useState } from "react";
 import "./Ranking.css";
 
-type RankingEntry = {
-  id: number;
-  name: string;
-  score: number;
-};
-
-// 動作確認用の仮データ
-const rankingData: RankingEntry[] = [
-  { id: 1, name: "ねこマスター", score: 100 },
-  { id: 2, name: "みけねこ", score: 95 },
-  { id: 3, name: "しろねこ", score: 90 },
-  { id: 4, name: "くろねこ", score: 85 },
-  { id: 5, name: "ねこすき", score: 80 },
-  { id: 6, name: "ねこたろう", score: 75 },
-  { id: 7, name: "にゃんこ", score: 70 },
-];
+import {
+  getSortedRanking,
+  saveRanking,
+  type RankingEntry,
+} from "../utils/rankingStorage";
 
 export default function Ranking() {
-  // 自分のID（仮）
-  const myId = 6;
-
-  // 点数が高い順に並べる
-  const sortedRanking = [...rankingData].sort(
-    (a, b) => b.score - a.score
+  // 保存済みランキングを読み込む
+  const [rankingData, setRankingData] = useState<RankingEntry[]>(
+    () => getSortedRanking()
   );
 
-  // 上位5人
-  const topFive = sortedRanking.slice(0, 5);
+  // 今回の体験者のID
+  const [myId, setMyId] = useState<string | null>(null);
 
-  // 自分の順位
-  const myIndex = sortedRanking.findIndex(
+  // テスト用の記録を追加する
+  const addTestData = () => {
+    const names = [
+      "ねこマスター",
+      "みけねこ",
+      "しろねこ",
+      "くろねこ",
+      "ねこすき",
+      "ねこたろう",
+    ];
+
+    const name = names[Math.floor(Math.random() * names.length)];
+    const score = Math.floor(Math.random() * 11) * 10;
+
+    const newEntry = saveRanking(name, score);
+
+    setMyId(newEntry.id);
+    setRankingData(getSortedRanking());
+  };
+
+  const topFive = rankingData.slice(0, 5);
+
+  const myIndex = rankingData.findIndex(
     (entry) => entry.id === myId
   );
 
   const myRank = myIndex + 1;
-  const myEntry = sortedRanking[myIndex];
+  const myEntry = rankingData[myIndex];
 
-  // 順位カードを表示する関数
   const renderRanking = (entry: RankingEntry, rank: number) => {
     const isMe = entry.id === myId;
 
@@ -56,14 +63,12 @@ export default function Ranking() {
             ? "🥈"
             : rank === 3
             ? "🥉"
-            : `${rank}い`}
+            : `${rank}位`}
         </span>
 
         <span className="ranking-name">
           {entry.name}
-          {isMe && (
-            <span className="my-label">あなた！</span>
-          )}
+          {isMe && <span className="my-label">あなた！</span>}
         </span>
 
         <span className="ranking-score">
@@ -75,11 +80,7 @@ export default function Ranking() {
 
   return (
     <div className="ranking-page">
-
-      {/* ランキング全体のパネル */}
       <div className="ranking-panel">
-
-        {/* タイトル */}
         <h1 className="ranking-heading">
           👑 ランキング 👑
         </h1>
@@ -88,27 +89,29 @@ export default function Ranking() {
           ✨ ねこひげトップ５ ✨
         </p>
 
-        {/* 1位 */}
+        {topFive.length === 0 && (
+          <p>まだランキングのきろくがないよ！</p>
+        )}
+
         {topFive[0] && (
           <div className="first-place">
             {renderRanking(topFive[0], 1)}
           </div>
         )}
 
-        {/* 2位・3位 */}
         <div className="podium-row">
           {topFive[1] && renderRanking(topFive[1], 2)}
           {topFive[2] && renderRanking(topFive[2], 3)}
         </div>
 
-        {/* 4位・5位 */}
         <div className="lower-ranking">
-          {topFive.slice(3).map((entry, index) =>
-            renderRanking(entry, index + 4)
-          )}
+          {topFive
+            .slice(3)
+            .map((entry, index) =>
+              renderRanking(entry, index + 4)
+            )}
         </div>
 
-        {/* 自分が6位以下の場合 */}
         {myEntry && myRank > 5 && (
           <div className="my-rank-area">
             <p>🐱 あなたのじゅんい</p>
@@ -116,13 +119,24 @@ export default function Ranking() {
           </div>
         )}
 
-        {/* 自分が5位以内の場合 */}
         {myEntry && myRank <= 5 && (
           <p className="ranking-congrats">
             ✨ ランクインおめでとう！ ✨
           </p>
         )}
 
+        {/* 動作確認用。完成時には削除する */}
+        <button
+          type="button"
+          onClick={addTestData}
+          style={{
+            padding: "10px 20px",
+            fontSize: "18px",
+            cursor: "pointer",
+          }}
+        >
+          テストデータを追加
+        </button>
       </div>
     </div>
   );
