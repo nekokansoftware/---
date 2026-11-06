@@ -11,24 +11,28 @@ import { saveRanking } from "../utils/rankingStorage";
 
 type Props = {
   answer: number;
-  onRanking: () => void;
+  nickname: string;
+  onRanking: (entryId: string) => void;
 };
 
-export default function ResultScreen({ answer, onRanking }: Props) {
+export default function ResultScreen({
+  answer,
+  nickname,
+  onRanking,
+}: Props) {
   const [curtainClosing, setCurtainClosing] = useState(false);
 
-  // ランキングボタンを押したとき
 const handleRankingClick = () => {
   if (curtainClosing) return;
 
-  // 仮のニックネームと点数を保存
-  saveRanking("テストねこ", matchRate);
+  // 名前と点数を保存
+  const newEntry = saveRanking(nickname, matchRate);
 
   setCurtainClosing(true);
 
-  // 幕が降りたらランキング画面に移動
+  // 幕が降りたらIDを渡して移動
   setTimeout(() => {
-    onRanking();
+    onRanking(newEntry.id);
   }, 1200);
 };
 

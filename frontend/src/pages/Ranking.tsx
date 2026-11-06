@@ -8,14 +8,20 @@ import {
   type RankingEntry,
 } from "../utils/rankingStorage";
 
-export default function Ranking() {
+type Props = {
+  currentEntryId: string | null;
+};
+
+export default function Ranking({ currentEntryId }: Props) {
   // 保存済みランキングを読み込む
   const [rankingData, setRankingData] = useState<RankingEntry[]>(
     () => getSortedRanking()
   );
 
   // 今回の体験者のID
-  const [myId, setMyId] = useState<string | null>(null);
+  const [myId, setMyId] = useState<string | null>(
+  currentEntryId
+);
 
   // テスト用の記録を追加する
   const addTestData = () => {
@@ -37,14 +43,33 @@ export default function Ranking() {
     setRankingData(getSortedRanking());
   };
 
-  const topFive = rankingData.slice(0, 5);
+  
+  // 点数が同じ場合、今回の体験者を優先する
+  const displayRanking = [...rankingData].sort((a, b) => {
+    // 点数が違う場合は高い点数が上
+    if (a.score !== b.score) {
+      return b.score - a.score;
+    }
 
-  const myIndex = rankingData.findIndex(
+    // 同点の場合は今回の体験者を上にする
+    if (a.id === myId) return -1;
+    if (b.id === myId) return 1;
+
+    // それ以外の同点は元の順番を維持
+    return 0;
+  });
+
+  // 上位5人を取得
+  const topFive = displayRanking.slice(0, 5);
+
+  // 今回の体験者の順位を取得
+  const myIndex = displayRanking.findIndex(
     (entry) => entry.id === myId
   );
 
   const myRank = myIndex + 1;
-  const myEntry = rankingData[myIndex];
+  const myEntry = displayRanking[myIndex];
+
 
   const renderRanking = (entry: RankingEntry, rank: number) => {
     const isMe = entry.id === myId;

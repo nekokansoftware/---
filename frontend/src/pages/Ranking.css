@@ -573,3 +573,42 @@
   border: none;
   border-radius: 0;
 }
+
+
+/* 「あなた！」を赤文字に */
+.my-label {
+  color: #ff2020;
+  font-size: 24px;
+  font-weight: 900;
+  margin-left: 10px;
+  text-shadow:
+    2px 2px 0 white,
+    -2px -2px 0 white,
+    2px -2px 0 white,
+    -2px 2px 0 white;
+}
+
+/* 「ランクインおめでとう！」を大きな赤文字に */
+.ranking-congrats {
+  color: #ff2020;
+  font-size: 36px;
+  font-weight: 900;
+  text-align: center;
+  margin-top: 25px;
+  text-shadow:
+    2px 2px 0 white,
+    -2px -2px 0 white,
+    2px -2px 0 white,
+    -2px 2px 0 white;
+  animation: congrats-pop 1.5s ease-in-out infinite;
+}
+
+@keyframes congrats-pop {
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
