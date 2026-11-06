@@ -45,6 +45,8 @@
   text-align: center;
 }
 
+
+
 /* タイトル */
 .ranking-page .ranking-heading {
   margin: 0;
@@ -60,7 +62,7 @@
 
 .ranking-page .ranking-subtitle {
   margin: 0 0 8px;
-  font-size: 18px;
+  font-size: 100px;
   font-weight: 900;
   color: #b77b2c;
 }
@@ -611,4 +613,25 @@
   50% {
     transform: scale(1.08);
   }
+}
+
+
+.ranking-page .ranking-panel .ranking-subtitle {
+  font-size: 50px !important;
+}
+
+/* ランキングの見出しを大きくする */
+.ranking-page .ranking-panel .ranking-heading {
+  font-size: 65px !important;
+}
+
+/* 「あなたのじゅんい」の文字を大きくする */
+.ranking-page .my-rank-area > p {
+  font-size: 30px !important;
+  font-weight: 900;
+}
+
+/* ランキング全体を上に移動 */
+.ranking-page .ranking-panel {
+  transform: translateY(-80px);
 }
