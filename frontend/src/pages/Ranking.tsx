@@ -4,7 +4,6 @@ import "./Ranking.css";
 
 import {
   getSortedRanking,
-  saveRanking,
   type RankingEntry,
 } from "../utils/rankingStorage";
 
@@ -14,34 +13,12 @@ type Props = {
 
 export default function Ranking({ currentEntryId }: Props) {
   // 保存済みランキングを読み込む
-  const [rankingData, setRankingData] = useState<RankingEntry[]>(
-    () => getSortedRanking()
-  );
-
-  // 今回の体験者のID
-  const [myId, setMyId] = useState<string | null>(
-  currentEntryId
+  const [rankingData] = useState<RankingEntry[]>(
+  () => getSortedRanking()
 );
 
-  // テスト用の記録を追加する
-  const addTestData = () => {
-    const names = [
-      "ねこマスター",
-      "みけねこ",
-      "しろねこ",
-      "くろねこ",
-      "ねこすき",
-      "ねこたろう",
-    ];
-
-    const name = names[Math.floor(Math.random() * names.length)];
-    const score = Math.floor(Math.random() * 11) * 10;
-
-    const newEntry = saveRanking(name, score);
-
-    setMyId(newEntry.id);
-    setRankingData(getSortedRanking());
-  };
+  // 今回の体験者のID
+  const myId = currentEntryId;
 
   
   // 点数が同じ場合、今回の体験者を優先する
@@ -150,18 +127,7 @@ export default function Ranking({ currentEntryId }: Props) {
           </p>
         )}
 
-        {/* 動作確認用。完成時には削除する */}
-        <button
-          type="button"
-          onClick={addTestData}
-          style={{
-            padding: "10px 20px",
-            fontSize: "18px",
-            cursor: "pointer",
-          }}
-        >
-          テストデータを追加
-        </button>
+       
       </div>
     </div>
   );

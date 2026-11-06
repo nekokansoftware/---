@@ -6,8 +6,11 @@ import Ranking from "./pages/Ranking";
 function App() {
   const [screen, setScreen] = useState<"result" | "ranking">("result");
 
+
+  const actual = 1;
+
   // 仮の回答数
-  const answer = 4;
+  const answer = 5;
 
   // 仮のニックネーム
   const nickname = "ねこたろう";
@@ -26,6 +29,7 @@ function App() {
       {screen === "result" && (
         <Result
           answer={answer}
+          actual={actual}
           nickname={nickname}
           onRanking={handleRanking}
         />
