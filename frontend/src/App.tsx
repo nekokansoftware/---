@@ -1,24 +1,14 @@
 
-import { useState, useEffect, useRef, type ComponentType, type CSSProperties } from 'react'
+import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
-import ConfirmScreen from './components/ConfirmScreen'
 import NameScreen from './components/NameScreen'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
 import './components/AnswerScreen.css'
-import './components/ConfirmScreen.css'
 
-type Screen = 'start' | 'answer' | 'confirm' | 'name'
-type ConfirmScreenProps = {
-  answer: number
-  onEdit: () => void
-  onBack: () => void
-  onNext: () => void
-}
-
-const ConfirmationScreen = ConfirmScreen as unknown as ComponentType<ConfirmScreenProps>
+type Screen = 'start' | 'answer' | 'name'
 
 const leafImages = [
   '/leaf-green.png',
@@ -123,22 +113,11 @@ export default function App() {
             onChange={setAnswer}
             onConfirm={() => {
               if (answer !== null) {
-                setScreen('confirm')
+                // TODO: 統合時に playerName と answer を結果画面へ渡す。
+                // 接続までは回答入力画面を維持する。
               }
             }}
             onBack={() => setScreen('name')}
-          />
-        )}
-
-        {screen === 'confirm' && answer !== null && (
-          <ConfirmationScreen
-            answer={answer}
-            onEdit={() => setScreen('answer')}
-            onBack={returnToStart}
-            onNext={() => {
-              console.log('名前:', playerName, '回答:', answer)
-              // 結果画面完成後にここから遷移する
-            }}
           />
         )}
 
