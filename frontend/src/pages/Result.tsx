@@ -145,7 +145,7 @@ export default function ResultScreen({
 
         <p className="difference">
           {difference === 0
-            ? "✨ ぴったり！ ✨"
+            ? "🐱 ぴったり！🐱"
             : `✨ ${difference}こちがい！ ✨`}
         </p>
 

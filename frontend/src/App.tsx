@@ -10,7 +10,7 @@ function App() {
   const actual = 1;
 
   // 仮の回答数
-  const answer = 5;
+  const answer = 1;
 
   // 仮のニックネーム
   const nickname = "ねこたろう";
