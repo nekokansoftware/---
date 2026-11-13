@@ -55,6 +55,8 @@ const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
 })
 
 export default function App() {
+  // 実際の接触回数（ハードウェア連携までは仮の値）
+  const actual = 1
   const [screen, setScreen] = useState<Screen>('start')
   const [answer, setAnswer] = useState<number | null>(null)
   const [playerName, setPlayerName] = useState('')
@@ -107,6 +109,7 @@ export default function App() {
     return (
       <Result
         answer={answer}
+        actual={actual}
         nickname={playerName}
         onRanking={(id) => {
           setCurrentEntryId(id)

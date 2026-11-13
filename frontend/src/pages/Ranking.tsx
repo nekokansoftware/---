@@ -1,10 +1,10 @@
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import "./Ranking.css";
+import rankingCat from "../assets/Ranking-cat.png";
 
 import {
   getSortedRanking,
-  saveRanking,
   type RankingEntry,
 } from "../utils/rankingStorage";
 
@@ -14,34 +14,12 @@ type Props = {
 
 export default function Ranking({ currentEntryId }: Props) {
   // 保存済みランキングを読み込む
-  const [rankingData, setRankingData] = useState<RankingEntry[]>(
-    () => getSortedRanking()
-  );
-
-  // 今回の体験者のID
-  const [myId, setMyId] = useState<string | null>(
-  currentEntryId
+  const [rankingData] = useState<RankingEntry[]>(
+  () => getSortedRanking()
 );
 
-  // テスト用の記録を追加する
-  const addTestData = () => {
-    const names = [
-      "ねこマスター",
-      "みけねこ",
-      "しろねこ",
-      "くろねこ",
-      "ねこすき",
-      "ねこたろう",
-    ];
-
-    const name = names[Math.floor(Math.random() * names.length)];
-    const score = Math.floor(Math.random() * 11) * 10;
-
-    const newEntry = saveRanking(name, score);
-
-    setMyId(newEntry.id);
-    setRankingData(getSortedRanking());
-  };
+  // 今回の体験者のID
+  const myId = currentEntryId;
 
   
   // 点数が同じ場合、今回の体験者を優先する
@@ -69,6 +47,20 @@ export default function Ranking({ currentEntryId }: Props) {
 
   const myRank = myIndex + 1;
   const myEntry = displayRanking[myIndex];
+
+  
+  // 今回の体験者が5位以内なら紙吹雪を表示
+  const showConfetti = myEntry !== undefined && myRank <= 5;
+
+  // 紙吹雪を50枚生成
+  const confettiPieces = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    left: `${(i * 37 + 11) % 100}%`,
+    delay: `${(i * 0.17) % 2}s`,
+    duration: `${3 + (i % 4) * 0.5}s`,
+    color: ["#ff5555", "#ffcc00", "#55ccff", "#88dd66", "#cc88ff"][i % 5],
+  }));
+
 
 
   const renderRanking = (entry: RankingEntry, rank: number) => {
@@ -105,6 +97,35 @@ export default function Ranking({ currentEntryId }: Props) {
 
   return (
     <div className="ranking-page">
+
+      
+{/* 5位以内に入ったときの紙吹雪 */}
+{showConfetti && (
+  <div className="confetti-container" aria-hidden="true">
+    {confettiPieces.map((piece) => (
+      <span
+        key={piece.id}
+        className="confetti-piece"
+        style={
+          {
+            left: piece.left,
+            backgroundColor: piece.color,
+            animationDelay: piece.delay,
+            animationDuration: piece.duration,
+          } as CSSProperties
+        }
+      />
+    ))}
+  </div>
+)}
+
+      
+{/* ランキング表示時に左右に開くカーテン */}
+<div className="curtain-opening" aria-hidden="true">
+  <div className="curtain-left"></div>
+  <div className="curtain-right"></div>
+</div>
+
       <div className="ranking-panel">
         <h1 className="ranking-heading">
           👑 ランキング 👑
@@ -150,19 +171,24 @@ export default function Ranking({ currentEntryId }: Props) {
           </p>
         )}
 
-        {/* 動作確認用。完成時には削除する */}
-        <button
-          type="button"
-          onClick={addTestData}
-          style={{
-            padding: "10px 20px",
-            fontSize: "18px",
-            cursor: "pointer",
-          }}
-        >
-          テストデータを追加
-        </button>
+       
       </div>
+
+      
+       <div className="ranking-cat-area">
+  <div className="ranking-speech">
+    ぼくをタッチして
+    <br />
+    スタートがめんにもどるにゃ
+  </div>
+
+  <img
+    src={rankingCat}
+    className="ranking-cat"
+    alt="下からのぞくネコ"
+  />
+</div>
+
     </div>
   );
 }

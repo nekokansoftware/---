@@ -11,38 +11,47 @@ import { saveRanking } from "../utils/rankingStorage";
 
 type Props = {
   answer: number;
+  actual: number;
   nickname: string;
   onRanking: (entryId: string) => void;
 };
 
 export default function ResultScreen({
   answer,
+  actual,
   nickname,
   onRanking,
 }: Props) {
   const [curtainClosing, setCurtainClosing] = useState(false);
 
-const handleRankingClick = () => {
-  if (curtainClosing) return;
-
-  // 名前と点数を保存
-  const newEntry = saveRanking(nickname, matchRate);
-
-  setCurtainClosing(true);
-
-  // 幕が降りたらIDを渡して移動
-  setTimeout(() => {
-    onRanking(newEntry.id);
-  }, 1200);
-};
-
-  // ハードウェアから受け取る予定。今は仮データ
-  const actual = 3;
-  const matchRate = 80;
-
-  // こたえと実際の個数の差
+  // 予想回数と実際の接触回数の差
   const difference = Math.abs(answer - actual);
 
+  // 一致率を計算（最大100%）
+  const matchRate =
+    answer === 0 && actual === 0
+      ? 100
+      : Math.round(
+          (Math.min(answer, actual) /
+            Math.max(answer, actual)) * 100
+        );
+
+  // ランキングボタンを押したとき
+  const handleRankingClick = () => {
+    if (curtainClosing) return;
+
+    // 名前と一致率を保存
+    const newEntry = saveRanking(nickname, matchRate);
+
+    setCurtainClosing(true);
+
+    // 幕が降りたらランキング画面に移動
+    setTimeout(() => {
+      onRanking(newEntry.id);
+    }, 1200);
+  };
+
+  // 一致率によって称号を決定
   let title: string;
   let titleIcon: string;
 
@@ -98,7 +107,7 @@ const handleRankingClick = () => {
         <span className="party-icon">🎉</span>
       </h1>
 
-      {/* 点数と称号 */}
+      {/* 一致率と称号 */}
       <div className="result-card">
 
         <p className="whisker-text">
@@ -107,7 +116,7 @@ const handleRankingClick = () => {
 
         <div className="match-rate">
           {matchRate}
-          <span>てん！</span>
+          <span>%</span>
         </div>
 
         <div className="result-area">
@@ -136,7 +145,7 @@ const handleRankingClick = () => {
 
         <p className="difference">
           {difference === 0
-            ? "✨ ぴったり！ ✨"
+            ? "🐱 ぴったり！🐱"
             : `✨ ${difference}こちがい！ ✨`}
         </p>
 
