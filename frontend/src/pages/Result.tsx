@@ -43,8 +43,8 @@ const handleRankingClick = () => {
   // こたえと実際の個数の差
   const difference = Math.abs(answer - actual);
 
-  let title = "";
-  let titleIcon = "";
+  let title: string;
+  let titleIcon: string;
 
   if (matchRate >= 90) {
     title = "ひげマスター！";

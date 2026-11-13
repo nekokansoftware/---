@@ -1,184 +1,70 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap');
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
+:root{font-family:"M PLUS Rounded 1c",Meiryo,sans-serif}
 
-.hero {
-  position: relative;
+*,*::before,*::after{box-sizing:border-box}
 
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
+body{margin:0}
 
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
+.nekohan{min-height:100vh;background:#b9dcb0;color:#54361f;font-family:"M PLUS Rounded 1c",Meiryo,sans-serif;font-weight:700;color-scheme:light}
 
-  .framework,
-  .vite {
-    position: absolute;
-  }
+.nekohan .page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
+.nekohan h1,.nekohan p{margin:0}
 
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
+.game-screen{width:min(100%,780px);min-height:min(750px,calc(100vh - 48px));padding:30px 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;border:6px solid #a56b38;border-radius:38px;background:linear-gradient(180deg,rgba(236,248,253,.89),rgba(248,247,217,.89));box-shadow:0 16px 0 rgba(92,61,30,.25),0 18px 50px rgba(39,59,22,.2)}
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
+.wood-sign{max-width:100%;padding:13px 44px;border:4px solid #9d602e;border-radius:20px;background:linear-gradient(#f4c782,#dfa35d);box-shadow:0 6px 0 #9d602e;color:#58321b;font-size:clamp(25px,4vw,42px);font-weight:900}
 
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
+.small-sign{font-size:clamp(15px,2.3vw,21px);padding:10px 24px}
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
+.game-title{font-size:clamp(64px,10vw,108px);line-height:1.2;color:#aa521d;letter-spacing:.08em;font-weight:900;text-shadow:3px 3px #fff, -3px -3px #fff, 0 8px #f3cb8d}
 
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
+.game-message{font-size:clamp(21px,3vw,30px);line-height:1.65;color:#50331e}
 
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
+.mascot-frame{position:relative;width:min(100%,330px);height:200px;overflow:hidden;border:5px solid #f3d39b;border-radius:36px;background:#fff5e3;box-shadow:0 6px 0 #d9ad6e}
 
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
+.mascot-image{width:100%;height:100%;object-fit:cover;object-position:center}
 
-#docs {
-  border-right: 1px solid var(--border);
+.mascot-label{position:absolute;left:8px;right:8px;bottom:8px;border-radius:99px;padding:7px;background:rgba(255,248,230,.93);font-size:17px}
 
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
+.wood-button{min-height:74px;padding:12px 30px;border:4px solid #a56326;border-radius:999px;background:linear-gradient(#ffe39a,#ffc665);color:#5a351b;font:900 clamp(24px,3vw,32px) "M PLUS Rounded 1c",sans-serif;box-shadow:0 7px 0 #a56326;cursor:pointer}
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
+.wood-button:hover:not(:disabled){filter:brightness(1.05)}
 
-  .logo {
-    height: 18px;
-  }
+.wood-button:active:not(:disabled){transform:translateY(5px);box-shadow:0 2px 0 #a56326}
 
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
+.wood-button:disabled{opacity:.5;cursor:not-allowed}
 
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
+.primary-button{width:min(100%,420px)}
 
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+.screen-note{font-size:18px}
 
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
+.question-bubble{padding:20px 42px;background:#fffdf4;border:4px solid #e9d6ad;border-radius:45% 45% 40% 40% / 35% 35% 45% 45%;font-size:clamp(27px,4vw,44px);font-weight:900;line-height:1.45}
 
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
+.answer-panel{width:min(100%,670px);padding:28px 24px;border:8px solid #a66b39;border-radius:32px;background:rgba(255,250,237,.97);box-shadow:0 8px 0 #764a27;display:flex;flex-direction:column;align-items:center;gap:20px}
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
+.answer-hint{font-size:clamp(18px,2.5vw,25px)}
 
-.ticks {
-  position: relative;
-  width: 100%;
+.number-grid{width:100%;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+.number-button{min-width:0;min-height:85px;border:3px solid #d8ae78;border-radius:20px;background:#fffdf8;color:#51341e;font:900 clamp(26px,4vw,43px) "M PLUS Rounded 1c",sans-serif;box-shadow:0 5px 0 #dfc7a5;cursor:pointer}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+.number-button:hover{background:#fff0cc}
+
+.number-button.selected{background:#ffcc76;border-color:#aa6227;box-shadow:0 3px 0 #aa6227;transform:translateY(2px)}
+
+.selection-message{font-size:20px}
+
+.confirm-button{width:min(100%,360px)}
+
+.back-button{border:2px solid #a77e55;border-radius:999px;padding:10px 24px;background:#fff9ec;color:#68462b;font:700 18px "M PLUS Rounded 1c",sans-serif;cursor:pointer}
+
+button:focus-visible{outline:4px solid #216eac;outline-offset:4px}
+
+@media(max-width:640px){.nekohan .page{padding:12px}.game-screen{padding:20px 12px;min-height:calc(100vh - 24px);gap:16px;border-width:4px;border-radius:24px}.mascot-frame{height:170px}.number-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.number-button{min-height:68px}.answer-panel{padding:18px 12px}.question-bubble{padding:14px 20px}}
+/* タッチ時の灰色のハイライトを消す */
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
