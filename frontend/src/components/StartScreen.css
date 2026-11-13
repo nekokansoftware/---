@@ -1,0 +1,162 @@
+/* 16:9の背景と独立したネコカン君を重ねるスタート画面 */
+.nekohan:has(.start-artwork) {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #b9dcb0;
+}
+
+.nekohan .page:has(.start-artwork) {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  display: block;
+}
+
+.start-artwork {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* 16:9の操作領域全体を収め、画面比率が違ってもボタンを切らない */
+  width: min(100vw, 177.7778dvh);
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%);
+  background: #b9dcb0 url('/safari-background.png') center / 100% 100% no-repeat;
+  overflow: hidden;
+}
+
+.start-cat {
+  position: absolute;
+  left: 50%;
+  top: 39%;
+  width: 32%;
+  aspect-ratio: 1450 / 1023;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.start-nekokankun {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+}
+
+/* 黒目は正面が基本。たまにわずかに視線を変える */
+.start-cat-pupil {
+  position: absolute;
+  top: 30.4%;
+  width: 2.9%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #16100d;
+  z-index: 3;
+  animation: start-cat-look 8s ease-in-out infinite;
+}
+.start-cat-pupil-left { left: 37.4%; }
+.start-cat-pupil-right { left: 58.1%; }
+
+/* 目の上に猫の毛色のまぶたを重ねて、短く瞬きする */
+.start-cat-eyelid {
+  position: absolute;
+  top: 25.1%;
+  width: 9.1%;
+  height: 13%;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 4;
+  pointer-events: none;
+}
+.start-cat-eyelid-left { left: 34.4%; }
+.start-cat-eyelid-right { left: 55.1%; }
+.start-cat-eyelid::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #ff9414;
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: start-cat-blink 5.7s linear infinite;
+}
+
+/* ユーザーが用意したしっぽ画像を本体の後ろでゆっくり揺らす */
+.start-cat-tail {
+  position: absolute;
+  left: 62%;
+  top: 31%;
+  width: 46%;
+  height: auto;
+  z-index: 0;
+  transform-origin: 24% 79%;
+  animation: start-cat-tail-wag 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes start-cat-look {
+  0%, 17%, 32%, 70%, 100% { transform: translate(0, 0); }
+  22%, 27% { transform: translate(28%, 0); }
+  75%, 80% { transform: translate(-28%, 0); }
+}
+@keyframes start-cat-blink {
+  0%, 45%, 47%, 100% { transform: scaleY(0); }
+  46% { transform: scaleY(1); }
+}
+@keyframes start-cat-tail-wag {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(7deg); }
+}
+
+.artwork-start-button {
+  position: absolute;
+  left: 35.35%;
+  top: 77.5%;
+  width: 29.3%;
+  height: 12.9%;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  z-index: 2;
+  transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.artwork-start-button:hover {
+  background: rgba(255, 240, 120, .25);
+  box-shadow: 0 0 20px rgba(255, 210, 40, .8);
+  transform: scale(1.025);
+}
+
+.artwork-start-button:active { transform: scale(.98); }
+.artwork-start-button:focus-visible {
+  outline: 5px solid #1566b0;
+  outline-offset: 5px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artwork-start-button { transition: none; }
+  .start-cat-pupil, .start-cat-tail, .start-cat-eyelid::after { animation: none; }
+  .start-cat-pupil { transform: translateX(0); }
+}
