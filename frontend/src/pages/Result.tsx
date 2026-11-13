@@ -52,8 +52,8 @@ export default function ResultScreen({
   };
 
   // 一致率によって称号を決定
-  let title = "";
-  let titleIcon = "";
+  let title: string;
+  let titleIcon: string;
 
   if (matchRate >= 90) {
     title = "ひげマスター！";
