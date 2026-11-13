@@ -1,0 +1,374 @@
+
+.result-page {
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  position: relative;
+
+  background-image: url("../assets/result-background-new.png.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  padding: 30px 20px;
+  text-align: center;
+  font-family: sans-serif;
+  color: #333;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-number {
+  text-align: left;
+  color: #777;
+  font-size: 14px;
+}
+
+.result-heading {
+  margin: 60px 0 20px;
+
+  width: 100%;
+  max-width: 900px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+
+  font-size: 60px;
+  line-height: 1;
+  font-weight: 900;
+  color: #ff8500;
+  white-space: nowrap;
+
+   /* 文字のまわりを白く囲む */
+  -webkit-text-stroke: 5px white;
+  paint-order: stroke fill;
+
+   /* 少し立体感をつける */
+  text-shadow: 4px 5px 0 #ffb52e;
+}
+
+.party-icon {
+  font-size: 55px;
+}
+
+.result-card {
+  width: min(700px, 90%);
+  margin-top: -20px;
+}
+
+.whisker-text {
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 18px;
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
+}
+
+.match-label {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.match-rate {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 140px;
+  line-height: 1;
+  font-weight: 900;
+ 
+  /* オレンジ～黄色のグラデーション */
+  background: linear-gradient(#ff9d00, #ff6f00);
+  
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+
+  /* 白いふち */
+  -webkit-text-stroke: 6px white;
+  paint-order: stroke fill;
+
+  /* 立体感 */
+  filter: drop-shadow(0 7px 0 #ffc44d);
+
+  margin: 20px 0;
+}
+
+.match-rate span {
+  font-size: 110px;
+  margin-left: 8px;
+}
+
+.result-score {
+  padding: 25px;
+  border-radius: 20px;
+  background-color: #fff5d9;
+}
+
+.result-score p {
+  margin: 10px 0;
+}
+
+.result-percent {
+  font-size: 64px;
+  font-weight: bold;
+  color: #f39800;
+}
+
+.result-title {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 48px;
+  line-height: 1.2;
+  font-weight: 900;
+
+  /* 点数と同じグラデーション */
+  background: linear-gradient(#ff9d00, #ff6f00);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 立体感 */
+  filter: drop-shadow(0 4px 0 #ffc44d);
+
+  margin-top: 15px;
+}
+
+.title-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-icon {
+  font-size: 48px;
+}
+
+.result-details {
+  margin: 25px 0;
+  padding: 15px;
+  border: 2px solid #eee;
+  border-radius: 15px;
+}
+
+.result-details p {
+  margin: 10px;
+  font-size: 18px;
+}
+
+.result-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+
+  margin-top: 0px;
+}
+
+.result-buttons button {
+  padding: 16px 45px;
+
+  border: 3px solid white;
+  border-radius: 30px;
+
+  background: linear-gradient(#ffad33, #ff8500);
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 0 #d96d00;
+}
+
+.result-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 #d96d00;
+}
+
+.answer-card {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.answer-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.answer-item {
+  width: 220px;
+  padding: 12px 25px;
+  border-radius: 25px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* きみのこたえ */
+.answer-user {
+  background-color: #ffe4ea;
+}
+
+/* ほんとうは */
+.answer-actual {
+  background-color: #dff3ff;
+}
+
+/* 4こ・3こ */
+.answer-item strong {
+  font-size: 42px;
+  font-weight: 900;
+  margin-top: 2px;
+}
+
+/* 4こをピンク */
+.answer-user strong {
+  color: #ff3f78;
+}
+
+/* 3こを青 */
+.answer-actual strong {
+  color: #159ee4;
+}
+
+/* ○こちがい！ */
+.difference {
+  display: inline-block;
+
+  margin-top: 15px;
+  padding: 10px 45px;
+
+  background-color: #fff3b0;
+  border: 3px solid #ffd45c;
+  border-radius: 30px;
+
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  color: #e88900;
+
+  box-shadow: 0 4px 0 #f2c44e;
+}
+
+/* 猫全体の位置と大きさ */
+.cat {
+  position: fixed;
+
+  left: 20px;
+  bottom: 20px;
+
+  width: clamp(220px, 26vw, 480px);
+
+  z-index: 2;
+}
+
+/* 猫の胴体 */
+.cat-body {
+  position: relative;
+
+  width: 100%;
+  height: auto;
+
+  display: block;
+  z-index: 2;
+}
+
+/* しっぽ */
+.cat-tail {
+  position: absolute;
+
+  width: 50%;
+
+  right: -5%;
+  bottom: 15%;
+
+  height: auto;
+  z-index: 1;
+
+  transform-origin: bottom left;
+  animation: tail-wag 1.5s ease-in-out infinite;
+}
+
+@keyframes tail-wag {
+  0% {
+    transform: rotate(-8deg);
+  }
+
+  50% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(-8deg);
+  }
+}
+
+.butterfly {
+  position: fixed;
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.butterfly-left {
+  width: clamp(150px, 15vw, 240px);
+  left: 17%;
+  top: 40%;
+}
+
+.butterfly-right {
+  width: clamp(150px, 15vw, 240px);
+  right: 16%;
+  top: 30%;
+}
+
+.stage-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+
+  z-index: 9999;
+  pointer-events: none;
+
+  /* 最初は画面の上に隠しておく */
+  transform: translateY(-105%);
+}
+
+/* ボタンを押したとき */
+.stage-curtain.curtain-drop {
+  animation: curtainFall 1.2s forwards;
+}
+
+@keyframes curtainFall {
+  0% {
+    transform: translateY(-105%);
+  }
+
+  15% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}

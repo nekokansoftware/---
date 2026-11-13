@@ -3,12 +3,14 @@ import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
+import Result from './pages/Result'
+import Ranking from './pages/Ranking'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
 import './components/AnswerScreen.css'
 
-type Screen = 'start' | 'answer' | 'name'
+type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
 const leafImages = [
   '/leaf-green.png',
@@ -56,6 +58,7 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('start')
   const [answer, setAnswer] = useState<number | null>(null)
   const [playerName, setPlayerName] = useState('')
+  const [currentEntryId, setCurrentEntryId] = useState<string | null>(null)
   const [isWindPlaying, setIsWindPlaying] = useState(false)
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
@@ -100,6 +103,23 @@ export default function App() {
     setScreen('start')
   }
 
+  if (screen === 'result' && answer !== null) {
+    return (
+      <Result
+        answer={answer}
+        nickname={playerName}
+        onRanking={(id) => {
+          setCurrentEntryId(id)
+          setScreen('ranking')
+        }}
+      />
+    )
+  }
+
+  if (screen === 'ranking') {
+    return <Ranking currentEntryId={currentEntryId} />
+  }
+
   return (
     <main className="nekohan" lang="ja">
       <div className="page">
@@ -113,8 +133,7 @@ export default function App() {
             onChange={setAnswer}
             onConfirm={() => {
               if (answer !== null) {
-                // TODO: 統合時に playerName と answer を結果画面へ渡す。
-                // 接続までは回答入力画面を維持する。
+                setScreen('result')
               }
             }}
             onBack={() => setScreen('name')}
