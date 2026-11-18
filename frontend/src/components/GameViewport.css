@@ -1,0 +1,126 @@
+/* Preserve a 16:9 game canvas on tablets, desktops and other viewports. */
+.game-viewport {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #b9dcb0;
+}
+
+.game-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  overflow: hidden;
+  transform-origin: center center;
+  isolation: isolate;
+}
+
+/* Override viewport-relative sizing inside the fixed 1280x720 canvas. */
+.game-stage .nekohan,
+.game-stage .nekohan .page,
+.game-stage .result-page,
+.game-stage .ranking-page {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.game-stage .nekohan .page:has(.start-artwork),
+.game-stage .nekohan .page:has(.name-artwork),
+.game-stage .nekohan .page:has(.answer-artwork) {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.game-stage .start-artwork,
+.game-stage .name-artwork,
+.game-stage .answer-artwork {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+/* Prevent fixed overlays from leaking into the letterbox area. */
+.game-stage .butterfly,
+.game-stage .stage-curtain,
+.game-stage .curtain-opening,
+.game-stage .confetti-container,
+.game-stage .wind-transition {
+  position: absolute;
+}
+
+.game-stage .stage-curtain,
+.game-stage .wind-transition {
+  height: 100%;
+}
+
+/* Result: keep the existing composition but fit it inside the 720px stage. */
+.game-stage .result-page {
+  padding: 12px 20px;
+  overflow: hidden;
+}
+
+.game-stage .result-heading {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 48px;
+}
+.game-stage .party-icon { font-size: 42px; }
+.game-stage .result-card { margin-top: 0; }
+.game-stage .whisker-text { font-size: 24px; margin-bottom: 8px; }
+.game-stage .match-rate { font-size: 95px; margin: 8px 0; }
+.game-stage .match-rate span { font-size: 70px; }
+.game-stage .result-title { font-size: 36px; }
+.game-stage .title-icon { font-size: 36px; }
+.game-stage .answer-card { margin-top: 10px; }
+.game-stage .answer-item { padding: 8px 18px; }
+.game-stage .answer-item strong { font-size: 32px; }
+.game-stage .difference { margin-top: 8px; padding: 6px 30px; font-size: 24px; }
+.game-stage .result-buttons button { padding: 12px 36px; }
+.game-stage .cat { width: 280px; }
+
+/* Ranking: remove viewport-based offsets; give its bottom button clear space. */
+.game-stage .ranking-page {
+  padding: 0;
+  overflow: hidden;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.game-stage .ranking-page .ranking-panel {
+  transform: none;
+  width: 100%;
+  min-height: 0;
+  max-height: none;
+  height: auto;
+  margin: 0;
+  padding: 12px 35px 0;
+  gap: 5px;
+}
+.game-stage .ranking-page .ranking-panel .ranking-heading {
+  font-size: 46px !important;
+}
+.game-stage .ranking-page .ranking-panel .ranking-subtitle {
+  font-size: 32px !important;
+  margin-bottom: 4px;
+}
+.game-stage .ranking-page .rank-1 { padding: 7px 18px; }
+.game-stage .ranking-page .rank-1 .ranking-position { font-size: 32px; }
+.game-stage .ranking-page .rank-1 .ranking-score { font-size: 26px; }
+.game-stage .ranking-page .podium-row .ranking-card { padding: 7px 12px; font-size: 20px; }
+.game-stage .ranking-page .lower-ranking .ranking-card { padding: 7px 12px; font-size: 19px; }
+.game-stage .ranking-page .ranking-panel .ranking-congrats { font-size: 32px !important; }
+.game-stage .ranking-page .bottom-back-button {
+  position: absolute;
+  bottom: 24px;
+  width: 440px;
+  min-height: 64px;
+  font-size: 25px;
+}
+.game-stage .ranking-page .ranking-cat-area {
+  width: 245px;
+  right: 12px;
+}
