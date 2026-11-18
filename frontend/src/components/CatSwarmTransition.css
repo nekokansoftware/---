@@ -23,7 +23,7 @@
 .cat-swarm-member {
   left: var(--swarm-x);
   top: var(--swarm-y);
-  width: clamp(85px, calc(var(--swarm-size) * .8), 275px);
+  width: var(--swarm-size);
   opacity: 0;
   animation: cat-swarm-rush 1.35s var(--swarm-delay) cubic-bezier(.2,.76,.24,1) both;
   will-change: transform, opacity;
@@ -103,7 +103,7 @@
   to { transform: rotate(12deg); }
 }
 @media (max-width: 700px) {
-  .cat-swarm-member { width: clamp(80px, calc(var(--swarm-size) * .6), 190px); }
+  .cat-swarm-member { width: min(var(--swarm-size), 24vw); }
   .cat-swarm-giant { width: 165vw; }
 }
 @media (prefers-reduced-motion: reduce) {
