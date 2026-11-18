@@ -70,7 +70,7 @@ export default function App() {
 
   // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
   useEffect(() => {
-    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku-no-cat.png', '/sipponasi.png', '/nekokan-tail.png', ...leafImages]
+    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku-no-cat.png', '/sipponasi.png', '/nekokan-tail.png', '/nekokan-back.png', ...leafImages]
     images.forEach(src => {
       const img = new Image()
       img.src = src
@@ -104,8 +104,8 @@ export default function App() {
     }, 3900))
   }
 
-  // 名前画面にいる猫が右端へ移動し、その画面を紙のようにめくる。
-  // 次画面の猫はめくり終わるまで表示しないので、同時に2匹出ない。
+  // 名前画面の猫が後ろを向き、名前入力のシートを下へ引っぱる。
+  // 下にある回答画面の猫は演出終了まで表示しない。
   function confirmNameWithPageTurn() {
     if (isPageTurning || !playerName.trim()) return
 
@@ -120,7 +120,7 @@ export default function App() {
       setScreen('answer')
       setIsPageTurning(false)
       pageTurnTimers.current = []
-    }, 1700))
+    }, 1900))
   }
 
   function returnToStart() {
@@ -184,6 +184,15 @@ export default function App() {
             onBack={returnToStart}
             onConfirm={confirmNameWithPageTurn}
             isPageTurning={isPageTurning}
+          />
+        )}
+        {isPageTurning && (
+          <img
+            src="/nekokan-back.png"
+            className="name-pull-cat"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
           />
         )}
       </div>
