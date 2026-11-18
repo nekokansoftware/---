@@ -1,3 +1,4 @@
+import PeekabooCat from './PeekabooCat'
 
 type Props = {
   answer: number | null
@@ -56,6 +57,9 @@ export default function AnswerScreen({
         className="answer-background"
         draggable={false}
       />
+
+      {/* 装飾アニメーション。ボタンをクリックする操作は妨げない */}
+      <PeekabooCat />
 
       {/* 入力した数字 */}
       <output className="answer-value">
