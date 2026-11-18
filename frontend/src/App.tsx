@@ -108,7 +108,7 @@ export default function App() {
 
   if (screen === 'result' && answer !== null) {
     return (
-      <GameViewport>
+      <GameViewport screen="result">
         <Result
           answer={answer}
           actual={actual}
@@ -124,14 +124,14 @@ export default function App() {
 
   if (screen === 'ranking') {
     return (
-      <GameViewport>
+      <GameViewport screen="ranking">
         <Ranking currentEntryId={currentEntryId} onBack={returnToStart} />
       </GameViewport>
     )
   }
 
   return (
-    <GameViewport>
+    <GameViewport screen={screen}>
     <main className="nekohan" lang="ja">
       <div className="page">
         {screen === 'start' && (
