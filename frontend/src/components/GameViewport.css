@@ -127,45 +127,47 @@
 
 
 /*
- * Full-bleed scenery behind the 16:9 interactive stage.
- * The scenery may crop with background-size: cover, while the foreground
- * (cat, labels and touch targets) keeps its original coordinates and ratio.
+ * Extend the scenery without duplicating the central game image.
+ * Full-screen CSS colors contain no lettering or buttons, so changing
+ * the viewport aspect ratio cannot produce a giant second title.
+ * The interactive 16:9 stage stays sharp and its hotspots stay aligned.
  */
 .game-viewport {
-  --scenery: url('/safari-background.png');
-  background: #b9dcb0;
   isolation: isolate;
+  background: linear-gradient(
+    to bottom,
+    #24b5e9 0%,
+    #49c6ee 48%,
+    #9ddce9 69%,
+    #b5dc65 85%,
+    #9bdc3c 100%
+  );
 }
 
-.game-viewport[data-screen='name'] {
-  --scenery: url('/nekokan-nickname.png');
-}
-
-.game-viewport[data-screen='answer'] {
-  --scenery: url('/nekokan-nyuryoku.png');
-}
-
-.game-viewport[data-screen='result'] {
-  --scenery: url('../assets/result-background-new.png.png');
-}
-
+.game-viewport[data-screen='result'],
 .game-viewport[data-screen='ranking'] {
-  --scenery: url('../assets/Ranking-background.png');
+  background: linear-gradient(
+    to bottom,
+    #24b9ed 0%,
+    #73d8f6 53%,
+    #c0ed88 78%,
+    #a0dc43 100%
+  );
 }
 
+/* Subtle scenery only — no enlarged copies of buttons or text. */
 .game-viewport::before {
   content: '';
   position: absolute;
-  inset: -16px;
-  background-image: var(--scenery);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(10px) brightness(.92);
+  inset: 0;
   pointer-events: none;
+  background:
+    radial-gradient(ellipse at -4% 9%, rgba(42, 148, 44, .62), transparent 24%),
+    radial-gradient(ellipse at 103% 10%, rgba(48, 157, 42, .62), transparent 24%),
+    radial-gradient(ellipse at 1% 100%, rgba(65, 169, 44, .65), transparent 23%),
+    radial-gradient(ellipse at 100% 100%, rgba(65, 169, 44, .65), transparent 23%);
 }
 
-/* Foreground keeps its original 16:9 aspect ratio and touch coordinates. */
 .game-viewport .game-stage {
   z-index: 1;
 }
