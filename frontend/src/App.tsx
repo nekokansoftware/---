@@ -5,6 +5,7 @@ import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
 import Result from './pages/Result'
 import Ranking from './pages/Ranking'
+import GameViewport from './components/GameViewport'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
@@ -107,28 +108,30 @@ export default function App() {
 
   if (screen === 'result' && answer !== null) {
     return (
-      <Result
-        answer={answer}
-        actual={actual}
-        nickname={playerName}
-        onRanking={(id) => {
-          setCurrentEntryId(id)
-          setScreen('ranking')
-        }}
-      />
+      <GameViewport>
+        <Result
+          answer={answer}
+          actual={actual}
+          nickname={playerName}
+          onRanking={(id) => {
+            setCurrentEntryId(id)
+            setScreen('ranking')
+          }}
+        />
+      </GameViewport>
     )
   }
 
   if (screen === 'ranking') {
-  return (
-    <Ranking
-      currentEntryId={currentEntryId}
-      onBack={returnToStart}
-    />
-  )
-}
+    return (
+      <GameViewport>
+        <Ranking currentEntryId={currentEntryId} onBack={returnToStart} />
+      </GameViewport>
+    )
+  }
 
   return (
+    <GameViewport>
     <main className="nekohan" lang="ja">
       <div className="page">
         {screen === 'start' && (
@@ -183,5 +186,6 @@ export default function App() {
         </div>
       )}
     </main>
+    </GameViewport>
   )
 }
