@@ -53,13 +53,6 @@ export default function AnswerScreen({
       {/* 背景画像 */}
       <img
         src="/nekokan-nyuryoku-no-cat.png"
-        onError={(event) => {
-          // 猫なし画像のアップロード前は既存画像を表示して操作を維持する
-          const image = event.currentTarget
-          if (!image.src.endsWith("/nekokan-nyuryoku.png")) {
-            image.src = "/nekokan-nyuryoku.png"
-          }
-        }}
         alt=""
         className="answer-background"
         draggable={false}
