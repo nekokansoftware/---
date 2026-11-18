@@ -5,11 +5,11 @@ import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
 import Result from './pages/Result'
 import Ranking from './pages/Ranking'
-import GameViewport from './components/GameViewport'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
 import './components/AnswerScreen.css'
+import './styles/Responsive.css'
 
 type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
@@ -108,7 +108,7 @@ export default function App() {
 
   if (screen === 'result' && answer !== null) {
     return (
-      <GameViewport screen="result">
+      
         <Result
           answer={answer}
           actual={actual}
@@ -118,20 +118,20 @@ export default function App() {
             setScreen('ranking')
           }}
         />
-      </GameViewport>
+      
     )
   }
 
   if (screen === 'ranking') {
     return (
-      <GameViewport screen="ranking">
+      
         <Ranking currentEntryId={currentEntryId} onBack={returnToStart} />
-      </GameViewport>
+      
     )
   }
 
   return (
-    <GameViewport screen={screen}>
+    
     <main className="nekohan" lang="ja">
       <div className="page">
         {screen === 'start' && (
@@ -186,6 +186,6 @@ export default function App() {
         </div>
       )}
     </main>
-    </GameViewport>
+    
   )
 }
