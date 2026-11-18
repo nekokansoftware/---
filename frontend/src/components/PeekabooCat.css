@@ -43,6 +43,27 @@
   animation: peekaboo-tail-wag 1s ease-in-out infinite alternate;
 }
 
+/* The body sprite has white eyes only: match the pupils on the start screen. */
+.peekaboo-pupil {
+  position: absolute;
+  top: 30.4%;
+  width: 2.9%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #16100d;
+  z-index: 3;
+  pointer-events: none;
+  animation: peekaboo-look 8s ease-in-out infinite;
+}
+.peekaboo-pupil-left { left: 37.4%; }
+.peekaboo-pupil-right { left: 58.1%; }
+
+@keyframes peekaboo-look {
+  0%, 17%, 32%, 70%, 100% { transform: translate(0, 0); }
+  22%, 27% { transform: translate(28%, 0); }
+  75%, 80% { transform: translate(-28%, 0); }
+}
+
 /* Empty scenery zones intentionally chosen outside the active hotspots. */
 .peekaboo-cat--bottom {
   left: 41%;
@@ -96,6 +117,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .peekaboo-cat, .peekaboo-cat-tail { animation: none; }
+  .peekaboo-cat, .peekaboo-cat-tail, .peekaboo-pupil { animation: none; }
   .peekaboo-cat { opacity: 0; }
 }
