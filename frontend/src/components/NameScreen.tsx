@@ -99,7 +99,7 @@ export default function NameScreen({ name, onChange, onConfirm, onBack, isPageTu
       />
 
       {/* 本体と目を同じ座標系にしてずれないようにする */}
-      <div className={`nickname-cat${isPageTurning ? ' nickname-cat--turning' : isIdle ? ' nickname-cat-idle' : ''}`} role="img" aria-label="ネコカン君">
+      <div className={`nickname-cat${isPageTurning ? ' nickname-cat--hidden' : isIdle ? ' nickname-cat-idle' : ''}`} role="img" aria-label="ネコカン君">
         <img src="/sipponasi.png" className="nickname-cat-body" alt="" draggable={false} />
         <span className="nickname-pupil nickname-pupil-left" aria-hidden="true" />
         <span className="nickname-pupil nickname-pupil-right" aria-hidden="true" />
