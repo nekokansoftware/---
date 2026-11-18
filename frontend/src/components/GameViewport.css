@@ -124,3 +124,48 @@
   width: 245px;
   right: 12px;
 }
+
+
+/*
+ * Full-bleed scenery behind the 16:9 interactive stage.
+ * The scenery may crop with background-size: cover, while the foreground
+ * (cat, labels and touch targets) keeps its original coordinates and ratio.
+ */
+.game-viewport {
+  --scenery: url('/safari-background.png');
+  background: #b9dcb0;
+  isolation: isolate;
+}
+
+.game-viewport[data-screen='name'] {
+  --scenery: url('/nekokan-nickname.png');
+}
+
+.game-viewport[data-screen='answer'] {
+  --scenery: url('/nekokan-nyuryoku.png');
+}
+
+.game-viewport[data-screen='result'] {
+  --scenery: url('../assets/result-background-new.png.png');
+}
+
+.game-viewport[data-screen='ranking'] {
+  --scenery: url('../assets/Ranking-background.png');
+}
+
+.game-viewport::before {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  background-image: var(--scenery);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(10px) brightness(.92);
+  pointer-events: none;
+}
+
+/* Foreground keeps its original 16:9 aspect ratio and touch coordinates. */
+.game-viewport .game-stage {
+  z-index: 1;
+}
