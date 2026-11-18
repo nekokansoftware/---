@@ -37,6 +37,8 @@ export default function PeekabooCat() {
         <div className="peekaboo-cat-art">
           <img className="peekaboo-cat-tail" src="/nekokan-tail.png" alt="" draggable={false} />
           <img className="peekaboo-cat-body" src="/sipponasi.png" alt="" draggable={false} />
+          <span className="peekaboo-pupil peekaboo-pupil-left" />
+          <span className="peekaboo-pupil peekaboo-pupil-right" />
         </div>
       </div>
     </div>
