@@ -5,6 +5,7 @@ type Props = {
   onChange: (value: number | null) => void
   onConfirm: () => void
   onBack: () => void
+  showCat?: boolean
 }
 
 const keys = [
@@ -25,6 +26,7 @@ export default function AnswerScreen({
   onChange,
   onConfirm,
   onBack,
+  showCat = true,
 }: Props) {
   const input = answer === null ? '' : String(answer)
 
@@ -59,7 +61,7 @@ export default function AnswerScreen({
       />
 
       {/* 装飾アニメーション。ボタンをクリックする操作は妨げない */}
-      <PeekabooCat />
+      {showCat && <PeekabooCat />}
 
       {/* 入力した数字 */}
       <output className="answer-value">
