@@ -6,7 +6,7 @@
   height: 100%;
   height: 100dvh;
   overflow: hidden;
-  background: #b9dcb0;
+  background: #fff;
 }
 
 .game-stage {
@@ -126,48 +126,26 @@
 }
 
 
-/*
- * Extend the scenery without duplicating the central game image.
- * Full-screen CSS colors contain no lettering or buttons, so changing
- * the viewport aspect ratio cannot produce a giant second title.
- * The interactive 16:9 stage stays sharp and its hotspots stay aligned.
- */
+/* There is no second scenery/background outside the game artwork.
+   Letterboxing is unavoidable if screen ratios differ and we neither
+   crop nor distort. Keep those margins plain. */
 .game-viewport {
+  background: #fff;
   isolation: isolate;
-  background: linear-gradient(
-    to bottom,
-    #24b5e9 0%,
-    #49c6ee 48%,
-    #9ddce9 69%,
-    #b5dc65 85%,
-    #9bdc3c 100%
-  );
 }
-
-.game-viewport[data-screen='result'],
-.game-viewport[data-screen='ranking'] {
-  background: linear-gradient(
-    to bottom,
-    #24b9ed 0%,
-    #73d8f6 53%,
-    #c0ed88 78%,
-    #a0dc43 100%
-  );
+.game-viewport::before,
+.game-viewport::after {
+  content: none;
 }
-
-/* Subtle scenery only — no enlarged copies of buttons or text. */
-.game-viewport::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at -4% 9%, rgba(42, 148, 44, .62), transparent 24%),
-    radial-gradient(ellipse at 103% 10%, rgba(48, 157, 42, .62), transparent 24%),
-    radial-gradient(ellipse at 1% 100%, rgba(65, 169, 44, .65), transparent 23%),
-    radial-gradient(ellipse at 100% 100%, rgba(65, 169, 44, .65), transparent 23%);
-}
-
 .game-viewport .game-stage {
   z-index: 1;
+}
+.game-stage .start-artwork,
+.game-stage .name-artwork,
+.game-stage .answer-artwork {
+  width: 1280px;
+  height: 720px;
+  max-width: none;
+  max-height: none;
+  aspect-ratio: 16 / 9;
 }
