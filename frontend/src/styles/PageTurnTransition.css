@@ -1,0 +1,107 @@
+/*
+ * 名前入力 → 個数入力
+ * 既存の正面ネコカンくんが後ろを向き、名前画面を下へ引っ張って退場。
+ * 先に回答画面を下層へ配置して、シートが下がると自然に現れる。
+ */
+.nekohan .page .page-turn-answer-normal { display: contents; }
+
+.nekohan .page:has(.name-artwork--turning) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nekohan .page .page-turn-answer-underlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nekohan .page .page-turn-answer-underlay .answer-artwork {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  left: auto;
+  top: auto;
+  transform: none;
+  width: max(100vw, 177.777778dvh);
+  max-height: none;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+/* 名前入力の背景・ボタン・文字が一枚のシートとして下へずれる */
+.nekohan .page .name-artwork.name-artwork--turning {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+  transform: translateY(0);
+  animation: nekokan-pull-sheet 2.8s cubic-bezier(.37,.02,.2,1) forwards;
+  box-shadow: 0 -16px 28px rgba(83,55,23,.18);
+}
+.nekohan .page .name-artwork--turning .name-hotspot { pointer-events: none; }
+
+/* 正面の猫を隠し、同じ場所から後ろ姿へ切り替える */
+.nekohan .page .name-artwork--turning .nickname-cat.nickname-cat--hidden {
+  display: none;
+}
+
+/* 引っぱっているネコカンくん。
+   独立したレイヤーなので、シートが下がっても画面に見える。 */
+.nekohan .page .name-pull-cat {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: -7vh;
+  width: clamp(367.5px, 48vw, 750px);
+  max-height: 105vh;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  transform-origin: 50% 65%;
+  will-change: transform;
+  animation: nekokan-pull-cat 2.8s cubic-bezier(.37,.02,.2,1) forwards;
+}
+
+/* 手が画面上端に届く→ぎゅっと力をためる→シートを下に引き下ろす */
+@keyframes nekokan-pull-sheet {
+  0%, 27% { transform: translateY(0); }
+  32% { transform: translateY(-1.5vh); }
+  42% { transform: translateY(3vh); }
+  77% { transform: translateY(74vh); }
+  92%, 100% { transform: translateY(110vh); }
+}
+@keyframes nekokan-pull-cat {
+  /* 最初は画面下側の元のネコカンくんの場所から出てくる */
+  0% { transform: translate(-50%, 92vh) scale(.9) rotate(0); }
+  12% { transform: translate(-50%, 54vh) scale(.95) rotate(-5deg); }
+  26% { transform: translate(-50%, 0) scale(1) rotate(0); }
+  32% { transform: translate(-50%, -1.5vh) scale(.96) rotate(3deg); }
+  42% { transform: translate(-50%, 3vh) scale(1) rotate(-2deg); }
+  77% { transform: translate(-50%, 74vh) scale(1) rotate(0); }
+  92%, 100% { transform: translate(-50%, 110vh) scale(1) rotate(0); }
+}
+
+/* 最後までタッチ操作を受け付けない */
+.page-turn-input-blocker {
+  position: fixed;
+  inset: 0;
+  z-index: 9100;
+  cursor: progress;
+  background: transparent;
+}
+
+@media (max-width: 680px) {
+  .nekohan .page .name-pull-cat {
+    width: clamp(292.5px, 78vw, 532.5px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nekohan .page .name-artwork.name-artwork--turning,
+  .nekohan .page .name-pull-cat { animation: none; }
+}

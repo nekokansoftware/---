@@ -6,6 +6,7 @@ type Props = {
   onChange: (value: string) => void
   onConfirm: () => void
   onBack: () => void
+  isPageTurning?: boolean
 }
 
 // 画像の10列×5行に正確に合わせる（右端は濁点・半濁点）
@@ -45,7 +46,7 @@ function randomName() {
     randomSecond[Math.floor(Math.random() * randomSecond.length)]
 }
 
-export default function NameScreen({ name, onChange, onConfirm, onBack }: Props) {
+export default function NameScreen({ name, onChange, onConfirm, onBack, isPageTurning = false }: Props) {
   const [isIdle, setIsIdle] = useState(false)
   const [lastInteraction, setLastInteraction] = useState(0)
 
@@ -89,7 +90,7 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
   }
 
   return (
-    <section className="name-artwork" onClickCapture={wakeCat}>
+    <section className={`name-artwork${isPageTurning ? ' name-artwork--turning' : ''}`} onClickCapture={wakeCat}>
       <img
         src="/nekokan-nickname.png"
         alt=""
@@ -98,7 +99,7 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
       />
 
       {/* 本体と目を同じ座標系にしてずれないようにする */}
-      <div className={`nickname-cat${isIdle ? ' nickname-cat-idle' : ''}`} role="img" aria-label="ネコカン君">
+      <div className={`nickname-cat${isPageTurning ? ' nickname-cat--hidden' : isIdle ? ' nickname-cat-idle' : ''}`} role="img" aria-label="ネコカン君">
         <img src="/sipponasi.png" className="nickname-cat-body" alt="" draggable={false} />
         <span className="nickname-pupil nickname-pupil-left" aria-hidden="true" />
         <span className="nickname-pupil nickname-pupil-right" aria-hidden="true" />

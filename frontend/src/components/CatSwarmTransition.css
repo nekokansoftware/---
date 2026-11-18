@@ -1,0 +1,112 @@
+/* 名前決定→個数入力：大群が左右から押し寄せ、巨大な猫で切り替える */
+.cat-swarm-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  overflow: hidden;
+  pointer-events: auto;
+  isolation: isolate;
+}
+.cat-swarm-crowd {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+.cat-swarm-member,
+.cat-swarm-giant {
+  position: absolute;
+  aspect-ratio: 1450 / 1023;
+  pointer-events: none;
+  transform-origin: 50% 60%;
+}
+.cat-swarm-member {
+  left: var(--swarm-x);
+  top: var(--swarm-y);
+  width: var(--swarm-size);
+  opacity: 0;
+  animation: cat-swarm-rush 1.35s var(--swarm-delay) cubic-bezier(.2,.76,.24,1) both;
+  will-change: transform, opacity;
+}
+.cat-swarm-body {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+}
+.cat-swarm-tail {
+  position: absolute;
+  left: 62%;
+  top: 31%;
+  width: 46%;
+  height: auto;
+  z-index: 1;
+  transform-origin: 24% 79%;
+  animation: cat-swarm-wag .25s ease-in-out infinite alternate;
+}
+.cat-swarm-pupil {
+  position: absolute;
+  top: 30.4%;
+  width: 2.9%;
+  aspect-ratio: 1;
+  background: #16100d;
+  border-radius: 50%;
+  z-index: 3;
+}
+.cat-swarm-pupil-left { left: 37.4%; }
+.cat-swarm-pupil-right { left: 58.1%; }
+
+.cat-swarm-giant {
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: min(120vw, 175vh);
+  opacity: 0;
+  animation: cat-swarm-zoom 2.25s ease-in-out both;
+  will-change: transform, opacity;
+}
+
+/* 顔が近づいた瞬間に背景を隠し、裏側の画面を切り替える */
+.cat-swarm-wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #fff1ca;
+  opacity: 0;
+  animation: cat-swarm-curtain 2.25s ease-in-out both;
+}
+
+@keyframes cat-swarm-rush {
+  0% { opacity: 0; transform: translate(calc(var(--swarm-start-x) - 50%), 30vh) scale(.3) rotate(var(--swarm-rotate)); }
+  46% { opacity: 1; transform: translate(-50%, -50%) scale(1.12) rotate(var(--swarm-rotate)); }
+  63% { opacity: 1; transform: translate(-50%, -58%) scale(1.04) rotate(0deg); }
+  86% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.32); }
+}
+@keyframes cat-swarm-zoom {
+  0%, 43% { opacity: 0; transform: translate(-50%, 85%) scale(.25); }
+  49% { opacity: 1; transform: translate(-50%, -35%) scale(.4); }
+  66% { opacity: 1; transform: translate(-50%, -47%) scale(1.1); }
+  76% { opacity: 1; transform: translate(-50%, -48%) scale(1.9); }
+  89% { opacity: 1; transform: translate(-50%, -48%) scale(2.5); }
+  100% { opacity: 0; transform: translate(-50%, -48%) scale(2.8); }
+}
+@keyframes cat-swarm-curtain {
+  0%, 48% { opacity: 0; }
+  57%, 72% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes cat-swarm-wag {
+  from { transform: rotate(-10deg); }
+  to { transform: rotate(12deg); }
+}
+@media (max-width: 700px) {
+  .cat-swarm-member { width: min(var(--swarm-size), 24vw); }
+  .cat-swarm-giant { width: 165vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cat-swarm-member, .cat-swarm-giant, .cat-swarm-wipe, .cat-swarm-tail { animation: none; }
+  .cat-swarm-member, .cat-swarm-giant, .cat-swarm-wipe { opacity: 0; }
+}

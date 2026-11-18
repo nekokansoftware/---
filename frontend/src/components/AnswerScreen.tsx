@@ -1,9 +1,11 @@
+import PeekabooCat from './PeekabooCat'
 
 type Props = {
   answer: number | null
   onChange: (value: number | null) => void
   onConfirm: () => void
   onBack: () => void
+  showCat?: boolean
 }
 
 const keys = [
@@ -24,6 +26,7 @@ export default function AnswerScreen({
   onChange,
   onConfirm,
   onBack,
+  showCat = true,
 }: Props) {
   const input = answer === null ? '' : String(answer)
 
@@ -51,11 +54,14 @@ export default function AnswerScreen({
 
       {/* 背景画像 */}
       <img
-        src="/nekokan-nyuryoku.png"
+        src="/nekokan-nyuryoku-no-cat.png"
         alt=""
         className="answer-background"
         draggable={false}
       />
+
+      {/* 装飾アニメーション。ボタンをクリックする操作は妨げない */}
+      {showCat && <PeekabooCat />}
 
       {/* 入力した数字 */}
       <output className="answer-value">

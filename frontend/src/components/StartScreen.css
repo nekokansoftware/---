@@ -33,8 +33,8 @@
 .start-cat {
   position: absolute;
   left: 50%;
-  top: 39%;
-  width: 32%;
+  top: 40%;
+  width: 28%;
   aspect-ratio: 1450 / 1023;
   transform: translateX(-50%);
   z-index: 1;
@@ -116,31 +116,29 @@
   to { transform: rotate(7deg); }
 }
 
+/* 背景に描かれた「スタート！」の位置だけをタッチ可能にする */
 .artwork-start-button {
   position: absolute;
   left: 35.35%;
   top: 77.5%;
   width: 29.3%;
   height: 12.9%;
+  margin: 0;
+  padding: 0;
   border: 0;
   border-radius: 999px;
   background: transparent;
+  box-shadow: none;
+  color: transparent;
   cursor: pointer;
   touch-action: manipulation;
-  z-index: 2;
-  transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  z-index: 6;
 }
-
-.artwork-start-button:hover {
-  background: rgba(255, 240, 120, .25);
-  box-shadow: 0 0 20px rgba(255, 210, 40, .8);
-  transform: scale(1.025);
-}
-
-.artwork-start-button:active { transform: scale(.98); }
+.artwork-start-button:hover { background: rgba(255, 240, 120, .12); }
+.artwork-start-button:active { background: rgba(255, 240, 120, .22); }
 .artwork-start-button:focus-visible {
   outline: 5px solid #1566b0;
-  outline-offset: 5px;
+  outline-offset: 4px;
 }
 
 .visually-hidden {

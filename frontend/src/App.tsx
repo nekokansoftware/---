@@ -9,6 +9,8 @@ import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
 import './components/AnswerScreen.css'
+import './styles/Responsive.css'
+import './styles/PageTurnTransition.css'
 
 type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
@@ -62,11 +64,13 @@ export default function App() {
   const [playerName, setPlayerName] = useState('')
   const [currentEntryId, setCurrentEntryId] = useState<string | null>(null)
   const [isWindPlaying, setIsWindPlaying] = useState(false)
+  const [isPageTurning, setIsPageTurning] = useState(false)
+  const pageTurnTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
   // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
   useEffect(() => {
-    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku.png', ...leafImages]
+    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku-no-cat.png', '/sipponasi.png', '/nekokan-tail.png', '/nekokan-back.png', ...leafImages]
     images.forEach(src => {
       const img = new Image()
       img.src = src
@@ -77,6 +81,7 @@ export default function App() {
   useEffect(() => {
     return () => {
       windTimers.current.forEach(clearTimeout)
+      pageTurnTimers.current.forEach(clearTimeout)
     }
   }, [])
 
@@ -99,6 +104,25 @@ export default function App() {
     }, 3900))
   }
 
+  // 名前画面の猫が後ろを向き、名前入力のシートを下へ引っぱる。
+  // 下にある回答画面の猫は演出終了まで表示しない。
+  function confirmNameWithPageTurn() {
+    if (isPageTurning || !playerName.trim()) return
+
+    setAnswer(null)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setScreen('answer')
+      return
+    }
+
+    setIsPageTurning(true)
+    pageTurnTimers.current.push(setTimeout(() => {
+      setScreen('answer')
+      setIsPageTurning(false)
+      pageTurnTimers.current = []
+    }, 2800))
+  }
+
   function returnToStart() {
     setAnswer(null)
     setPlayerName('')
@@ -107,30 +131,38 @@ export default function App() {
 
   if (screen === 'result' && answer !== null) {
     return (
-      <Result
-        answer={answer}
-        actual={actual}
-        nickname={playerName}
-        onRanking={(id) => {
-          setCurrentEntryId(id)
-          setScreen('ranking')
-        }}
-      />
+      
+        <Result
+          answer={answer}
+          actual={actual}
+          nickname={playerName}
+          onRanking={(id) => {
+            setCurrentEntryId(id)
+            setScreen('ranking')
+          }}
+        />
+      
     )
   }
 
   if (screen === 'ranking') {
-    return <Ranking currentEntryId={currentEntryId} />
+    return (
+      
+        <Ranking currentEntryId={currentEntryId} onBack={returnToStart} />
+      
+    )
   }
 
   return (
+    
     <main className="nekohan" lang="ja">
       <div className="page">
         {screen === 'start' && (
           <StartScreen onStart={startGame} />
         )}
 
-        {screen === 'answer' && (
+        {(screen === 'answer' || (screen === 'name' && isPageTurning)) && (
+          <div className={isPageTurning ? 'page-turn-answer-underlay' : 'page-turn-answer-normal'}>
           <AnswerScreen
             answer={answer}
             onChange={setAnswer}
@@ -140,7 +172,9 @@ export default function App() {
               }
             }}
             onBack={() => setScreen('name')}
+            showCat={!isPageTurning}
           />
+          </div>
         )}
 
         {screen === 'name' && (
@@ -148,10 +182,22 @@ export default function App() {
             name={playerName}
             onChange={setPlayerName}
             onBack={returnToStart}
-            onConfirm={() => setScreen('answer')}
+            onConfirm={confirmNameWithPageTurn}
+            isPageTurning={isPageTurning}
+          />
+        )}
+        {isPageTurning && (
+          <img
+            src="/nekokan-back.png"
+            className="name-pull-cat"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
           />
         )}
       </div>
+
+      {isPageTurning && <div className="page-turn-input-blocker" aria-hidden="true" />}
 
       {isWindPlaying && (
         <div className="wind-transition" aria-hidden="true">
@@ -178,5 +224,6 @@ export default function App() {
         </div>
       )}
     </main>
+    
   )
 }

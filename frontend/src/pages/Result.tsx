@@ -69,6 +69,12 @@ export default function ResultScreen({
     titleIcon = "🐾";
   }
 
+  // 既存の称号を、ネコカンくんが話す自然な語尾にする
+  const catMessage =
+    matchRate < 50
+      ? "もういっかいやってみようニャ！"
+      : `${title.replace(/[！!]+$/, "")}だニャ！`;
+
   return (
     <div className="result-page">
 
@@ -98,6 +104,12 @@ export default function ResultScreen({
           className="cat-body"
           alt=""
         />
+      </div>
+
+      {/* ネコカンくんの猫耳吹き出し。GitHubに追加された透過画像を使用 */}
+      <div className="result-cat-speech" role="status" aria-label={`ネコカンくん：${catMessage}`}>
+        <img src="/nekokan-hukidasi.png" alt="" draggable={false} />
+        <span className="result-cat-speech-text" aria-hidden="true">{catMessage}</span>
       </div>
 
       {/* タイトル */}

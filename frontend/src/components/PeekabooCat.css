@@ -1,0 +1,132 @@
+/* The whole layer is visual-only; it cannot block the number buttons. */
+.peekaboo-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.peekaboo-cat {
+  position: absolute;
+  width: 18%;
+  aspect-ratio: 1450 / 1023;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation-duration: 3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+.peekaboo-cat-art {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+}
+
+/* 横からの登場時は猫本体・しっぽ・黒目をまとめて横向きにする。
+   左端では頭を右に、右端では頭を左に向ける。 */
+.peekaboo-cat--left .peekaboo-cat-art {
+  transform: rotate(90deg);
+}
+.peekaboo-cat--right .peekaboo-cat-art {
+  transform: rotate(-90deg);
+}
+
+.peekaboo-cat-body {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.peekaboo-cat-tail {
+  position: absolute;
+  width: 46%;
+  height: auto;
+  left: 62%;
+  top: 31%;
+  transform-origin: 24% 79%;
+  animation: peekaboo-tail-wag 1s ease-in-out infinite alternate;
+}
+
+/* The body sprite has white eyes only: match the pupils on the start screen. */
+.peekaboo-pupil {
+  position: absolute;
+  top: 30.4%;
+  width: 2.9%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #16100d;
+  z-index: 3;
+  pointer-events: none;
+  animation: peekaboo-look 8s ease-in-out infinite;
+}
+.peekaboo-pupil-left { left: 37.4%; }
+.peekaboo-pupil-right { left: 58.1%; }
+
+@keyframes peekaboo-look {
+  0%, 17%, 32%, 70%, 100% { transform: translate(0, 0); }
+  22%, 27% { transform: translate(28%, 0); }
+  75%, 80% { transform: translate(-28%, 0); }
+}
+
+/* Empty scenery zones intentionally chosen outside the active hotspots. */
+.peekaboo-cat--bottom {
+  left: 41%;
+  bottom: -1%;
+  width: 18%;
+  animation-name: peekaboo-from-bottom;
+}
+.peekaboo-cat--left {
+  left: 0;
+  top: 41%;
+  width: 15%;
+  animation-name: peekaboo-from-left;
+}
+.peekaboo-cat--right {
+  right: 0;
+  top: 39%;
+  width: 13%;
+  animation-name: peekaboo-from-right;
+}
+.peekaboo-cat--top {
+  right: 8%;
+  top: 0;
+  width: 13%;
+  animation-name: peekaboo-from-top;
+}
+
+/* Pop in, stay visible for a moment, hide fully before switching edges. */
+@keyframes peekaboo-from-bottom {
+  0%, 8%, 100% { opacity: 0; transform: translateY(110%); }
+  27%, 68% { opacity: 1; transform: translateY(17%); }
+  88% { opacity: 0; transform: translateY(110%); }
+}
+@keyframes peekaboo-from-left {
+  0%, 8%, 100% { opacity: 0; transform: translateX(-115%); }
+  27%, 68% { opacity: 1; transform: translateX(-35%); }
+  88% { opacity: 0; transform: translateX(-115%); }
+}
+@keyframes peekaboo-from-right {
+  0%, 8%, 100% { opacity: 0; transform: translateX(115%); }
+  27%, 68% { opacity: 1; transform: translateX(35%); }
+  88% { opacity: 0; transform: translateX(115%); }
+}
+@keyframes peekaboo-from-top {
+  0%, 8%, 100% { opacity: 0; transform: translateY(-115%) rotate(180deg); }
+  27%, 68% { opacity: 1; transform: translateY(-12%) rotate(180deg); }
+  88% { opacity: 0; transform: translateY(-115%) rotate(180deg); }
+}
+@keyframes peekaboo-tail-wag {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(7deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peekaboo-cat, .peekaboo-cat-tail, .peekaboo-pupil { animation: none; }
+  .peekaboo-cat { opacity: 0; }
+}
