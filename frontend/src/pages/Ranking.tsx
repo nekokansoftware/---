@@ -13,7 +13,7 @@ type Props = {
   onBack: () => void;
 };
 
-export default function Ranking({ currentEntryId,onBack }: Props) {
+export default function Ranking({ currentEntryId, onBack }: Props) {
   // 保存済みランキングを読み込む
   const [rankingData] = useState<RankingEntry[]>(
   () => getSortedRanking()
@@ -175,14 +175,10 @@ export default function Ranking({ currentEntryId,onBack }: Props) {
        
       </div>
 
-      
-       <div className="ranking-cat-area">
-        </div>
-
-      {/* スタート画面に戻るボタン */}
+      {/* タブレットでも押しやすい、画面下中央の戻るボタン */}
       <button
         type="button"
-        className="back-to-start-button"
+        className="bottom-back-button"
         onClick={onBack}
       >
         🐾 スタートにもどる
