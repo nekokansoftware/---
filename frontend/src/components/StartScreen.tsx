@@ -28,7 +28,9 @@ export default function StartScreen({ onStart }: Props) {
         onClick={onStart}
         aria-label="スタート！"
         title="スタート！"
-      />
+      >
+        スタート！ ▶
+      </button>
     </section>
   )
 }
