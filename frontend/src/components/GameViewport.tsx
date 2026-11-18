@@ -13,7 +13,9 @@ function viewportScale() {
  * All screens share the same 16:9 coordinates.
  * Scale the entire stage uniformly rather than stretching each element.
  */
-export default function GameViewport({ children }: { children: ReactNode }) {
+type GameScreen = 'start' | 'name' | 'answer' | 'result' | 'ranking'
+
+export default function GameViewport({ children, screen }: { children: ReactNode; screen: GameScreen }) {
   const [scale, setScale] = useState(viewportScale)
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function GameViewport({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <div className="game-viewport">
+    <div className="game-viewport" data-screen={screen}>
       <div
         className="game-stage"
         style={{
