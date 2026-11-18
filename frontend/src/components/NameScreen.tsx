@@ -90,6 +90,33 @@ export default function NameScreen({ name, onChange, onConfirm, onBack }: Props)
 
   return (
     <section className="name-artwork" onClickCapture={wakeCat}>
+      <div className="name-responsive-ui">
+        <div className="responsive-header">
+          <button type="button" className="responsive-action" onClick={onBack}>← スタートにもどる</button>
+          <h1>🐱 なまえを いれてね</h1>
+        </div>
+        <output className="responsive-name-value" aria-live="polite">{name || 'なまえをタッチしてね'}</output>
+        <div className="responsive-kana-grid">
+          {kanaRows.flatMap((row, rowIndex) =>
+            row.map((kana, columnIndex) => (
+              <button
+                type="button"
+                key={`visible-${rowIndex}-${columnIndex}`}
+                className="responsive-kana-button"
+                aria-label={kana}
+                onClick={() => kana === '゛' || kana === '゜' ? applyMark(kana) : kana === '小' ? toggleSmall() : addKana(kana)}
+              >{kana}</button>
+            ))
+          )}
+        </div>
+        <div className="responsive-actions">
+          <button type="button" className="responsive-action" onClick={() => onChange('')}>ぜんぶけす</button>
+          <button type="button" className="responsive-action" onClick={deleteLast}>ひとつけす</button>
+          <button type="button" className="responsive-action" onClick={() => onChange(randomName())}>おまかせ</button>
+          <button type="button" className="responsive-action responsive-primary" disabled={!name.trim()} onClick={onConfirm}>けってい ▶</button>
+        </div>
+      </div>
+
       <img
         src="/nekokan-nickname.png"
         alt=""
