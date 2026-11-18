@@ -3,12 +3,12 @@ import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
+import CatSwarmTransition from './components/CatSwarmTransition'
 import Result from './pages/Result'
 import Ranking from './pages/Ranking'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
-import './styles/NameJumpTransition.css'
 import './components/AnswerScreen.css'
 import './styles/Responsive.css'
 
@@ -64,8 +64,8 @@ export default function App() {
   const [playerName, setPlayerName] = useState('')
   const [currentEntryId, setCurrentEntryId] = useState<string | null>(null)
   const [isWindPlaying, setIsWindPlaying] = useState(false)
-  const [isNameJumping, setIsNameJumping] = useState(false)
-  const nameJumpTimers = useRef<ReturnType<typeof setTimeout>[]>([])
+  const [isCatSwarming, setIsCatSwarming] = useState(false)
+  const swarmTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
   // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
@@ -81,7 +81,7 @@ export default function App() {
   useEffect(() => {
     return () => {
       windTimers.current.forEach(clearTimeout)
-      nameJumpTimers.current.forEach(clearTimeout)
+      swarmTimers.current.forEach(clearTimeout)
     }
   }, [])
 
@@ -104,25 +104,27 @@ export default function App() {
     }, 3900))
   }
 
-  // 「けってい！」後、ジャンプの光が画面を覆うタイミングで次画面に切り替える
-  function confirmNameWithJump() {
-    if (isNameJumping || !playerName.trim()) return
+  // 「けってい！」後、猫の大群が押し寄せている間に次の画面へ移る
+  function confirmNameWithSwarm() {
+    if (isCatSwarming || !playerName.trim()) return
 
-    // 動きを抑える端末設定では余分な待機をせずに次へ
+    // アニメーションを減らす設定の場合は即切り替える
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setAnswer(null)
       setScreen('answer')
       return
     }
 
-    setIsNameJumping(true)
-    nameJumpTimers.current.push(setTimeout(() => {
+    setIsCatSwarming(true)
+    // ベージュのワイプが画面を隠しているタイミングで背後を切り替える
+    swarmTimers.current.push(setTimeout(() => {
       setAnswer(null)
       setScreen('answer')
-    }, 780))
-    nameJumpTimers.current.push(setTimeout(() => {
-      setIsNameJumping(false)
-      nameJumpTimers.current = []
-    }, 1550))
+    }, 1420))
+    swarmTimers.current.push(setTimeout(() => {
+      setIsCatSwarming(false)
+      swarmTimers.current = []
+    }, 2250))
   }
 
   function returnToStart() {
@@ -181,24 +183,12 @@ export default function App() {
             name={playerName}
             onChange={setPlayerName}
             onBack={returnToStart}
-            onConfirm={confirmNameWithJump}
+            onConfirm={confirmNameWithSwarm}
           />
         )}
       </div>
 
-      {isNameJumping && (
-        <div className="name-jump-transition" aria-hidden="true">
-          <div className="name-jump-transition__glow" />
-          <span className="name-jump-transition__spark name-jump-transition__spark--left">✦</span>
-          <span className="name-jump-transition__spark name-jump-transition__spark--right">✦</span>
-          <div className="name-jump-transition__cat">
-            <img src="/nekokan-tail.png" className="name-jump-transition__tail" alt="" draggable={false} />
-            <img src="/sipponasi.png" className="name-jump-transition__body" alt="" draggable={false} />
-            <span className="name-jump-transition__pupil name-jump-transition__pupil--left" />
-            <span className="name-jump-transition__pupil name-jump-transition__pupil--right" />
-          </div>
-        </div>
-      )}
+      {isCatSwarming && <CatSwarmTransition />}
 
       {isWindPlaying && (
         <div className="wind-transition" aria-hidden="true">
