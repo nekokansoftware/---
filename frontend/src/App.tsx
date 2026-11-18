@@ -120,8 +120,13 @@ export default function App() {
   }
 
   if (screen === 'ranking') {
-    return <Ranking currentEntryId={currentEntryId} />
-  }
+  return (
+    <Ranking
+      currentEntryId={currentEntryId}
+      onBack={returnToStart}
+    />
+  )
+}
 
   return (
     <main className="nekohan" lang="ja">

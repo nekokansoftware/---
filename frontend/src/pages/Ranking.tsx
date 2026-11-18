@@ -10,9 +10,10 @@ import {
 
 type Props = {
   currentEntryId: string | null;
+  onBack: () => void;
 };
 
-export default function Ranking({ currentEntryId }: Props) {
+export default function Ranking({ currentEntryId,onBack }: Props) {
   // 保存済みランキングを読み込む
   const [rankingData] = useState<RankingEntry[]>(
   () => getSortedRanking()
@@ -176,11 +177,18 @@ export default function Ranking({ currentEntryId }: Props) {
 
       
        <div className="ranking-cat-area">
-  <div className="ranking-speech">
-    ぼくをタッチして
-    <br />
-    スタートがめんにもどるにゃ
-  </div>
+        </div>
+
+      {/* スタート画面に戻るボタン */}
+      <button
+        type="button"
+        className="back-to-start-button"
+        onClick={onBack}
+      >
+        🐾 スタートにもどる
+      </button>
+
+      <div className="ranking-cat-area">
 
   <img
     src={rankingCat}

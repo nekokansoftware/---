@@ -372,3 +372,19 @@
     transform: translateY(0);
   }
 }
+.back-to-start-button {
+  display: block;
+  margin: 30px auto;
+  padding: 15px 30px;
+  background-color: #ffcc66;
+  color: #5c3b1e;
+  border: none;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.back-to-start-button:hover {
+  background-color: #ffb84d;
+}
