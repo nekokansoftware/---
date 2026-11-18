@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
-import CatSwarmTransition from './components/CatSwarmTransition'
 import Result from './pages/Result'
 import Ranking from './pages/Ranking'
 import './App.css'
@@ -11,6 +10,7 @@ import './components/StartScreen.css'
 import './styles/WindTransition.css'
 import './components/AnswerScreen.css'
 import './styles/Responsive.css'
+import './styles/PageTurnTransition.css'
 
 type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
@@ -64,8 +64,8 @@ export default function App() {
   const [playerName, setPlayerName] = useState('')
   const [currentEntryId, setCurrentEntryId] = useState<string | null>(null)
   const [isWindPlaying, setIsWindPlaying] = useState(false)
-  const [isCatSwarming, setIsCatSwarming] = useState(false)
-  const swarmTimers = useRef<ReturnType<typeof setTimeout>[]>([])
+  const [isPageTurning, setIsPageTurning] = useState(false)
+  const pageTurnTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
   // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
@@ -81,7 +81,7 @@ export default function App() {
   useEffect(() => {
     return () => {
       windTimers.current.forEach(clearTimeout)
-      swarmTimers.current.forEach(clearTimeout)
+      pageTurnTimers.current.forEach(clearTimeout)
     }
   }, [])
 
@@ -104,27 +104,23 @@ export default function App() {
     }, 3900))
   }
 
-  // 「けってい！」後、猫の大群が押し寄せている間に次の画面へ移る
-  function confirmNameWithSwarm() {
-    if (isCatSwarming || !playerName.trim()) return
+  // 名前画面にいる猫が右端へ移動し、その画面を紙のようにめくる。
+  // 次画面の猫はめくり終わるまで表示しないので、同時に2匹出ない。
+  function confirmNameWithPageTurn() {
+    if (isPageTurning || !playerName.trim()) return
 
-    // アニメーションを減らす設定の場合は即切り替える
+    setAnswer(null)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setAnswer(null)
       setScreen('answer')
       return
     }
 
-    setIsCatSwarming(true)
-    // ベージュのワイプが画面を隠しているタイミングで背後を切り替える
-    swarmTimers.current.push(setTimeout(() => {
-      setAnswer(null)
+    setIsPageTurning(true)
+    pageTurnTimers.current.push(setTimeout(() => {
       setScreen('answer')
-    }, 1420))
-    swarmTimers.current.push(setTimeout(() => {
-      setIsCatSwarming(false)
-      swarmTimers.current = []
-    }, 2250))
+      setIsPageTurning(false)
+      pageTurnTimers.current = []
+    }, 1700))
   }
 
   function returnToStart() {
@@ -165,7 +161,8 @@ export default function App() {
           <StartScreen onStart={startGame} />
         )}
 
-        {screen === 'answer' && (
+        {(screen === 'answer' || (screen === 'name' && isPageTurning)) && (
+          <div className={isPageTurning ? 'page-turn-answer-underlay' : 'page-turn-answer-normal'}>
           <AnswerScreen
             answer={answer}
             onChange={setAnswer}
@@ -175,7 +172,9 @@ export default function App() {
               }
             }}
             onBack={() => setScreen('name')}
+            showCat={!isPageTurning}
           />
+          </div>
         )}
 
         {screen === 'name' && (
@@ -183,12 +182,13 @@ export default function App() {
             name={playerName}
             onChange={setPlayerName}
             onBack={returnToStart}
-            onConfirm={confirmNameWithSwarm}
+            onConfirm={confirmNameWithPageTurn}
+            isPageTurning={isPageTurning}
           />
         )}
       </div>
 
-      {isCatSwarming && <CatSwarmTransition />}
+      {isPageTurning && <div className="page-turn-input-blocker" aria-hidden="true" />}
 
       {isWindPlaying && (
         <div className="wind-transition" aria-hidden="true">
