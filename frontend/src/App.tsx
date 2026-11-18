@@ -120,7 +120,7 @@ export default function App() {
       setScreen('answer')
       setIsPageTurning(false)
       pageTurnTimers.current = []
-    }, 1900))
+    }, 2800))
   }
 
   function returnToStart() {
