@@ -317,3 +317,30 @@ body { overflow-x: hidden; }
   padding: 0;
   overflow: hidden;
 }
+
+/* 回答画面も同じ cover サイズに揃える。画像と全ボタンは同じ座標系。 */
+.nekohan .page:has(.answer-artwork) {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nekohan .page .answer-artwork {
+  position: relative;
+  display: block;
+  left: auto;
+  top: auto;
+  flex: 0 0 auto;
+  transform: none;
+  width: max(100vw, 177.777778dvh);
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+}
