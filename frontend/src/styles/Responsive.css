@@ -261,3 +261,31 @@ body { overflow-x: hidden; }
   }
   .ranking-page .ranking-cat-area { width: 140px; margin-left: auto; }
 }
+
+/* スタート画面は余白なしの cover 表示。
+   画像と透明なスタート領域は同じ要素内にあるためズレない。
+   縦横比は維持し、異なる画面比率では外周だけを切り取る。 */
+.nekohan .page:has(.start-artwork) {
+  width: 100vw;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nekohan .page .start-artwork {
+  position: relative;
+  left: auto;
+  top: auto;
+  flex: 0 0 auto;
+  transform: none;
+  width: max(100vw, 177.777778dvh);
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+}
