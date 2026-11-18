@@ -58,8 +58,8 @@
   z-index: 6;
   left: 50%;
   top: -7vh;
-  width: clamp(245px, 32vw, 500px);
-  max-height: 70vh;
+  width: clamp(367.5px, 48vw, 750px);
+  max-height: 105vh;
   object-fit: contain;
   pointer-events: none;
   user-select: none;
@@ -98,7 +98,7 @@
 
 @media (max-width: 680px) {
   .nekohan .page .name-pull-cat {
-    width: clamp(195px, 52vw, 355px);
+    width: clamp(292.5px, 78vw, 532.5px);
   }
 }
 @media (prefers-reduced-motion: reduce) {
