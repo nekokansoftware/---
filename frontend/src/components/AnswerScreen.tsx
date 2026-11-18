@@ -49,24 +49,6 @@ export default function AnswerScreen({
   return (
     <section className="answer-artwork">
 
-      <div className="answer-responsive-ui">
-        <div className="responsive-header">
-          <button type="button" className="responsive-action" onClick={onBack}>← なまえにもどる</button>
-          <h1>🐾 なんこ ふれたかな？</h1>
-        </div>
-        <output className="responsive-answer-value" aria-live="polite">{input || '？'}</output>
-        <div className="responsive-digit-grid">
-          {['1','2','3','4','5','6','7','8','9','0'].map(digit =>
-            <button type="button" className="responsive-digit-button" key={digit} onClick={() => addDigit(digit)}>{digit}</button>
-          )}
-        </div>
-        <div className="responsive-actions">
-          <button type="button" className="responsive-action" onClick={clearAll}>ぜんぶけす</button>
-          <button type="button" className="responsive-action" onClick={deleteLast}>ひとつけす</button>
-          <button type="button" className="responsive-action responsive-primary" disabled={answer === null} onClick={onConfirm}>けってい ▶</button>
-        </div>
-      </div>
-
       {/* 背景画像 */}
       <img
         src="/nekokan-nyuryoku.png"
