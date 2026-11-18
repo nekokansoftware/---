@@ -116,28 +116,36 @@
   to { transform: rotate(7deg); }
 }
 
+/* Explicit, always-visible start control inside the 16:9 artwork. */
 .artwork-start-button {
   position: absolute;
-  left: 35.35%;
-  top: 77.5%;
-  width: 29.3%;
-  height: 12.9%;
-  border: 0;
+  left: 34%;
+  top: 80%;
+  width: 32%;
+  height: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #b87417;
   border-radius: 999px;
-  background: transparent;
+  padding: 0 12px;
+  background: linear-gradient(180deg, #ffed9f 0%, #ffc34e 100%);
+  color: #573410;
+  font: 900 35px/1.2 "M PLUS Rounded 1c", sans-serif;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 #fff5cf;
+  box-shadow: 0 6px 0 #a66b14;
   cursor: pointer;
   touch-action: manipulation;
-  z-index: 2;
-  transition: background-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  z-index: 6;
+  transition: filter .15s ease, box-shadow .15s ease;
 }
-
 .artwork-start-button:hover {
-  background: rgba(255, 240, 120, .25);
-  box-shadow: 0 0 20px rgba(255, 210, 40, .8);
-  transform: scale(1.025);
+  filter: brightness(1.06);
 }
-
-.artwork-start-button:active { transform: scale(.98); }
+.artwork-start-button:active {
+  box-shadow: 0 2px 0 #a66b14;
+}
 .artwork-start-button:focus-visible {
   outline: 5px solid #1566b0;
   outline-offset: 5px;
