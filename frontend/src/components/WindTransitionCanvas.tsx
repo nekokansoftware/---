@@ -52,8 +52,8 @@ const WindTransitionCanvas = memo(function WindTransitionCanvas() {
     const draw = (now: number) => {
       if (cancelled) return
       frame = requestAnimationFrame(draw)
-      // Limit canvas raster work to 60fps; animation still follows elapsed wall-clock time.
-      const frameInterval = 1000 / 60
+      // Limit canvas raster work to 55fps; animation still follows elapsed wall-clock time.
+      const frameInterval = 1000 / 45
       if (lastFrame !== -Infinity && now - lastFrame < frameInterval) return
       // Carry fractional frame time forward to maintain consistent scheduling.
       lastFrame = lastFrame === -Infinity
