@@ -90,13 +90,18 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   // 今回の体験者が5位以内なら紙吹雪を表示
   const showConfetti = myEntry !== undefined && myRank <= 5;
 
-  // 紙吹雪を50枚生成
-  const confettiPieces = Array.from({ length: 50 }, (_, i) => ({
+  // 大きめの紙吹雪がひらひら降り、画面下に少しずつたまる
+  const confettiPieces = Array.from({ length: 90 }, (_, i) => ({
     id: i,
-    left: `${(i * 37 + 11) % 100}%`,
-    delay: `${(i * 0.17) % 2}s`,
-    duration: `${3 + (i % 4) * 0.5}s`,
-    color: ["#ff5555", "#ffcc00", "#55ccff", "#88dd66", "#cc88ff"][i % 5],
+    left: `${(i * 47 + Math.floor(i / 9) * 13 + 7) % 100}%`,
+    delay: `${(i * 0.19) % 3.3}s`,
+    duration: `${3.1 + (i % 5) * 0.34}s`,
+    width: `${12 + (i % 4) * 3}px`,
+    height: `${18 + (i % 3) * 4}px`,
+    drift: `${((i * 19) % 37) - 18}px`,
+    settle: `${5 + (i % 6) * 5}px`,
+    turn: `${(i % 2 === 0 ? 1 : -1) * (430 + (i % 4) * 115)}deg`,
+    color: ["#ff5555", "#ffcc00", "#55ccff", "#88dd66", "#cc88ff", "#ff88ae"][i % 6],
   }));
 
 
@@ -150,6 +155,11 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
             backgroundColor: piece.color,
             animationDelay: piece.delay,
             animationDuration: piece.duration,
+            width: piece.width,
+            height: piece.height,
+            "--confetti-drift": piece.drift,
+            "--confetti-settle": piece.settle,
+            "--confetti-turn": piece.turn,
           } as CSSProperties
         }
       />
