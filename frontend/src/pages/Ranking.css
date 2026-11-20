@@ -1776,8 +1776,8 @@
 }
 
 
-/* ===== STAGE SIDE CURTAINS: original aspect ratio ===== */
-/* 画像に含まれる透明余白を画面外へ逃がし、赤い布が左右端に接する */
+/* ===== STAGE SIDE CURTAINS: full-height without distortion ===== */
+/* 画像の縦横比を固定したまま画面高いっぱいに表示し、端の帯だけを見せる */
 .ranking-page .ranking-stage-curtains {
   position: absolute;
   inset: 0;
@@ -1789,31 +1789,30 @@
   position: absolute;
   top: 0;
   display: block;
-  width: clamp(300px, 44vw, 670px);
-  height: auto;
+  width: auto;
+  height: 100%;
   max-width: none;
+  max-height: none;
   object-fit: contain;
+  object-position: top left;
+  /* 横方向に広くなる画像は端の約300pxだけ表示する */
+  clip-path: inset(0 calc(100% - min(26vw, 350px)) 0 0);
   pointer-events: none;
   user-select: none;
   filter: drop-shadow(5px 3px 6px rgba(68, 23, 0, .22));
 }
 .ranking-page .ranking-stage-curtain-left {
-  left: clamp(-56px, -3.2vw, -18px);
+  left: clamp(-90px, -6vw, -45px);
 }
 .ranking-page .ranking-stage-curtain-right {
-  right: clamp(-56px, -3.2vw, -18px);
+  right: clamp(-90px, -6vw, -45px);
   transform: scaleX(-1);
 }
-/* カーテンは背景装飾。ランキングと右下のボタンが前面 */
 .ranking-page .ranking-panel { z-index: 3; }
 @media (max-width: 700px) {
   .ranking-page .ranking-stage-curtain {
-    width: clamp(225px, 50vw, 360px);
+    clip-path: inset(0 calc(100% - min(26vw, 140px)) 0 0);
   }
-  .ranking-page .ranking-stage-curtain-left {
-    left: -16px;
-  }
-  .ranking-page .ranking-stage-curtain-right {
-    right: -16px;
-  }
+  .ranking-page .ranking-stage-curtain-left { left: -35px; }
+  .ranking-page .ranking-stage-curtain-right { right: -35px; }
 }
