@@ -90,23 +90,38 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   // 今回の体験者が5位以内なら紙吹雪を表示
   const showConfetti = myEntry !== undefined && myRank <= 5;
 
-  // 紙吹雪は中央の1か所に集まり、山形に重なって積もる
-  const confettiPieces = Array.from({ length: 180 }, (_, i) => {
-    const spread = (((i * 37 + Math.floor(i / 7) * 11) % 101) - 50) / 50;
-    const landingHeight = Math.round(
-      10 + Math.pow(1 - Math.abs(spread), 1.55) * 95 + (i % 6) * 4
-    );
+  const paperColors = ["#ff6577", "#ffe35f", "#75d5ff", "#a5e66b", "#bf91ff", "#ff8bb9", "#ffad50"];
+
+  // 空から降る紙吹雪。山の輪郭に並ばず、最後は自然に消える
+  const confettiPieces = Array.from({ length: 115 }, (_, i) => ({
+    id: i,
+    left: `${(i * 47 + Math.floor(i / 9) * 13 + 7) % 100}%`,
+    delay: `${(i * 0.061) % 4.8}s`,
+    duration: `${3.4 + (i % 6) * 0.29}s`,
+    width: `${11 + (i % 4) * 3}px`,
+    height: `${14 + (i % 3) * 4}px`,
+    turn: `${(i % 2 ? -1 : 1) * (400 + (i % 4) * 110)}deg`,
+    color: paperColors[i % paperColors.length],
+  }));
+
+  // 中央の小さな紙片の山。多数の独立した色紙で不規則な重なりをつくる
+  // 連続した背景の塗りや縞模様は使わない
+  const settledPapers = Array.from({ length: 480 }, (_, i) => {
+    const x = ((i * 73 + Math.floor(i / 17) * 23) % 997) / 996;
+    const edge = Math.abs(x * 2 - 1);
+    const maxHeight = Math.max(4, Math.pow(1 - edge, 0.72) * 93 + 4);
+    const layer = ((i * 151 + 19) % 491) / 490;
+    const y = Math.round(2 + maxHeight * layer);
 
     return {
       id: i,
-      left: `${50 + spread * 18}%`,
-      delay: `${(i * 0.031) % 4.8}s`,
-      duration: `${3.0 + (i % 6) * 0.26}s`,
-      width: `${12 + (i % 4) * 3}px`,
-      height: `${17 + (i % 3) * 4}px`,
-      pileHeight: `${landingHeight}px`,
-      turn: `${(i % 2 ? -1 : 1) * (420 + (i % 4) * 100)}deg`,
-      color: ["#ff5555", "#ffcc00", "#55ccff", "#88dd66", "#cc88ff", "#ff88ae"][i % 6],
+      left: `${x * 97 + 1}%`,
+      bottom: `${y}px`,
+      delay: `${1.9 + (y / 102) * 3.0 + ((i * 17) % 19) * 0.085}s`,
+      width: `${7 + (i % 5) * 2}px`,
+      height: `${3 + (i % 4) * 2}px`,
+      rotation: `${((i * 47) % 120) - 60}deg`,
+      color: paperColors[(i * 5 + Math.floor(i / 9)) % paperColors.length],
     };
   });
 
@@ -163,13 +178,28 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
             animationDuration: piece.duration,
             width: piece.width,
             height: piece.height,
-            "--confetti-pile-height": piece.pileHeight,
             "--confetti-turn": piece.turn,
           } as CSSProperties
         }
       />
     ))}
-    <div className="confetti-pile pile-center" />
+    <div className="confetti-pile pile-center">
+      {settledPapers.map((paper) => (
+        <span
+          key={paper.id}
+          className="confetti-settled-paper"
+          style={{
+            left: paper.left,
+            bottom: paper.bottom,
+            width: paper.width,
+            height: paper.height,
+            backgroundColor: paper.color,
+            animationDelay: paper.delay,
+            "--paper-angle": paper.rotation,
+          } as CSSProperties}
+        />
+      ))}
+    </div>
   </div>
 )}
 
