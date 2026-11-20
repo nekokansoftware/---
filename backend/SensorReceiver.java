@@ -74,6 +74,8 @@ public class SensorReceiver {
             // Preserve current sensor state, so a held contact is not counted again.
         }
 
+        synchronized int count() { return count; }
+
         synchronized String json() {
             return "{\"contact\":" + contact
                 + ",\"button_b\":" + buttonB
@@ -86,9 +88,9 @@ public class SensorReceiver {
     }
 
     private static class ContactHandler implements HttpHandler {
-        private static final Pattern CONTACT = Pattern.compile("\\"contact\\"\\s*:\\s*(true|false)");
-        private static final Pattern BUTTON = Pattern.compile("\\"button_b\\"\\s*:\\s*(true|false)");
-        private static final Pattern UPTIME = Pattern.compile("\\"uptime_ms\\"\\s*:\\s*(\\d+)");
+        private static final Pattern CONTACT = Pattern.compile("\"contact\"\\s*:\\s*(true|false)");
+        private static final Pattern BUTTON = Pattern.compile("\"button_b\"\\s*:\\s*(true|false)");
+        private static final Pattern UPTIME = Pattern.compile("\"uptime_ms\"\\s*:\\s*(\\d+)");
 
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -124,16 +126,9 @@ public class SensorReceiver {
             STATE.update(isContact, isPressed, uptimeValue);
             String timestamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             System.out.printf("[%s] contact=%s button_b=%s count=%d%n",
-                timestamp, isContact, isPressed, currentCount());
+                timestamp, isContact, isPressed, STATE.count());
             send(exchange, 200, "OK", "text/plain");
         }
-    }
-
-    private static int currentCount() {
-        // Used only for diagnostics; the JSON endpoint is the source of truth.
-        String json = STATE.json();
-        Matcher matcher = Pattern.compile("\\"count\\":(\\d+)").matcher(json);
-        return matcher.find() ? Integer.parseInt(matcher.group(1)) : 0;
     }
 
     private static void send(HttpExchange exchange, int status, String body, String contentType)
