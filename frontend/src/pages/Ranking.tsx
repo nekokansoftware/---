@@ -143,6 +143,12 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
         {topFive[0] && (
           <div className="first-place">
             {renderRanking(topFive[0], 1)}
+            <div className="first-place-mascot" aria-hidden="true">
+              <span className="first-place-mascot-cheer">やったにゃ！</span>
+              <img src={rankingCat} alt="" className="first-place-mascot-image" />
+              <span className="first-place-mascot-star star-one">✦</span>
+              <span className="first-place-mascot-star star-two">✦</span>
+            </div>
           </div>
         )}
 
