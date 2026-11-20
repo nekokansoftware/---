@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import WindTransitionCanvas from './components/WindTransitionCanvas'
+import { getSensorStatus, resetSensorCount } from './utils/sensorApi'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
@@ -18,8 +19,8 @@ type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 const leafImages = ['/leaf-green.png', '/leaf-lightgreen.png', '/leaf-yellow.png']
 
 export default function App() {
-  // 実際の接触回数（ハードウェア連携までは仮の値）
-  const actual = 1
+  // オフライン時は従来のデモ値（1回）を使う。
+  const [actual, setActual] = useState(1)
   const [screen, setScreen] = useState<Screen>('start')
   const [answer, setAnswer] = useState<number | null>(null)
   const [playerName, setPlayerName] = useState('')
@@ -50,6 +51,9 @@ export default function App() {
     if (isWindPlaying) return
 
     setIsWindPlaying(true)
+    setActual(1)
+    // Java側のゲーム用カウンターをリセット。サーバー未起動でもデモは続行。
+    void resetSensorCount().catch(error => console.warn('Sensor reset unavailable (demo mode):', error))
 
     // 密度が最大になるタイミングで背後の画面を切り替える
     windTimers.current.push(setTimeout(() => {
@@ -127,10 +131,17 @@ export default function App() {
           <AnswerScreen
             answer={answer}
             onChange={setAnswer}
-            onConfirm={() => {
-              if (answer !== null) {
-                setScreen('result')
+            onConfirm={async () => {
+              if (answer === null) return
+              try {
+                const status = await getSensorStatus()
+                // 最新の実測値を使う。通信できないときは従来のデモ値にフォールバック。
+                setActual(status.connected && status.recording ? status.count : 1)
+              } catch (error) {
+                console.warn('Sensor unavailable (demo mode):', error)
+                setActual(1)
               }
+              setScreen('result')
             }}
             onBack={() => setScreen('name')}
             showCat={!isPageTurning}
