@@ -27,7 +27,7 @@ const scatter = (seed: number) => {
 }
 
 // 葉の累計枚数を滑らかな指数イージングで増やす。終盤に向けて自然に加速。
-const LEAF_COUNT = 384
+const LEAF_COUNT = 256
 const COVER_START = 64
 const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
   const covering = i >= COVER_START
