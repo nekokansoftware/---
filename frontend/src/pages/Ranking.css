@@ -1852,7 +1852,7 @@
 }
 
 
-/* ===== CONFETTI: NATURAL PAPER SCRAPS IN ONE CENTER PILE ===== */
+/* ===== CONFETTI: BIGGER INDIVIDUAL SCRAPS + LIGHT GROUND COVER ===== */
 .ranking-page .confetti-container {
   position: fixed;
   inset: 0;
@@ -1871,28 +1871,42 @@
   will-change: transform;
 }
 @keyframes confetti-natural-fall {
-  0% {
-    transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0);
-    opacity: 0;
-  }
+  0% { transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0); opacity: 0; }
   8%, 80% { opacity: 1; }
-  55% {
-    transform: translate3d(14px, 50dvh, 0) rotate(270deg) rotateY(130deg);
-  }
+  55% { transform: translate3d(14px, 50dvh, 0) rotate(270deg) rotateY(130deg); }
   100% {
     transform: translate3d(-12px, 105dvh, 0) rotate(var(--confetti-turn, 540deg)) rotateY(280deg);
     opacity: 0;
   }
 }
 
-/* 無地の山型パネルは使わず、何百枚もの紙片そのものを積み上げる */
+/* 地面全体に、薄く散らばる紙切れ */
+.ranking-page .confetti-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 42px;
+  z-index: 1;
+}
+.ranking-page .confetti-ground-paper {
+  position: absolute;
+  display: block;
+  border-radius: 1px;
+  box-shadow: 0 1px 1px rgba(70, 43, 24, .12);
+  opacity: 0;
+  transform: translateY(-8px) rotate(var(--paper-angle, 0deg)) scale(.85);
+  animation: confetti-paper-land .35s ease-out forwards;
+}
+
+/* 真ん中の山は個別の紙片でつくる */
 .ranking-page .confetti-pile {
   position: absolute;
   z-index: 3;
   left: 50%;
   bottom: -3px;
-  width: min(40vw, 470px);
-  height: 128px;
+  width: min(46vw, 520px);
+  height: 140px;
   transform: translateX(-50%);
   background: none;
   clip-path: none;
@@ -1917,16 +1931,15 @@
 }
 @media (max-width: 700px) {
   .ranking-page .confetti-pile {
-    width: min(68vw, 340px);
-    height: 110px;
+    width: min(66vw, 340px);
+    height: 118px;
   }
-  .ranking-page .confetti-settled-paper {
-    transform-origin: center;
-  }
+  .ranking-page .confetti-ground { height: 32px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ranking-page .confetti-piece { animation: none; opacity: 0; }
-  .ranking-page .confetti-settled-paper {
+  .ranking-page .confetti-settled-paper,
+  .ranking-page .confetti-ground-paper {
     animation: none;
     opacity: 1;
     transform: rotate(var(--paper-angle, 0deg));
