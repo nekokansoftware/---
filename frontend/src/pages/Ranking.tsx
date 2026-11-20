@@ -145,7 +145,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
             {renderRanking(topFive[0], 1)}
             <div className="first-place-mascot" aria-hidden="true">
               <span className="first-place-mascot-cheer">やったにゃ！</span>
-              <img src={rankingCat} alt="" className="first-place-mascot-image" />
+              <img src="/nekokan-first-celebrate.png" alt="" className="first-place-mascot-image" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = rankingCat; }} />
               <span className="first-place-mascot-star star-one">✦</span>
               <span className="first-place-mascot-star star-two">✦</span>
             </div>
