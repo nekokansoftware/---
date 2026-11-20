@@ -3,6 +3,7 @@ import { useState, useLayoutEffect, useRef, type CSSProperties } from "react";
 import "./Ranking.css";
 import rankingCat from "../assets/Ranking-cat.png";
 import catBody from "../assets/cat-body.png.png";
+import curtainFallback from "../assets/curtain.png";
 
 import {
   getSortedRanking,
@@ -163,6 +164,12 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   <div className="curtain-left"></div>
   <div className="curtain-right"></div>
 </div>
+
+      {/* 表彰式ステージの両側に固定表示する飾りカーテン */}
+      <div className="ranking-stage-curtains" aria-hidden="true">
+        <img className="ranking-stage-curtain ranking-stage-curtain-left" src="/ranking-side-curtain.png" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = curtainFallback; }} alt="" />
+        <img className="ranking-stage-curtain ranking-stage-curtain-right" src="/ranking-side-curtain.png" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = curtainFallback; }} alt="" />
+      </div>
 
       <div className="ranking-panel" ref={rankingPanelRef} style={{ "--ranking-fit": fitScale } as CSSProperties}>
         <h1 className="ranking-heading">
