@@ -1128,3 +1128,33 @@
   .ranking-page .first-place-mascot-cheer,
   .ranking-page .first-place-mascot-star { animation: none; }
 }
+
+
+/* 指定されたネコカン君イラストを1位カード右下に見せる */
+.ranking-page .first-place-mascot {
+  width: clamp(120px, 16vw, 190px);
+  height: 146px;
+  right: 14px;
+  bottom: 1px;
+}
+.ranking-page .first-place-mascot-image {
+  max-height: 137px;
+  object-fit: contain;
+  animation: first-mascot-celebrate 1.15s cubic-bezier(.32,.9,.52,1.15) infinite;
+}
+@keyframes first-mascot-celebrate {
+  0%,100% { transform: translateY(0) rotate(-5deg) scale(1); }
+  42% { transform: translateY(-13px) rotate(7deg) scale(1.06); }
+  65% { transform: translateY(-2px) rotate(-2deg) scale(.98); }
+}
+@media (min-width: 701px) {
+  .ranking-page .first-place .rank-1 { padding-right: clamp(170px, 20vw, 230px); }
+}
+@media (max-width: 700px) {
+  .ranking-page .first-place-mascot { width: 96px; height: 98px; right: 3px; bottom: 0; }
+  .ranking-page .first-place-mascot-image { max-height: 90px; }
+  .ranking-page .first-place .rank-1 { padding-right: 92px; padding-left: 58px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ranking-page .first-place-mascot-image { animation: none; }
+}
