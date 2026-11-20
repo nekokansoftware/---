@@ -4,7 +4,7 @@
 
 ## 起動
 
-Ubuntu PC（Java 11以上）でリポジトリのルートから：
+Java 11以上が入ったPC（Ubuntu / Windowsなど）でリポジトリのルートから：
 
 ```bash
 javac backend/SensorReceiver.java
@@ -26,10 +26,10 @@ Viteは `/api` を同じPCの `127.0.0.1:8000` に転送します。Javaが別PC
 ## API
 
 - `POST /contact`：M5Stackから `{"contact":true,"button_b":false,"uptime_ms":12345}` を送信
-- `GET /api/status`：現在値とゲーム開始後の累計接触回数 `count` を返す
-- `POST /api/reset`：ゲーム開始時に `count` を0にする
+- `GET /api/status`：現在値と前回のリセット後の累計接触回数 `count` を返す
+- `POST /api/reset`：ランキング画面の「スタートにもどる」で `count` を0にする
 
-Reactでは、スタート時に `/api/reset` を呼び、回答画面の「けってい」で `/api/status` から接触回数を取得して結果に使います。Javaが起動していない、またはM5Stackの通信が途絶えている場合は、以前のデモ値 **1回** に戻ります。現段階では、画面内にデモモード表示はありません。
+Reactでは、ランキング画面の「スタートにもどる」を押すと `/api/reset` を呼び、次の体験のカウントを0にします。スタートボタンではリセットしません。Javaサーバーの起動直後も、接触回数0・計測中の状態で始まります。回答画面の「けってい」で `/api/status` から接触回数を取得して結果に使います。Javaへの通信ができない場合は従来のデモ値 **1回** を使います（`connected:false` だけではデモ値に戻しません）。現段階では画面内にデモモード表示はありません。Javaコードを変更した後は、古いプロセスを止めて再コンパイル・再起動してください。
 
 ```bash
 curl -X POST http://localhost:8000/api/reset
