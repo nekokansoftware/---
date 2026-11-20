@@ -33,7 +33,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
     const updateFit = () => {
       const screenHeight = viewport.clientHeight;
       // 画面下の「スタートにもどる」ボタンの分を常に確保
-      const bottomSpace = window.innerWidth <= 700 ? 76 : 90;
+      const bottomSpace = 24;
       const availableHeight = Math.max(1, screenHeight - bottomSpace);
       // CSS transform はレイアウト上の高さを変えないので縮小前の高さを測れる
       const naturalHeight = panel.scrollHeight;
@@ -218,23 +218,21 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
        
       </div>
 
-      {/* タブレットでも押しやすい、画面下中央の戻るボタン */}
+      {/* 右下のネコカン君を押すとスタートに戻る */}
       <button
         type="button"
-        className="bottom-back-button"
+        className="ranking-cat-area"
         onClick={onBack}
+        aria-label="ネコカン君を押してスタートにもどる"
+        title="スタートにもどる"
       >
-        🐾 スタートにもどる
+        <img
+          src={rankingCat}
+          className="ranking-cat"
+          alt=""
+          draggable={false}
+        />
       </button>
-
-      <div className="ranking-cat-area">
-
-  <img
-    src={rankingCat}
-    className="ranking-cat"
-    alt="下からのぞくネコ"
-  />
-</div>
 
     </div>
   );
