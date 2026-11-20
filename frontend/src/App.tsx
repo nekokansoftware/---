@@ -52,8 +52,6 @@ export default function App() {
 
     setIsWindPlaying(true)
     setActual(1)
-    // Java側のゲーム用カウンターをリセット。サーバー未起動でもデモは続行。
-    void resetSensorCount().catch(error => console.warn('Sensor reset unavailable (demo mode):', error))
 
     // 密度が最大になるタイミングで背後の画面を切り替える
     windTimers.current.push(setTimeout(() => {
@@ -94,6 +92,18 @@ export default function App() {
     setScreen('start')
   }
 
+  // ランキングからスタート画面へ戻る時点で次の体験に備えて計測をリセットする。
+  async function finishGameAndReturnToStart() {
+    try {
+      await resetSensorCount()
+    } catch (error) {
+      console.warn('Sensor reset unavailable (demo mode):', error)
+    }
+    setActual(1)
+    setCurrentEntryId(null)
+    returnToStart()
+  }
+
   if (screen === 'result' && answer !== null) {
     return (
       
@@ -113,7 +123,7 @@ export default function App() {
   if (screen === 'ranking') {
     return (
       
-        <Ranking currentEntryId={currentEntryId} onBack={returnToStart} />
+        <Ranking currentEntryId={currentEntryId} onBack={() => { void finishGameAndReturnToStart() }} />
       
     )
   }
