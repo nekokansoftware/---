@@ -1852,7 +1852,7 @@
 }
 
 
-/* ===== LARGE CONFETTI: ONE GROWING CENTER PILE ===== */
+/* ===== CONFETTI: NATURAL PAPER SCRAPS IN ONE CENTER PILE ===== */
 .ranking-page .confetti-container {
   position: fixed;
   inset: 0;
@@ -1864,67 +1864,71 @@
   position: absolute;
   z-index: 2;
   top: -35px;
-  border-radius: 3px 5px 2px 4px;
-  box-shadow: 1px 2px 2px rgba(75, 40, 12, .22);
+  border-radius: 1px 3px 1px 2px;
+  box-shadow: 1px 2px 2px rgba(75, 40, 12, .12);
   opacity: 0;
-  animation: confetti-to-mound 3.5s cubic-bezier(.28,.57,.62,1) forwards;
+  animation: confetti-natural-fall 3.5s ease-in forwards;
   will-change: transform;
 }
-@keyframes confetti-to-mound {
+@keyframes confetti-natural-fall {
   0% {
-    transform: translate3d(0, -12px, 0) rotate(0deg) rotateY(0deg);
+    transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0);
     opacity: 0;
   }
-  9% { opacity: 1; }
+  8%, 80% { opacity: 1; }
   55% {
-    transform: translate3d(16px, 55dvh, 0) rotate(280deg) rotateY(160deg);
-    opacity: 1;
+    transform: translate3d(14px, 50dvh, 0) rotate(270deg) rotateY(130deg);
   }
   100% {
-    transform: translate3d(0, calc(100dvh - var(--confetti-pile-height, 25px) - 27px), 0) rotate(var(--confetti-turn, 540deg)) rotateY(0deg);
-    opacity: 1;
+    transform: translate3d(-12px, 105dvh, 0) rotate(var(--confetti-turn, 540deg)) rotateY(280deg);
+    opacity: 0;
   }
 }
 
-/* 中央の山だけがゆっくり高くなる */
+/* 無地の山型パネルは使わず、何百枚もの紙片そのものを積み上げる */
 .ranking-page .confetti-pile {
   position: absolute;
-  bottom: -4px;
-  z-index: 1;
-  width: min(44%, 520px);
-  height: clamp(60px, 13vh, 120px);
-  transform-origin: bottom center;
-  transform: translateX(-50%) scaleY(0);
-  opacity: 0;
-  background:
-    repeating-linear-gradient(28deg,
-      #ff6577 0 8px, #ffe35f 8px 17px, #75d5ff 17px 25px,
-      #a5e66b 25px 33px, #bf91ff 33px 42px, #ff8bb9 42px 50px);
-  background-size: 76px 64px;
-  clip-path: polygon(0 100%, 0 95%, 6% 91%, 12% 86%, 18% 79%, 25% 68%,
-    33% 54%, 40% 41%, 47% 28%, 50% 22%, 53% 28%, 60% 41%,
-    67% 54%, 75% 68%, 82% 79%, 88% 86%, 94% 91%, 100% 95%, 100% 100%);
-  filter: drop-shadow(0 -2px 3px rgba(88,55,22,.12));
-  animation: confetti-mound-grow-center 5.8s ease-out 1.4s forwards;
+  z-index: 3;
+  left: 50%;
+  bottom: -3px;
+  width: min(40vw, 470px);
+  height: 128px;
+  transform: translateX(-50%);
+  background: none;
+  clip-path: none;
+  filter: none;
+  opacity: 1;
+  animation: none;
 }
-.ranking-page .pile-center { left: 50%; }
-@keyframes confetti-mound-grow-center {
-  0% { transform: translateX(-50%) scaleY(0); opacity: 0; }
-  30% { transform: translateX(-50%) scaleY(.25); opacity: .7; }
-  65% { transform: translateX(-50%) scaleY(.72); opacity: .9; }
-  100% { transform: translateX(-50%) scaleY(1); opacity: .95; }
+.ranking-page .confetti-settled-paper {
+  position: absolute;
+  display: block;
+  border-radius: 1px;
+  box-shadow: 0 1px 1px rgba(70, 43, 24, .16);
+  opacity: 0;
+  transform: translateY(-10px) rotate(var(--paper-angle, 0deg)) scale(.8);
+  transform-origin: center;
+  animation: confetti-paper-land .35s ease-out forwards;
+}
+@keyframes confetti-paper-land {
+  0% { opacity: 0; transform: translateY(-12px) rotate(var(--paper-angle, 0deg)) scale(.75); }
+  65% { opacity: 1; transform: translateY(2px) rotate(var(--paper-angle, 0deg)) scale(1); }
+  100% { opacity: 1; transform: translateY(0) rotate(var(--paper-angle, 0deg)) scale(1); }
 }
 @media (max-width: 700px) {
   .ranking-page .confetti-pile {
-    width: min(58%, 320px);
-    height: clamp(38px, 9vh, 78px);
+    width: min(68vw, 340px);
+    height: 110px;
+  }
+  .ranking-page .confetti-settled-paper {
+    transform-origin: center;
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .ranking-page .confetti-piece { animation: none; opacity: 0; }
-  .ranking-page .confetti-pile {
+  .ranking-page .confetti-settled-paper {
     animation: none;
-    transform: translateX(-50%) scaleY(.6);
-    opacity: .55;
+    opacity: 1;
+    transform: rotate(var(--paper-angle, 0deg));
   }
 }
