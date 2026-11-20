@@ -1526,3 +1526,78 @@
   .ranking-page .ranking-panel { height: auto; min-height: 100%; overflow: visible; }
   .ranking-page .bottom-back-button { position: fixed; }
 }
+
+
+/* ===== AUTOMATIC VIEWPORT FIT (no scroll) ===== */
+/* 元のカードデザインを変えず、描画後の実寸に応じて全体を縮小 */
+.ranking-page {
+  position: relative;
+  display: block;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  max-height: 100dvh;
+  padding: 0;
+  margin: 0;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+.ranking-page .ranking-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-width: none;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 10px clamp(12px, 3vw, 40px) 8px;
+  margin: 0;
+  overflow: visible !important;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transform: scale(var(--ranking-fit, 1)) !important;
+  transform-origin: top center;
+  box-sizing: border-box;
+}
+
+/* 旧来の大きな余白は不要。カード自体の演出・配置は維持する */
+.ranking-page .first-place {
+  flex-shrink: 0;
+}
+.ranking-page .podium-row,
+.ranking-page .lower-ranking,
+.ranking-page .my-rank-area {
+  flex-shrink: 0;
+}
+
+.ranking-page .bottom-back-button {
+  position: absolute;
+  left: 50%;
+  bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+}
+
+@media (max-width: 700px) {
+  .ranking-page .ranking-panel {
+    padding: 8px 10px;
+  }
+  .ranking-page .bottom-back-button {
+    position: absolute;
+    bottom: max(9px, env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* 小さな画面でもカットせずに画面内に倍率を合わせる */
+@media (max-height: 420px) {
+  .ranking-page { overflow: hidden !important; }
+  .ranking-page .ranking-panel {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  .ranking-page .bottom-back-button { position: absolute; }
+}
