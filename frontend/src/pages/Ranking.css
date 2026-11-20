@@ -1650,3 +1650,55 @@
     bottom: 0;
   }
 }
+
+
+/* ===== FIX INTERACTIVE CORNER MASCOT ===== */
+/* Responsive.css の古い指定より優先。右下のネコカン君を確実にタップ可能にする */
+.ranking-page button.ranking-cat-area {
+  position: absolute !important;
+  inset: auto clamp(0px, 1vw, 12px) -22px auto !important;
+  display: block !important;
+  width: clamp(190px, 21vw, 285px) !important;
+  height: auto !important;
+  min-width: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  overflow: visible;
+}
+.ranking-page button.ranking-cat-area .ranking-cat {
+  position: relative !important;
+  inset: auto !important;
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  transform: none;
+  pointer-events: none; /* 画像ではなく親ボタンがクリックを受け取る */
+  user-select: none;
+}
+.ranking-page button.ranking-cat-area:focus-visible {
+  outline: 4px solid #2465e0;
+  outline-offset: -7px;
+}
+@media (max-width: 700px) {
+  .ranking-page button.ranking-cat-area {
+    width: clamp(125px, 26vw, 190px) !important;
+    bottom: -15px !important;
+    right: 0 !important;
+  }
+}
+@media (max-height: 650px) and (min-width: 701px) {
+  .ranking-page button.ranking-cat-area {
+    width: clamp(165px, 24vh, 220px) !important;
+    bottom: -18px !important;
+  }
+}
