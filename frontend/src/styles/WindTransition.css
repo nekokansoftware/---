@@ -16,7 +16,7 @@
   pointer-events: none;
   opacity: 0;
   transform-origin: center;
-  will-change: transform, opacity;
+  /* Avoid reserving a compositor layer for every leaf at once. */
   animation-duration: var(--leaf-duration);
   animation-delay: var(--leaf-delay);
   animation-timing-function: linear;
