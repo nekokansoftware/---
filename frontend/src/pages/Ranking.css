@@ -1030,3 +1030,101 @@
   .ranking-page .first-place .rank-1::after,
   .ranking-page .first-place::before { animation: none; }
 }
+
+
+/* ===== 1位の右下：ネコカン君のお祝いアニメーション ===== */
+.ranking-page .first-place-mascot {
+  position: absolute;
+  right: 16px;
+  bottom: 3px;
+  width: clamp(100px, 14vw, 156px);
+  height: 128px;
+  z-index: 7;
+  pointer-events: none;
+}
+
+.ranking-page .first-place-mascot-image {
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  max-height: 118px;
+  object-fit: contain;
+  object-position: bottom right;
+  transform-origin: bottom center;
+  filter: drop-shadow(0 4px 4px rgba(111,65,9,.2));
+  animation: first-mascot-cheer 1.1s ease-in-out infinite;
+}
+
+.ranking-page .first-place-mascot-cheer {
+  position: absolute;
+  top: -12px;
+  right: 0;
+  z-index: 1;
+  padding: 5px 10px;
+  background: #fffdf2;
+  color: #e06c00;
+  border: 2px solid #d99a17;
+  border-radius: 22px;
+  font-size: clamp(12px, 1.3vw, 17px);
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 3px 0 rgba(149,96,13,.15);
+  animation: first-cheer-bubble 1.1s ease-in-out infinite;
+}
+
+.ranking-page .first-place-mascot-star {
+  position: absolute;
+  color: #fff;
+  font-size: 25px;
+  z-index: 2;
+  text-shadow: 0 0 5px #fff, 0 0 12px #e79e0c;
+  animation: first-cheer-star 1.4s ease-in-out infinite;
+}
+.ranking-page .first-place-mascot-star.star-one { left: 0; top: 27px; }
+.ranking-page .first-place-mascot-star.star-two { right: 2px; top: 34px; animation-delay: .55s; }
+
+@keyframes first-mascot-cheer {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  45% { transform: translateY(-9px) rotate(5deg); }
+}
+@keyframes first-cheer-bubble {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.05); }
+}
+@keyframes first-cheer-star {
+  0%,100% { opacity: .2; transform: scale(.65) rotate(-15deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(15deg); }
+}
+
+/* 1位の名前・スコアが長い場合、ネコと重ならないよう余白を確保 */
+@media (min-width: 701px) {
+  .ranking-page .first-place .rank-1 {
+    padding-left: clamp(110px, 15vw, 175px);
+    padding-right: clamp(110px, 15vw, 175px);
+  }
+}
+@media (max-width: 700px) {
+  .ranking-page .first-place-mascot {
+    right: 4px;
+    bottom: 0;
+    width: 77px;
+    height: 88px;
+  }
+  .ranking-page .first-place-mascot-image { max-height: 75px; }
+  .ranking-page .first-place-mascot-cheer {
+    top: -4px;
+    right: 0;
+    font-size: 10px;
+    padding: 2px 5px;
+  }
+  .ranking-page .first-place-mascot-star { font-size: 16px; }
+  .ranking-page .first-place .rank-1 { padding-left: 72px; padding-right: 72px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ranking-page .first-place-mascot-image,
+  .ranking-page .first-place-mascot-cheer,
+  .ranking-page .first-place-mascot-star { animation: none; }
+}
