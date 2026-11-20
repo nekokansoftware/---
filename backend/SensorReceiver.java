@@ -49,7 +49,8 @@ public class SensorReceiver {
         private boolean contact = false;
         private boolean buttonB = false;
         private boolean initialized = false;
-        private boolean recording = false;
+        // First game can count immediately; later games reset on ranking -> start.
+        private boolean recording = true;
         private int count = 0;
         private long uptimeMs = 0;
         private long lastSeenMs = 0;
