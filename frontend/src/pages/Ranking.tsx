@@ -210,9 +210,11 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
         )}
 
         {myEntry && myRank <= 5 && (
-          <p className="ranking-congrats">
-            ✨ ランクインおめでとう！ ✨
-          </p>
+          <div className="ranking-congrats" role="status">
+            <span className="congrats-sparkle" aria-hidden="true">✦</span>
+            <span className="congrats-message">🎉 ランクインおめでとう！ 🎉</span>
+            <span className="congrats-sparkle" aria-hidden="true">✦</span>
+          </div>
         )}
 
        
