@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef, type CSSProperties } from 'react'
+import { memo, useState, useEffect, useRef, type CSSProperties } from 'react'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
@@ -54,6 +54,34 @@ const leaves = Array.from({ length: LEAF_COUNT }, (_, i) => {
     drift: covering ? 0 : Math.round((scatter(i + 197) - .5) * 3),
     covering,
   }
+})
+
+// 画面切り替え時にも256枚の葉を再レンダリングしない。
+const WindTransition = memo(function WindTransition() {
+  return (
+    <div className="wind-transition" aria-hidden="true">
+
+          {leaves.map((leaf) => (
+            <img
+              key={leaf.id}
+              src={leaf.image}
+              className={`wind-leaf${leaf.covering ? " wind-leaf-covering" : " wind-leaf-scattered"}`}
+              alt=""
+              draggable={false}
+              style={{
+                '--leaf-x': `${leaf.x}%`,
+                '--leaf-y': `${leaf.y}%`,
+                '--leaf-delay': `${leaf.delay}s`,
+                '--leaf-rotation': `${leaf.rotation}deg`,
+                '--leaf-spin': `${leaf.spin}deg`,
+                '--leaf-duration': `${leaf.duration}s`,
+                '--leaf-size': `${leaf.size}vw`,
+                '--leaf-drift': `${leaf.drift}vh`,
+              } as CSSProperties}
+            />
+          ))}
+    </div>
+  )
 })
 
 export default function App() {
@@ -199,30 +227,8 @@ export default function App() {
 
       {isPageTurning && <div className="page-turn-input-blocker" aria-hidden="true" />}
 
-      {isWindPlaying && (
-        <div className="wind-transition" aria-hidden="true">
+      {isWindPlaying && <WindTransition />}
 
-          {leaves.map((leaf) => (
-            <img
-              key={leaf.id}
-              src={leaf.image}
-              className={`wind-leaf${leaf.covering ? " wind-leaf-covering" : " wind-leaf-scattered"}`}
-              alt=""
-              draggable={false}
-              style={{
-                '--leaf-x': `${leaf.x}%`,
-                '--leaf-y': `${leaf.y}%`,
-                '--leaf-delay': `${leaf.delay}s`,
-                '--leaf-rotation': `${leaf.rotation}deg`,
-                '--leaf-spin': `${leaf.spin}deg`,
-                '--leaf-duration': `${leaf.duration}s`,
-                '--leaf-size': `${leaf.size}vw`,
-                '--leaf-drift': `${leaf.drift}vh`,
-              } as CSSProperties}
-            />
-          ))}
-        </div>
-      )}
     </main>
     
   )
