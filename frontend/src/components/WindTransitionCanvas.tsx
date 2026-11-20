@@ -99,7 +99,7 @@ const WindTransitionCanvas = memo(function WindTransitionCanvas() {
 
         ctx.save()
         ctx.globalAlpha = opacity
-        ctx.translate((leaf.x * w + travelX) * sx, (leaf.y * h + travelY) * sy)
+        ctx.translate((leaf.x * w + size / 2 + travelX) * sx, (leaf.y * h + imageH / 2 + travelY) * sy)
         ctx.rotate(angle)
         ctx.scale(scale * sx, scale * sy)
         ctx.drawImage(image, -size / 2, -imageH / 2, size, imageH)
