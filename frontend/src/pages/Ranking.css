@@ -1852,49 +1852,76 @@
 }
 
 
-/* ===== LARGE CONFETTI WITH BOTTOM ACCUMULATION ===== */
-/* ランキングの上を舞うカラフルな大きめ紙吹雪。触る操作は妨げない */
+/* ===== LARGE CONFETTI: THREE GROWING PILES ===== */
 .ranking-page .confetti-container {
   position: fixed;
   inset: 0;
+  pointer-events: none;
   overflow: hidden;
   z-index: 100;
-  pointer-events: none;
 }
 .ranking-page .confetti-piece {
-  top: -32px;
-  width: 15px;
-  height: 22px;
-  border-radius: 3px 5px 3px 5px;
-  box-shadow: 1px 2px 2px rgba(76, 43, 12, .16);
+  position: absolute;
+  z-index: 2;
+  top: -35px;
+  border-radius: 3px 5px 2px 4px;
+  box-shadow: 1px 2px 2px rgba(75, 40, 12, .22);
   opacity: 0;
-  animation-name: ranking-confetti-settle;
-  animation-timing-function: cubic-bezier(.28,.56,.58,1);
-  animation-fill-mode: forwards;
-  animation-iteration-count: 1;
+  animation: confetti-to-mound var(--unused-duration, 3.5s) cubic-bezier(.28,.57,.62,1) forwards;
+  animation-duration: inherit;
   will-change: transform;
 }
-
-/* 落ちた紙吹雪を消さず、画面下端に薄く積もらせる */
-@keyframes ranking-confetti-settle {
+@keyframes confetti-to-mound {
   0% {
-    transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0deg);
+    transform: translate3d(0, -12px, 0) rotate(0deg) rotateY(0deg);
     opacity: 0;
   }
-  8% { opacity: 1; }
+  9% { opacity: 1; }
   55% {
-    transform: translate3d(calc(var(--confetti-drift, 0px) * .6), 55dvh, 0) rotate(calc(var(--confetti-turn, 540deg) * .55)) rotateY(150deg);
+    transform: translate3d(16px, 55dvh, 0) rotate(280deg) rotateY(160deg);
     opacity: 1;
   }
-  88% { opacity: 1; }
   100% {
-    transform: translate3d(var(--confetti-drift, 0px), calc(100dvh - var(--confetti-settle, 8px) - 28px), 0) rotate(var(--confetti-turn, 540deg)) rotateY(0deg);
+    transform: translate3d(0, calc(100dvh - var(--confetti-pile-height, 25px) - 27px), 0) rotate(var(--confetti-turn, 540deg)) rotateY(0deg);
     opacity: 1;
   }
 }
+
+/* 色紙の重なりを表現した3つのこんもりした山が徐々に成長 */
+.ranking-page .confetti-pile {
+  position: absolute;
+  bottom: -4px;
+  z-index: 1;
+  width: 29%;
+  height: clamp(55px, 12vh, 112px);
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  opacity: .95;
+  background:
+    repeating-linear-gradient(28deg,
+      #ff6577 0 8px, #ffe35f 8px 17px, #75d5ff 17px 25px,
+      #a5e66b 25px 33px, #bf91ff 33px 42px, #ff8bb9 42px 50px);
+  background-size: 76px 64px;
+  clip-path: polygon(0 100%, 0 94%, 7% 88%, 13% 84%, 20% 72%, 27% 63%,
+    35% 45%, 42% 38%, 48% 27%, 54% 30%, 61% 39%, 68% 51%,
+    75% 65%, 81% 73%, 89% 83%, 95% 90%, 100% 94%, 100% 100%);
+  filter: drop-shadow(0 -2px 3px rgba(88,55,22,.12));
+  animation: confetti-mound-grow 5.8s ease-out 1.4s forwards;
+}
+.ranking-page .pile-left { left: 3.5%; }
+.ranking-page .pile-center { left: 35.5%; animation-delay: 1.8s; }
+.ranking-page .pile-right { right: 3.5%; animation-delay: 2.1s; }
+
+@keyframes confetti-mound-grow {
+  0% { transform: scaleY(0); opacity: 0; }
+  30% { transform: scaleY(.25); opacity: .7; }
+  65% { transform: scaleY(.7); opacity: .9; }
+  100% { transform: scaleY(1); opacity: .95; }
+}
+@media (max-width: 700px) {
+  .ranking-page .confetti-pile { height: clamp(36px, 9vh, 75px); }
+}
 @media (prefers-reduced-motion: reduce) {
-  .ranking-page .confetti-piece {
-    animation: none;
-    opacity: 0;
-  }
+  .ranking-page .confetti-piece { animation: none; opacity: 0; }
+  .ranking-page .confetti-pile { animation: none; transform: scaleY(.6); opacity: .55; }
 }
