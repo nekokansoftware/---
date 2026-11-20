@@ -136,7 +136,7 @@ export default function App() {
               try {
                 const status = await getSensorStatus()
                 // 最新の実測値を使う。通信できないときは従来のデモ値にフォールバック。
-                setActual(status.connected && status.recording ? status.count : 1)
+               setActual(status.recording ? status.count : 1)
               } catch (error) {
                 console.warn('Sensor unavailable (demo mode):', error)
                 setActual(1)
