@@ -1,5 +1,5 @@
 
-import { useState, type CSSProperties } from "react";
+import { useState, useLayoutEffect, useRef, type CSSProperties } from "react";
 import "./Ranking.css";
 import rankingCat from "../assets/Ranking-cat.png";
 import catBody from "../assets/cat-body.png.png";
@@ -19,6 +19,42 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   const [rankingData] = useState<RankingEntry[]>(
   () => getSortedRanking()
 );
+
+  // スクロールしないで表示するため、実際の内容の高さから倍率を計算する
+  const rankingViewportRef = useRef<HTMLDivElement>(null);
+  const rankingPanelRef = useRef<HTMLDivElement>(null);
+  const [fitScale, setFitScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const viewport = rankingViewportRef.current;
+    const panel = rankingPanelRef.current;
+    if (!viewport || !panel) return;
+
+    const updateFit = () => {
+      const screenHeight = viewport.clientHeight;
+      // 画面下の「スタートにもどる」ボタンの分を常に確保
+      const bottomSpace = window.innerWidth <= 700 ? 76 : 90;
+      const availableHeight = Math.max(1, screenHeight - bottomSpace);
+      // CSS transform はレイアウト上の高さを変えないので縮小前の高さを測れる
+      const naturalHeight = panel.scrollHeight;
+      const nextScale = Math.min(1, availableHeight / Math.max(naturalHeight, 1));
+      setFitScale((current) =>
+        Math.abs(current - nextScale) < 0.002 ? current : nextScale
+      );
+    };
+
+    const observer = new ResizeObserver(updateFit);
+    observer.observe(panel);
+    observer.observe(viewport);
+    window.addEventListener("resize", updateFit);
+    void document.fonts.ready.then(updateFit);
+    updateFit();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateFit);
+    };
+  }, []);
 
   // 今回の体験者のID
   const myId = currentEntryId;
@@ -98,7 +134,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   };
 
   return (
-    <div className="ranking-page">
+    <div className="ranking-page" ref={rankingViewportRef}>
 
       
 {/* 5位以内に入ったときの紙吹雪 */}
@@ -128,7 +164,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   <div className="curtain-right"></div>
 </div>
 
-      <div className="ranking-panel">
+      <div className="ranking-panel" ref={rankingPanelRef} style={{ "--ranking-fit": fitScale } as CSSProperties}>
         <h1 className="ranking-heading">
           👑 ランキング 👑
         </h1>
