@@ -1852,7 +1852,7 @@
 }
 
 
-/* ===== LARGE CONFETTI: THREE GROWING PILES ===== */
+/* ===== LARGE CONFETTI: ONE GROWING CENTER PILE ===== */
 .ranking-page .confetti-container {
   position: fixed;
   inset: 0;
@@ -1867,8 +1867,7 @@
   border-radius: 3px 5px 2px 4px;
   box-shadow: 1px 2px 2px rgba(75, 40, 12, .22);
   opacity: 0;
-  animation: confetti-to-mound var(--unused-duration, 3.5s) cubic-bezier(.28,.57,.62,1) forwards;
-  animation-duration: inherit;
+  animation: confetti-to-mound 3.5s cubic-bezier(.28,.57,.62,1) forwards;
   will-change: transform;
 }
 @keyframes confetti-to-mound {
@@ -1887,41 +1886,45 @@
   }
 }
 
-/* 色紙の重なりを表現した3つのこんもりした山が徐々に成長 */
+/* 中央の山だけがゆっくり高くなる */
 .ranking-page .confetti-pile {
   position: absolute;
   bottom: -4px;
   z-index: 1;
-  width: 29%;
-  height: clamp(55px, 12vh, 112px);
+  width: min(44%, 520px);
+  height: clamp(60px, 13vh, 120px);
   transform-origin: bottom center;
-  transform: scaleY(0);
-  opacity: .95;
+  transform: translateX(-50%) scaleY(0);
+  opacity: 0;
   background:
     repeating-linear-gradient(28deg,
       #ff6577 0 8px, #ffe35f 8px 17px, #75d5ff 17px 25px,
       #a5e66b 25px 33px, #bf91ff 33px 42px, #ff8bb9 42px 50px);
   background-size: 76px 64px;
-  clip-path: polygon(0 100%, 0 94%, 7% 88%, 13% 84%, 20% 72%, 27% 63%,
-    35% 45%, 42% 38%, 48% 27%, 54% 30%, 61% 39%, 68% 51%,
-    75% 65%, 81% 73%, 89% 83%, 95% 90%, 100% 94%, 100% 100%);
+  clip-path: polygon(0 100%, 0 95%, 6% 91%, 12% 86%, 18% 79%, 25% 68%,
+    33% 54%, 40% 41%, 47% 28%, 50% 22%, 53% 28%, 60% 41%,
+    67% 54%, 75% 68%, 82% 79%, 88% 86%, 94% 91%, 100% 95%, 100% 100%);
   filter: drop-shadow(0 -2px 3px rgba(88,55,22,.12));
-  animation: confetti-mound-grow 5.8s ease-out 1.4s forwards;
+  animation: confetti-mound-grow-center 5.8s ease-out 1.4s forwards;
 }
-.ranking-page .pile-left { left: 3.5%; }
-.ranking-page .pile-center { left: 35.5%; animation-delay: 1.8s; }
-.ranking-page .pile-right { right: 3.5%; animation-delay: 2.1s; }
-
-@keyframes confetti-mound-grow {
-  0% { transform: scaleY(0); opacity: 0; }
-  30% { transform: scaleY(.25); opacity: .7; }
-  65% { transform: scaleY(.7); opacity: .9; }
-  100% { transform: scaleY(1); opacity: .95; }
+.ranking-page .pile-center { left: 50%; }
+@keyframes confetti-mound-grow-center {
+  0% { transform: translateX(-50%) scaleY(0); opacity: 0; }
+  30% { transform: translateX(-50%) scaleY(.25); opacity: .7; }
+  65% { transform: translateX(-50%) scaleY(.72); opacity: .9; }
+  100% { transform: translateX(-50%) scaleY(1); opacity: .95; }
 }
 @media (max-width: 700px) {
-  .ranking-page .confetti-pile { height: clamp(36px, 9vh, 75px); }
+  .ranking-page .confetti-pile {
+    width: min(58%, 320px);
+    height: clamp(38px, 9vh, 78px);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .ranking-page .confetti-piece { animation: none; opacity: 0; }
-  .ranking-page .confetti-pile { animation: none; transform: scaleY(.6); opacity: .55; }
+  .ranking-page .confetti-pile {
+    animation: none;
+    transform: translateX(-50%) scaleY(.6);
+    opacity: .55;
+  }
 }
