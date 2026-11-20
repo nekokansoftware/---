@@ -1308,3 +1308,221 @@
     transition: none;
   }
 }
+
+
+/* ===== SINGLE-SCREEN RANKING LAYOUT ===== */
+/* 表示領域の高さを基準に、ランキング・戻るボタンを1画面に配置 */
+.ranking-page {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  padding: 0;
+  align-items: stretch;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
+.ranking-page .ranking-panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: clamp(8px, 1.4vh, 16px) clamp(12px, 3vw, 40px) clamp(76px, 11vh, 108px);
+  transform: none;
+  justify-content: flex-start;
+  gap: clamp(3px, .7vh, 8px);
+  overflow: hidden;
+}
+
+.ranking-page .ranking-panel .ranking-heading {
+  font-size: clamp(28px, 5.5vh, 56px) !important;
+  line-height: 1.08;
+  margin: 0;
+  flex-shrink: 0;
+}
+.ranking-page .ranking-panel .ranking-subtitle {
+  font-size: clamp(20px, 3.9vh, 37px) !important;
+  line-height: 1.05;
+  margin: 0 0 clamp(3px, 1vh, 9px);
+  flex-shrink: 0;
+}
+
+/* 1位の横幅・右下ネコカン君の位置はそのまま */
+.ranking-page .first-place {
+  flex-shrink: 1;
+  min-height: 0;
+  margin-top: clamp(11px, 2.4vh, 22px);
+  margin-bottom: clamp(3px, .9vh, 9px);
+}
+.ranking-page .first-place .rank-1 {
+  min-height: 0;
+  padding-top: clamp(5px, 1.25vh, 12px);
+  padding-bottom: clamp(5px, 1.25vh, 12px);
+  gap: 1px;
+}
+.ranking-page .first-place .rank-1 .ranking-position {
+  font-size: clamp(29px, 5vh, 49px);
+  line-height: 1;
+}
+.ranking-page .first-place .rank-1 .ranking-name {
+  font-size: clamp(20px, 4vh, 35px);
+  line-height: 1.1;
+}
+.ranking-page .first-place .rank-1 .ranking-score {
+  font-size: clamp(24px, 4.6vh, 40px);
+  line-height: 1.05;
+}
+
+/* 2〜5位は装飾を残して、高さと隙間だけ詰める */
+.ranking-page .podium-row,
+.ranking-page .lower-ranking {
+  flex-shrink: 1;
+  min-height: 0;
+  gap: clamp(7px, 1.5vw, 17px);
+}
+.ranking-page .podium-row .ranking-card {
+  min-height: 0;
+  padding: clamp(4px, .9vh, 10px) clamp(7px, 1.2vw, 14px);
+  gap: 2px;
+}
+.ranking-page .podium-row .ranking-position {
+  font-size: clamp(24px, 4vh, 36px);
+  line-height: 1;
+}
+.ranking-page .podium-row .ranking-name {
+  font-size: clamp(17px, 3vh, 26px);
+  line-height: 1.1;
+}
+.ranking-page .podium-row .ranking-score {
+  font-size: clamp(19px, 3.3vh, 29px);
+  line-height: 1.05;
+}
+.ranking-page .lower-ranking .ranking-card {
+  min-height: 0;
+  padding: clamp(4px, 1vh, 9px) clamp(7px, 1.4vw, 15px);
+  gap: 6px;
+}
+.ranking-page .lower-ranking .ranking-position {
+  min-width: clamp(46px, 6vw, 65px);
+  min-height: 0;
+  padding: 2px 7px;
+  font-size: clamp(18px, 3.1vh, 27px);
+  line-height: 1.1;
+}
+.ranking-page .lower-ranking .ranking-name,
+.ranking-page .lower-ranking .ranking-score {
+  font-size: clamp(17px, 3vh, 26px);
+  line-height: 1.1;
+}
+
+/* 自分の順位やお祝い文も画面内に収める */
+.ranking-page .my-rank-area {
+  margin-top: clamp(1px, .5vh, 5px);
+  flex-shrink: 1;
+}
+.ranking-page .my-rank-area > p {
+  font-size: clamp(18px, 3vh, 26px) !important;
+  line-height: 1.1;
+  margin-bottom: 3px;
+}
+.ranking-page .my-rank-area .ranking-card {
+  min-height: 0;
+  padding: clamp(4px, .9vh, 9px) 12px;
+  font-size: clamp(17px, 3vh, 25px);
+}
+.ranking-page .ranking-panel .ranking-congrats {
+  margin: clamp(2px, .8vh, 8px) 0 0;
+  font-size: clamp(21px, 4.2vh, 38px) !important;
+  line-height: 1.08;
+  flex-shrink: 0;
+}
+
+/* ボタンは画面下部に固定。ネコは画面外にはみ出さない大きさ */
+.ranking-page .bottom-back-button {
+  position: absolute;
+  bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  width: min(470px, 58%);
+  min-height: clamp(49px, 8vh, 66px);
+  padding: 8px 18px;
+  font-size: clamp(18px, 3vh, 26px);
+}
+.ranking-page .ranking-cat-area {
+  right: clamp(5px, 1.5vw, 20px);
+  width: clamp(95px, 18vh, 180px);
+  bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .ranking-page .ranking-panel {
+    padding: 8px 10px 78px;
+    gap: 4px;
+  }
+  .ranking-page .ranking-panel .ranking-heading {
+    font-size: clamp(26px, 5vh, 38px) !important;
+  }
+  .ranking-page .ranking-panel .ranking-subtitle {
+    font-size: clamp(18px, 3.3vh, 27px) !important;
+  }
+  .ranking-page .first-place { margin-top: 16px; margin-bottom: 3px; }
+  .ranking-page .first-place .rank-1 {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 55px;
+    padding-right: 88px;
+  }
+  .ranking-page .first-place .rank-1 .ranking-name {
+    font-size: clamp(18px, 3.5vh, 27px);
+  }
+  .ranking-page .first-place .rank-1 .ranking-score {
+    font-size: clamp(22px, 4vh, 30px);
+  }
+  .ranking-page .podium-row .ranking-card {
+    padding: 5px 3px;
+  }
+  .ranking-page .podium-row .ranking-name { font-size: clamp(14px, 2.5vh, 20px); }
+  .ranking-page .podium-row .ranking-score { font-size: clamp(16px, 2.9vh, 22px); }
+  .ranking-page .lower-ranking { gap: 5px; }
+  .ranking-page .lower-ranking .ranking-card { padding: 5px 8px; }
+  .ranking-page .lower-ranking .ranking-name,
+  .ranking-page .lower-ranking .ranking-score { font-size: clamp(15px, 2.8vh, 20px); }
+  .ranking-page .bottom-back-button {
+    width: min(440px, calc(100% - 30px));
+    min-height: 54px;
+    bottom: 9px;
+    font-size: 19px;
+  }
+  .ranking-page .ranking-cat-area { width: 85px; }
+}
+
+@media (min-width: 420px) and (max-width: 700px) {
+  .ranking-page .lower-ranking { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 高さが小さめの画面でも上部とカードの余白をさらに縮める */
+@media (max-height: 650px) {
+  .ranking-page .ranking-panel {
+    padding-top: 5px;
+    padding-bottom: 63px;
+    gap: 2px;
+  }
+  .ranking-page .ranking-panel .ranking-heading { font-size: 29px !important; }
+  .ranking-page .ranking-panel .ranking-subtitle { font-size: 20px !important; margin-bottom: 2px; }
+  .ranking-page .first-place { margin-top: 11px; margin-bottom: 2px; }
+  .ranking-page .first-place .rank-1 { padding-top: 4px; padding-bottom: 4px; }
+  .ranking-page .first-place-mascot { height: 95px; width: 105px; }
+  .ranking-page .first-place-mascot-image { max-height: 90px; }
+  .ranking-page .bottom-back-button { min-height: 48px; font-size: 18px; }
+  .ranking-page .ranking-cat-area { width: 90px; }
+  .ranking-page .ranking-panel .ranking-congrats { font-size: 23px !important; }
+}
+
+/* 極端に低い画面では文字を切り捨てるよりスクロールを許可 */
+@media (max-height: 420px) {
+  .ranking-page { overflow-y: auto; }
+  .ranking-page .ranking-panel { height: auto; min-height: 100%; overflow: visible; }
+  .ranking-page .bottom-back-button { position: fixed; }
+}
