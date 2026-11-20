@@ -1850,3 +1850,51 @@
   .ranking-page .ranking-panel .ranking-congrats,
   .ranking-page .ranking-congrats .congrats-sparkle { animation: none; }
 }
+
+
+/* ===== LARGE CONFETTI WITH BOTTOM ACCUMULATION ===== */
+/* ランキングの上を舞うカラフルな大きめ紙吹雪。触る操作は妨げない */
+.ranking-page .confetti-container {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 100;
+  pointer-events: none;
+}
+.ranking-page .confetti-piece {
+  top: -32px;
+  width: 15px;
+  height: 22px;
+  border-radius: 3px 5px 3px 5px;
+  box-shadow: 1px 2px 2px rgba(76, 43, 12, .16);
+  opacity: 0;
+  animation-name: ranking-confetti-settle;
+  animation-timing-function: cubic-bezier(.28,.56,.58,1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+  will-change: transform;
+}
+
+/* 落ちた紙吹雪を消さず、画面下端に薄く積もらせる */
+@keyframes ranking-confetti-settle {
+  0% {
+    transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0deg);
+    opacity: 0;
+  }
+  8% { opacity: 1; }
+  55% {
+    transform: translate3d(calc(var(--confetti-drift, 0px) * .6), 55dvh, 0) rotate(calc(var(--confetti-turn, 540deg) * .55)) rotateY(150deg);
+    opacity: 1;
+  }
+  88% { opacity: 1; }
+  100% {
+    transform: translate3d(var(--confetti-drift, 0px), calc(100dvh - var(--confetti-settle, 8px) - 28px), 0) rotate(var(--confetti-turn, 540deg)) rotateY(0deg);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ranking-page .confetti-piece {
+    animation: none;
+    opacity: 0;
+  }
+}
