@@ -1774,3 +1774,79 @@
     animation: none;
   }
 }
+
+
+/* ===== RANK-IN CELEBRATION BANNER ===== */
+/* Top5のときだけ表示。大きな文字と赤金の表彰リボンでお祝い */
+.ranking-page .ranking-panel .ranking-congrats {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1.2vw, 14px);
+  width: min(100%, 900px);
+  min-height: clamp(56px, 9vh, 84px);
+  margin: clamp(5px, 1vh, 10px) auto 0;
+  padding: clamp(7px, 1.4vh, 13px) clamp(10px, 2vw, 24px);
+  border: 4px solid #e7a72b;
+  border-radius: 999px;
+  background: linear-gradient(115deg, #fff1a5 0%, #fff9db 24%, #ffdc70 54%, #fff5c4 80%, #f6bd49 100%);
+  box-shadow: 0 5px 0 #ae7318, 0 10px 20px rgba(124, 72, 0, .22), 0 0 24px rgba(255, 212, 79, .50);
+  font-size: clamp(25px, 4.4vw, 53px) !important;
+  line-height: 1.12;
+  font-weight: 900;
+  color: #e32923;
+  text-align: center;
+  flex-shrink: 0;
+  animation: congrats-banner-entrance .9s cubic-bezier(.15,.85,.25,1.12) both, congrats-banner-glow 2.8s ease-in-out 1s infinite;
+}
+.ranking-page .ranking-panel .ranking-congrats .congrats-message {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  color: #e32923;
+  font-size: inherit;
+  font-weight: 900;
+  white-space: nowrap;
+  -webkit-text-stroke: 2px #fff9e9;
+  paint-order: stroke fill;
+  text-shadow: 2px 3px 0 #ab580e, 0 0 12px rgba(255,255,255,.95);
+}
+.ranking-page .ranking-congrats .congrats-sparkle {
+  flex: 0 0 auto;
+  color: #fff;
+  font-size: clamp(21px, 3.3vw, 41px);
+  text-shadow: 0 0 8px #fff, 0 0 18px #ff9900;
+  animation: congrats-banner-sparkle 1.5s ease-in-out infinite;
+}
+.ranking-page .ranking-congrats .congrats-sparkle:last-child { animation-delay: .7s; }
+@keyframes congrats-banner-entrance {
+  0% { opacity: 0; transform: translateY(20px) scale(.78); }
+  70% { opacity: 1; transform: translateY(-2px) scale(1.035); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes congrats-banner-glow {
+  0%,100% { box-shadow: 0 5px 0 #ae7318, 0 10px 20px rgba(124,72,0,.22), 0 0 13px rgba(255,212,79,.35); }
+  50% { box-shadow: 0 5px 0 #ae7318, 0 10px 24px rgba(124,72,0,.28), 0 0 32px rgba(255,212,79,.85); }
+}
+@keyframes congrats-banner-sparkle {
+  0%,100% { opacity: .45; transform: scale(.8) rotate(-14deg); }
+  50% { opacity: 1; transform: scale(1.23) rotate(14deg); }
+}
+@media (max-width: 700px) {
+  .ranking-page .ranking-panel .ranking-congrats {
+    min-height: 44px;
+    border-width: 3px;
+    padding: 6px 5px;
+    gap: 3px;
+    font-size: clamp(17px, 4.2vw, 28px) !important;
+  }
+  .ranking-page .ranking-congrats .congrats-sparkle {
+    font-size: clamp(15px, 3vw, 23px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ranking-page .ranking-panel .ranking-congrats,
+  .ranking-page .ranking-congrats .congrats-sparkle { animation: none; }
+}
