@@ -2,6 +2,7 @@
 import { useState, type CSSProperties } from "react";
 import "./Ranking.css";
 import rankingCat from "../assets/Ranking-cat.png";
+import catBody from "../assets/cat-body.png.png";
 
 import {
   getSortedRanking,
@@ -145,7 +146,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
             {renderRanking(topFive[0], 1)}
             <div className="first-place-mascot" aria-hidden="true">
               <span className="first-place-mascot-cheer">やったにゃ！</span>
-              <img src="/nekokan-first-celebrate.png" alt="" className="first-place-mascot-image" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = rankingCat; }} />
+              <img src={catBody} alt="" className="first-place-mascot-image" />
               <span className="first-place-mascot-star star-one">✦</span>
               <span className="first-place-mascot-star star-two">✦</span>
             </div>
