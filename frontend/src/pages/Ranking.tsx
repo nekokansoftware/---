@@ -1,7 +1,8 @@
 
-import { useState, type CSSProperties } from "react";
+import { useState, useLayoutEffect, useRef, type CSSProperties } from "react";
 import "./Ranking.css";
 import rankingCat from "../assets/Ranking-cat.png";
+import catBody from "../assets/cat-body.png.png";
 
 import {
   getSortedRanking,
@@ -18,6 +19,42 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   const [rankingData] = useState<RankingEntry[]>(
   () => getSortedRanking()
 );
+
+  // スクロールしないで表示するため、実際の内容の高さから倍率を計算する
+  const rankingViewportRef = useRef<HTMLDivElement>(null);
+  const rankingPanelRef = useRef<HTMLDivElement>(null);
+  const [fitScale, setFitScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const viewport = rankingViewportRef.current;
+    const panel = rankingPanelRef.current;
+    if (!viewport || !panel) return;
+
+    const updateFit = () => {
+      const screenHeight = viewport.clientHeight;
+      // 画面下の「スタートにもどる」ボタンの分を常に確保
+      const bottomSpace = 24;
+      const availableHeight = Math.max(1, screenHeight - bottomSpace);
+      // CSS transform はレイアウト上の高さを変えないので縮小前の高さを測れる
+      const naturalHeight = panel.scrollHeight;
+      const nextScale = Math.min(1, availableHeight / Math.max(naturalHeight, 1));
+      setFitScale((current) =>
+        Math.abs(current - nextScale) < 0.002 ? current : nextScale
+      );
+    };
+
+    const observer = new ResizeObserver(updateFit);
+    observer.observe(panel);
+    observer.observe(viewport);
+    window.addEventListener("resize", updateFit);
+    void document.fonts.ready.then(updateFit);
+    updateFit();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateFit);
+    };
+  }, []);
 
   // 今回の体験者のID
   const myId = currentEntryId;
@@ -53,16 +90,51 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   // 今回の体験者が5位以内なら紙吹雪を表示
   const showConfetti = myEntry !== undefined && myRank <= 5;
 
-  // 紙吹雪を50枚生成
-  const confettiPieces = Array.from({ length: 50 }, (_, i) => ({
+  const paperColors = ["#ff6577", "#ffe35f", "#75d5ff", "#a5e66b", "#bf91ff", "#ff8bb9", "#ffad50"];
+
+  // 空から降る紙吹雪
+  const confettiPieces = Array.from({ length: 115 }, (_, i) => ({
     id: i,
-    left: `${(i * 37 + 11) % 100}%`,
-    delay: `${(i * 0.17) % 2}s`,
-    duration: `${3 + (i % 4) * 0.5}s`,
-    color: ["#ff5555", "#ffcc00", "#55ccff", "#88dd66", "#cc88ff"][i % 5],
+    left: `${(i * 47 + Math.floor(i / 9) * 13 + 7) % 100}%`,
+    delay: `${(i * 0.061) % 4.8}s`,
+    duration: `${3.4 + (i % 6) * 0.29}s`,
+    width: `${12 + (i % 4) * 3}px`,
+    height: `${14 + (i % 3) * 4}px`,
+    turn: `${(i % 2 ? -1 : 1) * (400 + (i % 4) * 110)}deg`,
+    color: paperColors[i % paperColors.length],
   }));
 
+  // 中央には、ひと回り大きい紙片が重なって山ができる
+  const settledPapers = Array.from({ length: 340 }, (_, i) => {
+    const x = ((i * 73 + Math.floor(i / 17) * 23) % 997) / 996;
+    const edge = Math.abs(x * 2 - 1);
+    const maxHeight = Math.max(6, Math.pow(1 - edge, 0.72) * 100 + 8);
+    const layer = ((i * 151 + 19) % 491) / 490;
+    const y = Math.round(4 + maxHeight * layer);
 
+    return {
+      id: i,
+      left: `${x * 97 + 1}%`,
+      bottom: `${y}px`,
+      delay: `${1.9 + (y / 102) * 3.0 + ((i * 17) % 19) * 0.085}s`,
+      width: `${12 + (i % 5) * 3}px`,
+      height: `${6 + (i % 4) * 2}px`,
+      rotation: `${((i * 47) % 120) - 60}deg`,
+      color: paperColors[(i * 5 + Math.floor(i / 9)) % paperColors.length],
+    };
+  });
+
+  // 地面の端まで少しだけ紙片が散る（中央より低く、薄く）
+  const groundPapers = Array.from({ length: 140 }, (_, i) => ({
+    id: i,
+    left: `${((i * 61 + Math.floor(i / 11) * 29) % 1000) / 10}%`,
+    bottom: `${(i * 13) % 20}px`,
+    delay: `${2.2 + (i % 24) * 0.06}s`,
+    width: `${10 + (i % 4) * 3}px`,
+    height: `${5 + (i % 3) * 2}px`,
+    rotation: `${((i * 31) % 100) - 50}deg`,
+    color: paperColors[(i * 3 + 2) % paperColors.length],
+  }));
 
   const renderRanking = (entry: RankingEntry, rank: number) => {
     const isMe = entry.id === myId;
@@ -97,7 +169,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   };
 
   return (
-    <div className="ranking-page">
+    <div className="ranking-page" ref={rankingViewportRef}>
 
       
 {/* 5位以内に入ったときの紙吹雪 */}
@@ -113,10 +185,47 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
             backgroundColor: piece.color,
             animationDelay: piece.delay,
             animationDuration: piece.duration,
+            width: piece.width,
+            height: piece.height,
+            "--confetti-turn": piece.turn,
           } as CSSProperties
         }
       />
     ))}
+    <div className="confetti-ground">
+      {groundPapers.map((paper) => (
+        <span
+          key={paper.id}
+          className="confetti-ground-paper"
+          style={{
+            left: paper.left,
+            bottom: paper.bottom,
+            width: paper.width,
+            height: paper.height,
+            backgroundColor: paper.color,
+            animationDelay: paper.delay,
+            "--paper-angle": paper.rotation,
+          } as CSSProperties}
+        />
+      ))}
+    </div>
+    <div className="confetti-pile pile-center">
+      {settledPapers.map((paper) => (
+        <span
+          key={paper.id}
+          className="confetti-settled-paper"
+          style={{
+            left: paper.left,
+            bottom: paper.bottom,
+            width: paper.width,
+            height: paper.height,
+            backgroundColor: paper.color,
+            animationDelay: paper.delay,
+            "--paper-angle": paper.rotation,
+          } as CSSProperties}
+        />
+      ))}
+    </div>
   </div>
 )}
 
@@ -127,7 +236,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   <div className="curtain-right"></div>
 </div>
 
-      <div className="ranking-panel">
+      <div className="ranking-panel" ref={rankingPanelRef} style={{ "--ranking-fit": fitScale } as CSSProperties}>
         <h1 className="ranking-heading">
           👑 ランキング 👑
         </h1>
@@ -143,6 +252,12 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
         {topFive[0] && (
           <div className="first-place">
             {renderRanking(topFive[0], 1)}
+            <div className="first-place-mascot" aria-hidden="true">
+              <span className="first-place-mascot-cheer">やったにゃ！</span>
+              <img src={catBody} alt="" className="first-place-mascot-image" />
+              <span className="first-place-mascot-star star-one">✦</span>
+              <span className="first-place-mascot-star star-two">✦</span>
+            </div>
           </div>
         )}
 
@@ -167,31 +282,34 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
         )}
 
         {myEntry && myRank <= 5 && (
-          <p className="ranking-congrats">
-            ✨ ランクインおめでとう！ ✨
-          </p>
+          <div className="ranking-congrats" role="status">
+            <span className="congrats-sparkle" aria-hidden="true">✦</span>
+            <span className="congrats-message">🎉 ランクインおめでとう！ 🎉</span>
+            <span className="congrats-sparkle" aria-hidden="true">✦</span>
+          </div>
         )}
 
        
       </div>
 
-      {/* タブレットでも押しやすい、画面下中央の戻るボタン */}
+      {/* 右下のネコカン君を押すとスタートに戻る */}
       <button
         type="button"
-        className="bottom-back-button"
+        className="ranking-cat-area"
         onClick={onBack}
+        aria-label="ネコカン君を押してスタートにもどる"
+        title="スタートにもどる"
       >
-        🐾 スタートにもどる
+        <img
+          src={rankingCat}
+          className="ranking-cat"
+          alt=""
+          draggable={false}
+        />
+        <span className="ranking-cat-speech" aria-hidden="true">
+          ぼくをおして<br />スタートがめんに<br />もどるにゃ
+        </span>
       </button>
-
-      <div className="ranking-cat-area">
-
-  <img
-    src={rankingCat}
-    className="ranking-cat"
-    alt="下からのぞくネコ"
-  />
-</div>
 
     </div>
   );

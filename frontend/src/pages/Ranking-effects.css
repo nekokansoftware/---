@@ -1,0 +1,169 @@
+/* ===== RANK-IN CELEBRATION BANNER ===== */
+/* Top5のときだけ表示。大きな文字と赤金の表彰リボンでお祝い */
+.ranking-page .ranking-panel .ranking-congrats {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1.2vw, 14px);
+  width: min(100%, 900px);
+  min-height: clamp(56px, 9vh, 84px);
+  margin: clamp(5px, 1vh, 10px) auto 0;
+  padding: clamp(7px, 1.4vh, 13px) clamp(10px, 2vw, 24px);
+  border: 4px solid #e7a72b;
+  border-radius: 999px;
+  background: linear-gradient(115deg, #fff1a5 0%, #fff9db 24%, #ffdc70 54%, #fff5c4 80%, #f6bd49 100%);
+  box-shadow: 0 5px 0 #ae7318, 0 10px 20px rgba(124, 72, 0, .22), 0 0 24px rgba(255, 212, 79, .50);
+  font-size: clamp(25px, 4.4vw, 53px) !important;
+  line-height: 1.12;
+  font-weight: 900;
+  color: #e32923;
+  text-align: center;
+  flex-shrink: 0;
+  animation: congrats-banner-entrance .9s cubic-bezier(.15,.85,.25,1.12) both, congrats-banner-glow 2.8s ease-in-out 1s infinite;
+}
+.ranking-page .ranking-panel .ranking-congrats .congrats-message {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  color: #e32923;
+  font-size: inherit;
+  font-weight: 900;
+  white-space: nowrap;
+  -webkit-text-stroke: 2px #fff9e9;
+  paint-order: stroke fill;
+  text-shadow: 2px 3px 0 #ab580e, 0 0 12px rgba(255,255,255,.95);
+}
+.ranking-page .ranking-congrats .congrats-sparkle {
+  flex: 0 0 auto;
+  color: #fff;
+  font-size: clamp(21px, 3.3vw, 41px);
+  text-shadow: 0 0 8px #fff, 0 0 18px #ff9900;
+  animation: congrats-banner-sparkle 1.5s ease-in-out infinite;
+}
+.ranking-page .ranking-congrats .congrats-sparkle:last-child { animation-delay: .7s; }
+@keyframes congrats-banner-entrance {
+  0% { opacity: 0; transform: translateY(20px) scale(.78); }
+  70% { opacity: 1; transform: translateY(-2px) scale(1.035); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes congrats-banner-glow {
+  0%,100% { box-shadow: 0 5px 0 #ae7318, 0 10px 20px rgba(124,72,0,.22), 0 0 13px rgba(255,212,79,.35); }
+  50% { box-shadow: 0 5px 0 #ae7318, 0 10px 24px rgba(124,72,0,.28), 0 0 32px rgba(255,212,79,.85); }
+}
+@keyframes congrats-banner-sparkle {
+  0%,100% { opacity: .45; transform: scale(.8) rotate(-14deg); }
+  50% { opacity: 1; transform: scale(1.23) rotate(14deg); }
+}
+@media (max-width: 700px) {
+  .ranking-page .ranking-panel .ranking-congrats {
+    min-height: 44px;
+    border-width: 3px;
+    padding: 6px 5px;
+    gap: 3px;
+    font-size: clamp(17px, 4.2vw, 28px) !important;
+  }
+  .ranking-page .ranking-congrats .congrats-sparkle {
+    font-size: clamp(15px, 3vw, 23px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ranking-page .ranking-panel .ranking-congrats,
+  .ranking-page .ranking-congrats .congrats-sparkle { animation: none; }
+}
+
+
+/* ===== CONFETTI: BIGGER INDIVIDUAL SCRAPS + LIGHT GROUND COVER ===== */
+.ranking-page .confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 100;
+}
+.ranking-page .confetti-piece {
+  position: absolute;
+  z-index: 2;
+  top: -35px;
+  border-radius: 1px 3px 1px 2px;
+  box-shadow: 1px 2px 2px rgba(75, 40, 12, .12);
+  opacity: 0;
+  animation: confetti-natural-fall 3.5s ease-in forwards;
+  will-change: transform;
+}
+@keyframes confetti-natural-fall {
+  0% { transform: translate3d(0, -20px, 0) rotate(0deg) rotateY(0); opacity: 0; }
+  8%, 80% { opacity: 1; }
+  55% { transform: translate3d(14px, 50dvh, 0) rotate(270deg) rotateY(130deg); }
+  100% {
+    transform: translate3d(-12px, 105dvh, 0) rotate(var(--confetti-turn, 540deg)) rotateY(280deg);
+    opacity: 0;
+  }
+}
+
+/* 地面全体に、薄く散らばる紙切れ */
+.ranking-page .confetti-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 42px;
+  z-index: 1;
+}
+.ranking-page .confetti-ground-paper {
+  position: absolute;
+  display: block;
+  border-radius: 1px;
+  box-shadow: 0 1px 1px rgba(70, 43, 24, .12);
+  opacity: 0;
+  transform: translateY(-8px) rotate(var(--paper-angle, 0deg)) scale(.85);
+  animation: confetti-paper-land .35s ease-out forwards;
+}
+
+/* 真ん中の山は個別の紙片でつくる */
+.ranking-page .confetti-pile {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: -3px;
+  width: min(46vw, 520px);
+  height: 140px;
+  transform: translateX(-50%);
+  background: none;
+  clip-path: none;
+  filter: none;
+  opacity: 1;
+  animation: none;
+}
+.ranking-page .confetti-settled-paper {
+  position: absolute;
+  display: block;
+  border-radius: 1px;
+  box-shadow: 0 1px 1px rgba(70, 43, 24, .16);
+  opacity: 0;
+  transform: translateY(-10px) rotate(var(--paper-angle, 0deg)) scale(.8);
+  transform-origin: center;
+  animation: confetti-paper-land .35s ease-out forwards;
+}
+@keyframes confetti-paper-land {
+  0% { opacity: 0; transform: translateY(-12px) rotate(var(--paper-angle, 0deg)) scale(.75); }
+  65% { opacity: 1; transform: translateY(2px) rotate(var(--paper-angle, 0deg)) scale(1); }
+  100% { opacity: 1; transform: translateY(0) rotate(var(--paper-angle, 0deg)) scale(1); }
+}
+@media (max-width: 700px) {
+  .ranking-page .confetti-pile {
+    width: min(66vw, 340px);
+    height: 118px;
+  }
+  .ranking-page .confetti-ground { height: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ranking-page .confetti-piece { animation: none; opacity: 0; }
+  .ranking-page .confetti-settled-paper,
+  .ranking-page .confetti-ground-paper {
+    animation: none;
+    opacity: 1;
+    transform: rotate(var(--paper-angle, 0deg));
+  }
+}
