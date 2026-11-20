@@ -90,19 +90,26 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   // 今回の体験者が5位以内なら紙吹雪を表示
   const showConfetti = myEntry !== undefined && myRank <= 5;
 
-  // 大きめの紙吹雪がひらひら降り、画面下に少しずつたまる
-  const confettiPieces = Array.from({ length: 90 }, (_, i) => ({
-    id: i,
-    left: `${(i * 47 + Math.floor(i / 9) * 13 + 7) % 100}%`,
-    delay: `${(i * 0.19) % 3.3}s`,
-    duration: `${3.1 + (i % 5) * 0.34}s`,
-    width: `${12 + (i % 4) * 3}px`,
-    height: `${18 + (i % 3) * 4}px`,
-    drift: `${((i * 19) % 37) - 18}px`,
-    settle: `${5 + (i % 6) * 5}px`,
-    turn: `${(i % 2 === 0 ? 1 : -1) * (430 + (i % 4) * 115)}deg`,
-    color: ["#ff5555", "#ffcc00", "#55ccff", "#88dd66", "#cc88ff", "#ff88ae"][i % 6],
-  }));
+  // 3か所に山をつくるように紙吹雪の着地点を分散させる
+  const confettiPieces = Array.from({ length: 180 }, (_, i) => {
+    const pileIndex = i % 3;
+    const particleIndex = Math.floor(i / 3);
+    const spread = (((particleIndex * 37 + pileIndex * 23) % 101) - 50) / 50;
+    const centers = [18, 50, 82];
+    const landingHeight = Math.round(9 + (1 - Math.abs(spread)) ** 1.45 * 85 + (particleIndex % 5) * 4);
+
+    return {
+      id: i,
+      left: `${centers[pileIndex] + spread * 13}%`,
+      delay: `${(i * 0.031) % 4.8}s`,
+      duration: `${3.0 + (i % 6) * 0.26}s`,
+      width: `${12 + (i % 4) * 3}px`,
+      height: `${17 + (i % 3) * 4}px`,
+      pileHeight: `${landingHeight}px`,
+      turn: `${(i % 2 ? -1 : 1) * (420 + (i % 4) * 100)}deg`,
+      color: ["#ff5555", "#ffcc00", "#55ccff", "#88dd66", "#cc88ff", "#ff88ae"][i % 6],
+    };
+  });
 
 
 
@@ -157,13 +164,15 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
             animationDuration: piece.duration,
             width: piece.width,
             height: piece.height,
-            "--confetti-drift": piece.drift,
-            "--confetti-settle": piece.settle,
+            "--confetti-pile-height": piece.pileHeight,
             "--confetti-turn": piece.turn,
           } as CSSProperties
         }
       />
     ))}
+    <div className="confetti-pile pile-left" />
+    <div className="confetti-pile pile-center" />
+    <div className="confetti-pile pile-right" />
   </div>
 )}
 
