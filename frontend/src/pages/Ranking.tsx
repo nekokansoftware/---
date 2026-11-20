@@ -232,6 +232,9 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
           alt=""
           draggable={false}
         />
+        <span className="ranking-cat-speech" aria-hidden="true">
+          ぼくをおして<br />スタートがめんに<br />もどるにゃ
+        </span>
       </button>
 
     </div>
