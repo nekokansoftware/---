@@ -90,17 +90,16 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   // 今回の体験者が5位以内なら紙吹雪を表示
   const showConfetti = myEntry !== undefined && myRank <= 5;
 
-  // 3か所に山をつくるように紙吹雪の着地点を分散させる
+  // 紙吹雪は中央の1か所に集まり、山形に重なって積もる
   const confettiPieces = Array.from({ length: 180 }, (_, i) => {
-    const pileIndex = i % 3;
-    const particleIndex = Math.floor(i / 3);
-    const spread = (((particleIndex * 37 + pileIndex * 23) % 101) - 50) / 50;
-    const centers = [18, 50, 82];
-    const landingHeight = Math.round(9 + (1 - Math.abs(spread)) ** 1.45 * 85 + (particleIndex % 5) * 4);
+    const spread = (((i * 37 + Math.floor(i / 7) * 11) % 101) - 50) / 50;
+    const landingHeight = Math.round(
+      10 + Math.pow(1 - Math.abs(spread), 1.55) * 95 + (i % 6) * 4
+    );
 
     return {
       id: i,
-      left: `${centers[pileIndex] + spread * 13}%`,
+      left: `${50 + spread * 18}%`,
       delay: `${(i * 0.031) % 4.8}s`,
       duration: `${3.0 + (i % 6) * 0.26}s`,
       width: `${12 + (i % 4) * 3}px`,
@@ -170,9 +169,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
         }
       />
     ))}
-    <div className="confetti-pile pile-left" />
     <div className="confetti-pile pile-center" />
-    <div className="confetti-pile pile-right" />
   </div>
 )}
 
