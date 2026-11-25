@@ -346,47 +346,33 @@ body { overflow-x: hidden; }
 }
 
 
-/* Tablet-friendly press feedback. Image hotspots must not move: their artwork
-   is part of the background, so highlight the actual touch target instead. */
+/* Press feedback without moving buttons or drawing outlines over background art. */
 button:not(:disabled) {
   touch-action: manipulation;
 }
 button.artwork-start-button:active:not(:disabled),
 button.name-hotspot:active:not(:disabled),
 button.answer-hotspot:active:not(:disabled) {
-  background-color: rgba(115, 65, 20, .24);
-  box-shadow: inset 0 0 0 3px rgba(125, 72, 24, .65),
-              inset 0 4px 8px rgba(90, 45, 10, .24);
+  background: radial-gradient(ellipse at center, rgba(100, 60, 20, .22), transparent 72%);
+  box-shadow: none;
 }
 button.wood-button:active:not(:disabled),
 button.number-button:active:not(:disabled),
 button.back-button:active:not(:disabled),
 body .result-page button.ranking-button:active:not(:disabled) {
-  translate: 0 3px;
-  scale: .97;
   filter: brightness(.86);
 }
+body .result-page button.ranking-button:active:not(:disabled) {
+  transform: none;
+}
 .ranking-page button.ranking-cat-area:active:not(:disabled) .ranking-cat {
-  transform: scale(.94);
+  transform: none;
   filter: brightness(.84);
 }
 .ranking-page button.ranking-cat-area:active:not(:disabled) .ranking-cat-speech {
   background-color: #ffe3a3;
 }
 .ranking-page button.bottom-back-button:active:not(:disabled) {
+  transform: none;
   filter: brightness(.86);
-  scale: .97;
-}
-@media (prefers-reduced-motion: reduce) {
-  button.wood-button:active:not(:disabled),
-  button.number-button:active:not(:disabled),
-  button.back-button:active:not(:disabled),
-  body .result-page button.ranking-button:active:not(:disabled),
-  .ranking-page button.bottom-back-button:active:not(:disabled) {
-    translate: none;
-    scale: none;
-  }
-  .ranking-page button.ranking-cat-area:active:not(:disabled) .ranking-cat {
-    transform: none;
-  }
 }
