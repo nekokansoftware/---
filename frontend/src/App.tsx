@@ -13,6 +13,7 @@ import resultButterflyLeft from './assets/left.png'
 import resultButterflyRight from './assets/right.png'
 import resultCurtain from './assets/curtain.png'
 import rankingCat from './assets/Ranking-cat.png'
+import rankingBackground from './assets/Ranking-background.png'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
@@ -24,10 +25,14 @@ type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
 const leafImages = ['/leaf-green.png', '/leaf-lightgreen.png', '/leaf-yellow.png']
 
-const resultImages = [
+// 全画面の素材を体験順に並べる。現在の画面は通常どおり描画する。
+const preloadImages = [
+  '/safari-background.png', '/sipponasi.png', '/nekokan-tail.png',
+  '/nekokan-nickname.png', ...leafImages,
+  '/nekokan-nyuryoku-no-cat.png', '/nekokan-back.png',
   resultBackground, resultCatBody, resultCatTail,
-  resultButterflyLeft, resultButterflyRight, resultCurtain,
-  '/nekokan-hukidasi.png', rankingCat,
+  resultButterflyLeft, resultButterflyRight, '/nekokan-hukidasi.png',
+  resultCurtain, rankingBackground, rankingCat,
 ]
 
 export default function App() {
@@ -42,29 +47,47 @@ export default function App() {
   const pageTurnTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  // 回答中に次の画面の画像を読み込み、遷移時の読み込み・デコード負荷を抑える。
-  // 画像への参照を保持して、同じ展示セッションでの再読み込みを避ける。
-  const resultImageCache = useRef<HTMLImageElement[]>([])
+  // 初回描画を妨げないよう、全画面の素材を順番に先読みする。
+  // 同じURLは一度だけ読み込み、失敗しても次の素材へ進む。
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map())
 
   useEffect(() => {
-    if (screen !== 'answer' || resultImageCache.current.length > 0) return
-    resultImageCache.current = resultImages.map(src => {
-      const img = new Image()
-      img.decoding = 'async'
-      img.src = src
-      if (typeof img.decode === 'function') void img.decode().catch(() => {})
-      return img
-    })
-  }, [screen])
+    let cancelled = false
 
-  // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
-  useEffect(() => {
-    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku-no-cat.png', '/sipponasi.png', '/nekokan-tail.png', '/nekokan-back.png', ...leafImages]
-    images.forEach(src => {
-      const img = new Image()
-      img.src = src
-      if (typeof img.decode === 'function') void img.decode().catch(() => {})
-    })
+    async function preloadAllScreens() {
+      for (const src of new Set(preloadImages)) {
+        if (cancelled) return
+        if (imageCache.current.has(src)) continue
+
+        const img = new Image()
+        img.decoding = 'async'
+        imageCache.current.set(src, img)
+
+        try {
+          await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve()
+            img.onerror = () => reject(new Error('Image preload failed'))
+            img.src = src
+            if (img.complete && img.naturalWidth > 0) resolve()
+          })
+          if (!cancelled && typeof img.decode === 'function') {
+            await img.decode().catch(() => {})
+          }
+        } catch {
+          imageCache.current.delete(src)
+        } finally {
+          img.onload = null
+          img.onerror = null
+        }
+      }
+    }
+
+    // スタート画面の初回描画後に開始。読み込み完了まで操作を止めない。
+    const timer = window.setTimeout(() => { void preloadAllScreens() }, 150)
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+    }
   }, [])
 
   useEffect(() => {
