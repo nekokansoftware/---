@@ -93,7 +93,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   const paperColors = ["#ff6577", "#ffe35f", "#75d5ff", "#a5e66b", "#bf91ff", "#ff8bb9", "#ffad50"];
 
   // 空から降る紙吹雪
-  const confettiPieces = Array.from({ length: 115 }, (_, i) => ({
+  const confettiPieces = Array.from({ length: 40 }, (_, i) => ({
     id: i,
     left: `${(i * 47 + Math.floor(i / 9) * 13 + 7) % 100}%`,
     delay: `${(i * 0.061) % 4.8}s`,
@@ -105,7 +105,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   }));
 
   // 中央には、ひと回り大きい紙片が重なって山ができる
-  const settledPapers = Array.from({ length: 340 }, (_, i) => {
+  const settledPapers = Array.from({ length: 70 }, (_, i) => {
     const x = ((i * 73 + Math.floor(i / 17) * 23) % 997) / 996;
     const edge = Math.abs(x * 2 - 1);
     const maxHeight = Math.max(6, Math.pow(1 - edge, 0.72) * 100 + 8);
@@ -125,7 +125,7 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
   });
 
   // 地面の端まで少しだけ紙片が散る（中央より低く、薄く）
-  const groundPapers = Array.from({ length: 140 }, (_, i) => ({
+  const groundPapers = Array.from({ length: 30 }, (_, i) => ({
     id: i,
     left: `${((i * 61 + Math.floor(i / 11) * 29) % 1000) / 10}%`,
     bottom: `${(i * 13) % 20}px`,
