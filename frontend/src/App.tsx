@@ -6,6 +6,13 @@ import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
 import Result from './pages/Result'
 import Ranking from './pages/Ranking'
+import resultBackground from './assets/result-background-new.png.png'
+import resultCatBody from './assets/cat-body.png.png'
+import resultCatTail from './assets/cat-siri.png'
+import resultButterflyLeft from './assets/left.png'
+import resultButterflyRight from './assets/right.png'
+import resultCurtain from './assets/curtain.png'
+import rankingCat from './assets/Ranking-cat.png'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
@@ -16,6 +23,12 @@ import './styles/PageTurnTransition.css'
 type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
 const leafImages = ['/leaf-green.png', '/leaf-lightgreen.png', '/leaf-yellow.png']
+
+const resultImages = [
+  resultBackground, resultCatBody, resultCatTail,
+  resultButterflyLeft, resultButterflyRight, resultCurtain,
+  '/nekokan-hukidasi.png', rankingCat,
+]
 
 export default function App() {
   // 実際の接触回数（ハードウェア連携までは仮の値）
@@ -28,6 +41,21 @@ export default function App() {
   const [isPageTurning, setIsPageTurning] = useState(false)
   const pageTurnTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  // 回答中に次の画面の画像を読み込み、遷移時の読み込み・デコード負荷を抑える。
+  // 画像への参照を保持して、同じ展示セッションでの再読み込みを避ける。
+  const resultImageCache = useRef<HTMLImageElement[]>([])
+
+  useEffect(() => {
+    if (screen !== 'answer' || resultImageCache.current.length > 0) return
+    resultImageCache.current = resultImages.map(src => {
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = src
+      if (typeof img.decode === 'function') void img.decode().catch(() => {})
+      return img
+    })
+  }, [screen])
 
   // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
   useEffect(() => {
