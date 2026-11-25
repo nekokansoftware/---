@@ -23,12 +23,9 @@ import './styles/PageTurnTransition.css'
 
 type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
-const leafImages = ['/leaf-green.png', '/leaf-lightgreen.png', '/leaf-yellow.png']
-
-// 全画面の素材を体験順に並べる。現在の画面は通常どおり描画する。
+// 名前入力への遷移が終わった後に、後続画面の素材だけを先読みする。
 const preloadImages = [
-  '/safari-background.png', '/sipponasi.png', '/nekokan-tail.png',
-  '/nekokan-nickname.png', ...leafImages,
+  '/sipponasi.png', '/nekokan-tail.png',
   '/nekokan-nyuryoku-no-cat.png', '/nekokan-back.png',
   resultBackground, resultCatBody, resultCatTail,
   resultButterflyLeft, resultButterflyRight, '/nekokan-hukidasi.png',
@@ -47,11 +44,12 @@ export default function App() {
   const pageTurnTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  // 初回描画を妨げないよう、全画面の素材を順番に先読みする。
+  // ホーム画面と葉っぱの遷移中は先読みしない。
   // 同じURLは一度だけ読み込み、失敗しても次の素材へ進む。
   const imageCache = useRef<Map<string, HTMLImageElement>>(new Map())
 
   useEffect(() => {
+    if (screen === 'start' || isWindPlaying) return
     let cancelled = false
 
     async function preloadAllScreens() {
@@ -82,13 +80,13 @@ export default function App() {
       }
     }
 
-    // スタート画面の初回描画後に開始。読み込み完了まで操作を止めない。
+    // 名前入力への遷移完了後に開始。読み込み完了まで操作を止めない。
     const timer = window.setTimeout(() => { void preloadAllScreens() }, 150)
     return () => {
       cancelled = true
       window.clearTimeout(timer)
     }
-  }, [])
+  }, [screen, isWindPlaying])
 
   useEffect(() => {
     return () => {
