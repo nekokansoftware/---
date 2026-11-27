@@ -158,3 +158,72 @@
   .start-cat-pupil, .start-cat-tail, .start-cat-eyelid::after { animation: none; }
   .start-cat-pupil { transform: translateX(0); }
 }
+
+/* Touch only the cat; the existing start button retains its higher z-index. */
+.start-cat-pet {
+  position: absolute;
+  inset: 6% 12% 3% 12%;
+  z-index: 5;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 40%;
+  background: transparent;
+  box-shadow: none;
+  pointer-events: auto;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.start-cat-pet:active, .start-cat-pet:hover { background: transparent; box-shadow: none; }
+.start-cat-pet:focus-visible { outline: 3px solid #1566b0; outline-offset: 2px; }
+.start-cat-hearts, .start-cat-hiss {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+.start-cat-hearts span {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  color: #ff638c;
+  font-size: clamp(20px, 4vw, 55px);
+  line-height: 1;
+  text-shadow: 0 2px #fff;
+  animation: start-pet-heart .85s ease-out both;
+}
+.start-cat-hearts span:nth-child(1) { --heart-x: -105%; }
+.start-cat-hearts span:nth-child(2) { --heart-x: -10%; animation-delay: .06s; }
+.start-cat-hearts span:nth-child(3) { --heart-x: 85%; animation-delay: .12s; }
+@keyframes start-pet-heart {
+  from { transform: translate(-50%, 10%) scale(.5); opacity: 0; }
+  20% { opacity: 1; }
+  to { transform: translate(var(--heart-x), -180%) scale(1.12); opacity: 0; }
+}
+.start-cat-angry { animation: start-pet-hiss .42s ease-in-out 2; }
+.start-cat-angry .start-cat-tail { animation-duration: .35s; }
+.start-cat-angry .start-cat-pupil { animation: none; transform: scaleX(.45); }
+.start-cat-hiss span {
+  position: absolute;
+  top: 0;
+  right: -4%;
+  background: #fff5d8;
+  border: 2px solid #c66b37;
+  border-radius: 12px;
+  padding: .2em .45em;
+  color: #9e3523;
+  font-weight: bold;
+  font-size: clamp(18px, 3vw, 42px);
+  white-space: nowrap;
+}
+@keyframes start-pet-hiss {
+  0%, 100% { transform: translateX(-50%); }
+  25% { transform: translateX(-53%) rotate(-3deg); }
+  75% { transform: translateX(-47%) rotate(3deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .start-cat-angry { animation: none; }
+  .start-cat-hearts span { animation: none; transform: translate(var(--heart-x), -80%); }
+  .start-cat-angry .start-cat-tail { animation: none; }
+}
