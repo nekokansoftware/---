@@ -340,4 +340,10 @@ body .result-page button.ranking-button:active:not(:disabled) {
     max-height: none;
     aspect-ratio: auto;
   }
+
+  /* 背景が縦に広がっても足元を地面（スタートボタンの直上）に固定する。 */
+  .start-artwork .start-cat {
+    top: auto;
+    bottom: 24%;
+  }
 }
