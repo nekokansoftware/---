@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import WindTransitionCanvas from './components/WindTransitionCanvas'
+import { getSensorStatus, resetSensorCount } from './utils/sensorApi'
 import StartScreen from './components/StartScreen'
 import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
@@ -33,8 +34,11 @@ const preloadImages = [
 ]
 
 export default function App() {
-  // 実際の接触回数（ハードウェア連携までは仮の値）
-  const actual = 1
+  // 実測値の取得に成功した場合のみ結果画面へ進む。
+  const [actual, setActual] = useState(0)
+  const [sensorBusy, setSensorBusy] = useState(false)
+  const [sensorError, setSensorError] = useState('')
+  const sensorLock = useRef(false)
   const [screen, setScreen] = useState<Screen>('start')
   const [answer, setAnswer] = useState<number | null>(null)
   const [playerName, setPlayerName] = useState('')
@@ -99,6 +103,8 @@ export default function App() {
     if (isWindPlaying) return
 
     setIsWindPlaying(true)
+    setActual(0)
+    setSensorError('')
 
     // 密度が最大になるタイミングで背後の画面を切り替える
     windTimers.current.push(setTimeout(() => {
@@ -134,9 +140,50 @@ export default function App() {
   }
 
   function returnToStart() {
+    setSensorError('')
     setAnswer(null)
     setPlayerName('')
     setScreen('start')
+  }
+
+  async function confirmAnswer() {
+    if (answer === null || sensorLock.current || isPageTurning || screen !== 'answer') return
+    sensorLock.current = true
+    setSensorBusy(true)
+    setSensorError('')
+    try {
+      const status = await getSensorStatus()
+      if (!status.connected || !status.recording) throw new Error('Sensor not ready')
+      setActual(status.count)
+      setScreen('result')
+    } catch (error) {
+      console.warn('Sensor read failed:', error)
+      setSensorError('センサーに接続できません。係の人に知らせて、もう一度けっていを押してください。')
+    } finally {
+      sensorLock.current = false
+      setSensorBusy(false)
+    }
+  }
+
+  // 次の体験はリセット成功後に開始する。失敗時はランキング画面で再試行。
+  async function finishGameAndReturnToStart() {
+    if (sensorLock.current) return
+    sensorLock.current = true
+    setSensorBusy(true)
+    setSensorError('')
+    try {
+      const status = await resetSensorCount()
+      if (status.count !== 0 || !status.recording) throw new Error('Reset not confirmed')
+      setActual(0)
+      setCurrentEntryId(null)
+      returnToStart()
+    } catch (error) {
+      console.warn('Sensor reset failed:', error)
+      setSensorError('リセットできません。係の人に知らせて、もう一度ネコカン君を押してください。')
+    } finally {
+      sensorLock.current = false
+      setSensorBusy(false)
+    }
   }
 
   if (screen === 'result' && answer !== null) {
@@ -158,7 +205,7 @@ export default function App() {
   if (screen === 'ranking') {
     return (
       
-        <Ranking currentEntryId={currentEntryId} onBack={returnToStart} />
+        <Ranking currentEntryId={currentEntryId} onBack={() => { void finishGameAndReturnToStart() }} busy={sensorBusy} error={sensorError} />
       
     )
   }
@@ -175,13 +222,11 @@ export default function App() {
           <div className={isPageTurning ? 'page-turn-answer-underlay' : 'page-turn-answer-normal'}>
           <AnswerScreen
             answer={answer}
-            onChange={setAnswer}
-            onConfirm={() => {
-              if (answer !== null) {
-                setScreen('result')
-              }
-            }}
-            onBack={() => setScreen('name')}
+            onChange={(value) => { if (!sensorLock.current) setAnswer(value) }}
+            onConfirm={() => { void confirmAnswer() }}
+            onBack={() => { if (!sensorLock.current) { setSensorError(''); setScreen('name') } }}
+            busy={sensorBusy}
+            error={sensorError}
             showCat={!isPageTurning}
           />
           </div>

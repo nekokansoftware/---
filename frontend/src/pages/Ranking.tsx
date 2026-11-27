@@ -12,9 +12,11 @@ import {
 type Props = {
   currentEntryId: string | null;
   onBack: () => void;
+  busy?: boolean;
+  error?: string;
 };
 
-export default function Ranking({ currentEntryId, onBack }: Props) {
+export default function Ranking({ currentEntryId, onBack, busy = false, error = '' }: Props) {
   // 保存済みランキングを読み込む
   const [rankingData] = useState<RankingEntry[]>(
   () => getSortedRanking()
@@ -292,10 +294,17 @@ export default function Ranking({ currentEntryId, onBack }: Props) {
        
       </div>
 
+      {(busy || error) && (
+        <div role={error ? 'alert' : 'status'} style={{ position: 'fixed', top: '1%', left: '5%', right: '5%', zIndex: 100, padding: '8px', background: '#fff5d8', color: '#54361f', borderRadius: '8px', textAlign: 'center', pointerEvents: 'none' }}>
+          {busy ? 'センサーをリセットしています…' : error}
+        </div>
+      )}
+
       {/* 右下のネコカン君を押すとスタートに戻る */}
       <button
         type="button"
         className="ranking-cat-area"
+        disabled={busy}
         onClick={onBack}
         aria-label="ネコカン君を押してスタートにもどる"
         title="スタートにもどる"
