@@ -7,6 +7,14 @@ import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
 import Result from './pages/Result'
 import Ranking from './pages/Ranking'
+import resultBackground from './assets/result-background-new.png.png'
+import resultCatBody from './assets/cat-body.png.png'
+import resultCatTail from './assets/cat-siri.png'
+import resultButterflyLeft from './assets/left.png'
+import resultButterflyRight from './assets/right.png'
+import resultCurtain from './assets/curtain.png'
+import rankingCat from './assets/Ranking-cat.png'
+import rankingBackground from './assets/Ranking-background.png'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
@@ -16,11 +24,21 @@ import './styles/PageTurnTransition.css'
 
 type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
-const leafImages = ['/leaf-green.png', '/leaf-lightgreen.png', '/leaf-yellow.png']
+// 名前入力への遷移が終わった後に、後続画面の素材だけを先読みする。
+const preloadImages = [
+  '/sipponasi.png', '/nekokan-tail.png',
+  '/nekokan-nyuryoku-no-cat.png', '/nekokan-back.png',
+  resultBackground, resultCatBody, resultCatTail,
+  resultButterflyLeft, resultButterflyRight, '/nekokan-hukidasi.png',
+  resultCurtain, rankingBackground, rankingCat,
+]
 
 export default function App() {
-  // オフライン時は従来のデモ値（1回）を使う。
-  const [actual, setActual] = useState(1)
+  // 実測値の取得に成功した場合のみ結果画面へ進む。
+  const [actual, setActual] = useState(0)
+  const [sensorBusy, setSensorBusy] = useState(false)
+  const [sensorError, setSensorError] = useState('')
+  const sensorLock = useRef(false)
   const [screen, setScreen] = useState<Screen>('start')
   const [answer, setAnswer] = useState<number | null>(null)
   const [playerName, setPlayerName] = useState('')
@@ -30,15 +48,49 @@ export default function App() {
   const pageTurnTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
+  // ホーム画面と葉っぱの遷移中は先読みしない。
+  // 同じURLは一度だけ読み込み、失敗しても次の素材へ進む。
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map())
+
   useEffect(() => {
-    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku-no-cat.png', '/sipponasi.png', '/nekokan-tail.png', '/nekokan-back.png', ...leafImages]
-    images.forEach(src => {
-      const img = new Image()
-      img.src = src
-      if (typeof img.decode === 'function') void img.decode().catch(() => {})
-    })
-  }, [])
+    if (screen === 'start' || isWindPlaying) return
+    let cancelled = false
+
+    async function preloadAllScreens() {
+      for (const src of new Set(preloadImages)) {
+        if (cancelled) return
+        if (imageCache.current.has(src)) continue
+
+        const img = new Image()
+        img.decoding = 'async'
+        imageCache.current.set(src, img)
+
+        try {
+          await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve()
+            img.onerror = () => reject(new Error('Image preload failed'))
+            img.src = src
+            if (img.complete && img.naturalWidth > 0) resolve()
+          })
+          if (!cancelled && typeof img.decode === 'function') {
+            await img.decode().catch(() => {})
+          }
+        } catch {
+          imageCache.current.delete(src)
+        } finally {
+          img.onload = null
+          img.onerror = null
+        }
+      }
+    }
+
+    // 名前入力への遷移完了後に開始。読み込み完了まで操作を止めない。
+    const timer = window.setTimeout(() => { void preloadAllScreens() }, 150)
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+    }
+  }, [screen, isWindPlaying])
 
   useEffect(() => {
     return () => {
@@ -51,7 +103,8 @@ export default function App() {
     if (isWindPlaying) return
 
     setIsWindPlaying(true)
-    setActual(1)
+    setActual(0)
+    setSensorError('')
 
     // 密度が最大になるタイミングで背後の画面を切り替える
     windTimers.current.push(setTimeout(() => {
@@ -87,21 +140,50 @@ export default function App() {
   }
 
   function returnToStart() {
+    setSensorError('')
     setAnswer(null)
     setPlayerName('')
     setScreen('start')
   }
 
-  // ランキングからスタート画面へ戻る時点で次の体験に備えて計測をリセットする。
-  async function finishGameAndReturnToStart() {
+  async function confirmAnswer() {
+    if (answer === null || sensorLock.current || isPageTurning || screen !== 'answer') return
+    sensorLock.current = true
+    setSensorBusy(true)
+    setSensorError('')
     try {
-      await resetSensorCount()
+      const status = await getSensorStatus()
+      if (!status.connected || !status.recording) throw new Error('Sensor not ready')
+      setActual(status.count)
+      setScreen('result')
     } catch (error) {
-      console.warn('Sensor reset unavailable (demo mode):', error)
+      console.warn('Sensor read failed:', error)
+      setSensorError('センサーに接続できません。係の人に知らせて、もう一度けっていを押してください。')
+    } finally {
+      sensorLock.current = false
+      setSensorBusy(false)
     }
-    setActual(1)
-    setCurrentEntryId(null)
-    returnToStart()
+  }
+
+  // 次の体験はリセット成功後に開始する。失敗時はランキング画面で再試行。
+  async function finishGameAndReturnToStart() {
+    if (sensorLock.current) return
+    sensorLock.current = true
+    setSensorBusy(true)
+    setSensorError('')
+    try {
+      const status = await resetSensorCount()
+      if (status.count !== 0 || !status.recording) throw new Error('Reset not confirmed')
+      setActual(0)
+      setCurrentEntryId(null)
+      returnToStart()
+    } catch (error) {
+      console.warn('Sensor reset failed:', error)
+      setSensorError('リセットできません。係の人に知らせて、もう一度ネコカン君を押してください。')
+    } finally {
+      sensorLock.current = false
+      setSensorBusy(false)
+    }
   }
 
   if (screen === 'result' && answer !== null) {
@@ -123,7 +205,7 @@ export default function App() {
   if (screen === 'ranking') {
     return (
       
-        <Ranking currentEntryId={currentEntryId} onBack={() => { void finishGameAndReturnToStart() }} />
+        <Ranking currentEntryId={currentEntryId} onBack={() => { void finishGameAndReturnToStart() }} busy={sensorBusy} error={sensorError} />
       
     )
   }
@@ -140,20 +222,11 @@ export default function App() {
           <div className={isPageTurning ? 'page-turn-answer-underlay' : 'page-turn-answer-normal'}>
           <AnswerScreen
             answer={answer}
-            onChange={setAnswer}
-            onConfirm={async () => {
-              if (answer === null) return
-              try {
-                const status = await getSensorStatus()
-                // 最新の実測値を使う。通信できないときは従来のデモ値にフォールバック。
-               setActual(status.recording ? status.count : 1)
-              } catch (error) {
-                console.warn('Sensor unavailable (demo mode):', error)
-                setActual(1)
-              }
-              setScreen('result')
-            }}
-            onBack={() => setScreen('name')}
+            onChange={(value) => { if (!sensorLock.current) setAnswer(value) }}
+            onConfirm={() => { void confirmAnswer() }}
+            onBack={() => { if (!sensorLock.current) { setSensorError(''); setScreen('name') } }}
+            busy={sensorBusy}
+            error={sensorError}
             showCat={!isPageTurning}
           />
           </div>

@@ -171,7 +171,7 @@ body { overflow-x: hidden; }
   align-self: flex-end;
   margin-top: auto;
   width: clamp(110px, 19vw, 240px);
-  pointer-events: none;
+  pointer-events: auto;
 }
 .ranking-page .ranking-cat-area .ranking-cat { width: 100%; }
 .ranking-page .curtain-opening,
@@ -262,65 +262,12 @@ body { overflow-x: hidden; }
   .ranking-page .ranking-cat-area { width: 140px; margin-left: auto; }
 }
 
-/* スタート画面は余白なしの cover 表示。
-   画像と透明なスタート領域は同じ要素内にあるためズレない。
-   縦横比は維持し、異なる画面比率では外周だけを切り取る。 */
-.nekohan .page:has(.start-artwork) {
-  width: 100vw;
-  height: 100dvh;
-  min-height: 0;
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.nekohan .page .start-artwork {
-  position: relative;
-  left: auto;
-  top: auto;
-  flex: 0 0 auto;
-  transform: none;
-  width: max(100vw, 177.777778dvh);
-  height: auto;
-  min-height: 0;
-  max-height: none;
-  aspect-ratio: 16 / 9;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* 名前入力もスタート画面と同じ全面表示方式。
-   背景画像と文字のタッチ領域を同じ16:9座標で拡大する。 */
-.nekohan .page:has(.name-artwork) {
-  width: 100vw;
-  height: 100dvh;
-  min-height: 0;
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.nekohan .page .name-artwork {
-  position: relative;
-  display: block;
-  left: auto;
-  top: auto;
-  flex: 0 0 auto;
-  transform: none;
-  width: max(100vw, 177.777778dvh);
-  height: auto;
-  min-height: 0;
-  max-height: none;
-  aspect-ratio: 16 / 9;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* 回答画面も同じ cover サイズに揃える。画像と全ボタンは同じ座標系。 */
+/* 展示用：背景とタッチ領域を同じ16:9座標のまま画面内に収める。
+   4:3のiPadでも左右のボタンを切らない。 */
+.nekohan .page:has(.start-artwork),
+.nekohan .page:has(.name-artwork),
 .nekohan .page:has(.answer-artwork) {
-  width: 100vw;
+  width: 100%;
   height: 100dvh;
   min-height: 0;
   padding: 0;
@@ -328,7 +275,10 @@ body { overflow-x: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #b9dcb0;
 }
+.nekohan .page .start-artwork,
+.nekohan .page .name-artwork,
 .nekohan .page .answer-artwork {
   position: relative;
   display: block;
@@ -336,11 +286,64 @@ body { overflow-x: hidden; }
   top: auto;
   flex: 0 0 auto;
   transform: none;
-  width: max(100vw, 177.777778dvh);
+  width: min(100vw, 177.777778dvh);
+  max-width: 100%;
   height: auto;
   min-height: 0;
-  max-height: none;
+  max-height: 100dvh;
   aspect-ratio: 16 / 9;
   padding: 0;
   overflow: hidden;
+}
+
+/* Press feedback without moving buttons or drawing outlines over background art. */
+button:not(:disabled) {
+  touch-action: manipulation;
+}
+button.artwork-start-button:active:not(:disabled),
+button.name-hotspot:active:not(:disabled),
+button.answer-hotspot:active:not(:disabled) {
+  background: radial-gradient(ellipse at center, rgba(100, 60, 20, .22), transparent 72%);
+  box-shadow: none;
+}
+button.wood-button:active:not(:disabled),
+button.number-button:active:not(:disabled),
+button.back-button:active:not(:disabled),
+body .result-page button.ranking-button:active:not(:disabled) {
+  filter: brightness(.86);
+}
+body .result-page button.ranking-button:active:not(:disabled) {
+  transform: none;
+}
+.ranking-page button.ranking-cat-area:active:not(:disabled) .ranking-cat {
+  transform: none;
+  filter: brightness(.84);
+}
+.ranking-page button.ranking-cat-area:active:not(:disabled) .ranking-cat-speech {
+  background-color: #ffe3a3;
+}
+.ranking-page button.bottom-back-button:active:not(:disabled) {
+  transform: none;
+  filter: brightness(.86);
+}
+
+/* 横向きタブレット：画像と透明ボタンを同じ割合で広げて余白をなくす。
+   猫の画像は既存の aspect-ratio / object-fit を維持する。 */
+@media (orientation: landscape) and (pointer: coarse) {
+  .nekohan .page .start-artwork,
+  .nekohan .page .name-artwork,
+  .nekohan .page .answer-artwork,
+  .nekohan .page:has(.name-artwork) .page-turn-answer-underlay .answer-artwork {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    aspect-ratio: auto;
+  }
+
+  /* 背景が縦に広がっても足元を地面（スタートボタンの直上）に固定する。 */
+  .start-artwork .start-cat {
+    top: auto;
+    bottom: 24%;
+  }
 }

@@ -6,6 +6,8 @@ type Props = {
   onConfirm: () => void
   onBack: () => void
   showCat?: boolean
+  busy?: boolean
+  error?: string
 }
 
 const keys = [
@@ -27,6 +29,8 @@ export default function AnswerScreen({
   onConfirm,
   onBack,
   showCat = true,
+  busy = false,
+  error = '',
 }: Props) {
   const input = answer === null ? '' : String(answer)
 
@@ -70,6 +74,7 @@ export default function AnswerScreen({
 
       {/* 背景画像の左上に描かれた「もどる」ボタン */}
       <button
+        disabled={busy}
         type="button"
         className="answer-hotspot back-hotspot"
         aria-label="スタート画面にもどる"
@@ -79,7 +84,8 @@ export default function AnswerScreen({
       {/* 数字ボタン */}
       {keys.map(({ digit, x, y }) => (
         <button
-          key={digit}
+          disabled={busy}
+        key={digit}
           type="button"
           className="answer-hotspot digit-hotspot"
           style={{
@@ -93,6 +99,7 @@ export default function AnswerScreen({
 
       {/* 全部消す */}
       <button
+        disabled={busy}
         type="button"
         className="answer-hotspot clear-hotspot"
         aria-label="全部消す"
@@ -101,6 +108,7 @@ export default function AnswerScreen({
 
       {/* 1つ消す */}
       <button
+        disabled={busy}
         type="button"
         className="answer-hotspot delete-hotspot"
         aria-label="1つ消す"
@@ -112,10 +120,15 @@ export default function AnswerScreen({
         type="button"
         className="answer-hotspot decide-hotspot"
         aria-label="決定"
-        disabled={answer === null}
+        disabled={busy || answer === null}
         onClick={onConfirm}
       />
 
+      {(busy || error) && (
+        <div role={error ? 'alert' : 'status'} style={{ position: 'absolute', top: '1%', left: '28%', right: '2%', zIndex: 20, padding: '8px', background: '#fff5d8', color: '#54361f', borderRadius: '8px', textAlign: 'center', pointerEvents: 'none' }}>
+          {busy ? 'センサーを確認しています…' : error}
+        </div>
+      )}
     </section>
   )
 }
