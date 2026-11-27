@@ -560,3 +560,16 @@ body .result-page .result-cat-speech-text {
 @media (prefers-reduced-motion: reduce) {
   body .result-page .result-cat-speech { animation: none; }
 }
+
+/* Tablet: keep the artwork, reduce expensive compositing and continuous motion. */
+@media (pointer: coarse) {
+  body .result-page .match-rate,
+  body .result-page .result-title { filter: none; }
+  body .result-page .cat-tail { animation: tail-wag 2s ease-in-out 3; }
+  body .result-page .result-cat-speech { animation-duration: 350ms; }
+}
+body .result-page .ranking-button { touch-action: manipulation; }
+@media (prefers-reduced-motion: reduce) {
+  body .result-page .cat-tail,
+  body .result-page .result-cat-speech { animation: none; }
+}

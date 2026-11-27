@@ -6,6 +6,14 @@ import AnswerScreen  from './components/AnswerScreen'
 import NameScreen from './components/NameScreen'
 import Result from './pages/Result'
 import Ranking from './pages/Ranking'
+import resultBackground from './assets/result-background-new.png.png'
+import resultCatBody from './assets/cat-body.png.png'
+import resultCatTail from './assets/cat-siri.png'
+import resultButterflyLeft from './assets/left.png'
+import resultButterflyRight from './assets/right.png'
+import resultCurtain from './assets/curtain.png'
+import rankingCat from './assets/Ranking-cat.png'
+import rankingBackground from './assets/Ranking-background.png'
 import './App.css'
 import './components/StartScreen.css'
 import './styles/WindTransition.css'
@@ -15,7 +23,14 @@ import './styles/PageTurnTransition.css'
 
 type Screen = 'start' | 'answer' | 'name' | 'result' | 'ranking'
 
-const leafImages = ['/leaf-green.png', '/leaf-lightgreen.png', '/leaf-yellow.png']
+// 名前入力への遷移が終わった後に、後続画面の素材だけを先読みする。
+const preloadImages = [
+  '/sipponasi.png', '/nekokan-tail.png',
+  '/nekokan-nyuryoku-no-cat.png', '/nekokan-back.png',
+  resultBackground, resultCatBody, resultCatTail,
+  resultButterflyLeft, resultButterflyRight, '/nekokan-hukidasi.png',
+  resultCurtain, rankingBackground, rankingCat,
+]
 
 export default function App() {
   // 実際の接触回数（ハードウェア連携までは仮の値）
@@ -29,15 +44,49 @@ export default function App() {
   const pageTurnTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const windTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  // 次の画面で使う画像を先に読み込み、切り替え時の一瞬の空白を抑える
+  // ホーム画面と葉っぱの遷移中は先読みしない。
+  // 同じURLは一度だけ読み込み、失敗しても次の素材へ進む。
+  const imageCache = useRef<Map<string, HTMLImageElement>>(new Map())
+
   useEffect(() => {
-    const images = ['/nekokan-nickname.png', '/nekokan-nyuryoku-no-cat.png', '/sipponasi.png', '/nekokan-tail.png', '/nekokan-back.png', ...leafImages]
-    images.forEach(src => {
-      const img = new Image()
-      img.src = src
-      if (typeof img.decode === 'function') void img.decode().catch(() => {})
-    })
-  }, [])
+    if (screen === 'start' || isWindPlaying) return
+    let cancelled = false
+
+    async function preloadAllScreens() {
+      for (const src of new Set(preloadImages)) {
+        if (cancelled) return
+        if (imageCache.current.has(src)) continue
+
+        const img = new Image()
+        img.decoding = 'async'
+        imageCache.current.set(src, img)
+
+        try {
+          await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve()
+            img.onerror = () => reject(new Error('Image preload failed'))
+            img.src = src
+            if (img.complete && img.naturalWidth > 0) resolve()
+          })
+          if (!cancelled && typeof img.decode === 'function') {
+            await img.decode().catch(() => {})
+          }
+        } catch {
+          imageCache.current.delete(src)
+        } finally {
+          img.onload = null
+          img.onerror = null
+        }
+      }
+    }
+
+    // 名前入力への遷移完了後に開始。読み込み完了まで操作を止めない。
+    const timer = window.setTimeout(() => { void preloadAllScreens() }, 150)
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+    }
+  }, [screen, isWindPlaying])
 
   useEffect(() => {
     return () => {

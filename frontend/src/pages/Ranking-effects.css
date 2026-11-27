@@ -167,3 +167,34 @@
     transform: rotate(var(--paper-angle, 0deg));
   }
 }
+
+/* Avoid retaining a compositor layer for each paper fragment. */
+.ranking-page .confetti-piece { will-change: auto; box-shadow: none; }
+.ranking-page .confetti-ground-paper,
+.ranking-page .confetti-settled-paper { box-shadow: none; }
+/* Tablet: preserve the celebration without repainting shadows or rotating a huge gradient. */
+@media (pointer: coarse) {
+  .ranking-page .first-place .rank-1 { animation: champion-enter .6s ease-out both; }
+  .ranking-page .first-place .rank-1::before { animation: none; }
+  .ranking-page .ranking-panel .ranking-congrats { animation: congrats-banner-entrance .6s ease-out both; }
+  .ranking-page .first-place-mascot-image,
+  .ranking-page .first-place-mascot-cheer,
+  .ranking-page .first-place-mascot-star,
+  .ranking-page .first-place .rank-1::after,
+  .ranking-page .first-place::before,
+  .ranking-page .ranking-congrats .congrats-sparkle { animation-iteration-count: 3; }
+  .ranking-page .first-place-mascot-image { filter: none; }
+  .ranking-page .confetti-piece { animation-name: tablet-confetti-fall; }
+  .ranking-page .confetti-ground-paper,
+  .ranking-page .confetti-settled-paper { animation: none; opacity: 1; transform: rotate(var(--paper-angle, 0deg)); }
+}
+@keyframes tablet-confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  8%, 80% { opacity: 1; }
+  100% { transform: translateY(105dvh) rotate(var(--confetti-turn, 540deg)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ranking-page .first-place .rank-1,
+  .ranking-page .ranking-panel .ranking-congrats,
+  .ranking-page .confetti-piece { animation: none; }
+}

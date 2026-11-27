@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "ねこかんくん",
+  "short_name": "ねこかんくん",
+  "lang": "ja",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#b9dcb0",
+  "theme_color": "#b9dcb0",
+  "icons": [
+    {
+      "src": "/nekokan-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

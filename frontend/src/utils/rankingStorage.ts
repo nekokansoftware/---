@@ -44,7 +44,11 @@ export function saveRanking(
   score: number
 ): RankingEntry {
   const newEntry: RankingEntry = {
-    id: crypto.randomUUID(),
+    id: typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : Array.from(crypto.getRandomValues(new Uint32Array(4)), (n) =>
+          n.toString(16).padStart(8, "0")
+        ).join(""),
     name: name.trim(),
     score: score,
     createdAt: Date.now(),
